@@ -17,6 +17,7 @@
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
+      <parameter key="ADPWechatBundle">ADP\WechatBundle\ADPWechatBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -1769,7 +1770,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>57231e4fbbe5f0.33958678</argument>
+            <argument>57233b0608b077.50310759</argument>
           </service>
         </argument>
       </argument>
@@ -1888,7 +1889,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>57231e4fbbe5f0.33958678</argument>
+            <argument>57233b0608b077.50310759</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -2786,6 +2787,10 @@
       <call method="addPath">
         <argument>/vagrant/vendor/doctrine/doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
+      </call>
+      <call method="addPath">
+        <argument>/vagrant/src/ADP/WechatBundle/Resources/views</argument>
+        <argument>ADPWechat</argument>
       </call>
       <call method="addPath">
         <argument>/vagrant/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
