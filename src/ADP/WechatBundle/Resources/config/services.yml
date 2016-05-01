@@ -1,4 +1,8 @@
 services:
-#    adp_wechat.example:
-#        class: ADP\WechatBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+  #  adp_wechat.example:
+  #      class: ADP\WechatBundle\Example
+  #      arguments: [@service_id, "plain_value", %parameter%]
+
+        vendor.MysqliDb:
+          class: MysqliDb
+          arguments: [%database_host%, %database_user%, %database_password%, %database_name%]

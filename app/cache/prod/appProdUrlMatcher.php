@@ -32,6 +32,15 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'adp_wechat_homepage')), array (  '_controller' => 'ADP\\WechatBundle\\Controller\\DefaultController::indexAction',));
         }
 
+        // adp_wechat_wechat
+        if (rtrim($pathinfo, '/') === '/wechat') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'adp_wechat_wechat');
+            }
+
+            return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\DefaultController::wechatAction',  '_route' => 'adp_wechat_wechat',);
+        }
+
         // homepage
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {
