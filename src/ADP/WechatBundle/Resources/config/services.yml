@@ -6,3 +6,7 @@ services:
         vendor.MysqliDb:
           class: MysqliDb
           arguments: [%database_host%, %database_user%, %database_password%, %database_name%]
+
+        my.dataSql:
+          class: ADP\WechatBundle\Modals\Database\dataSql
+          arguments: [@service_container]
