@@ -26,15 +26,19 @@ class dataSql{
   }
 
   public function textField($Content){
-    return searchData(array('getMsgType' => 'text','getContent' => $Content) ,array(), 'wechat_menu_event');
+    return $this->searchData(array('getMsgType' => 'text','getContent' => $Content) ,array(), 'wechat_menu_event');
   }
 
   public function subscribeField(){
-    return searchData(array('getEvent' => 'subscribe','getMsgType' => 'event') ,array(), 'wechat_menu_event');
+    return $this->searchData(array('getEvent' => 'subscribe','getMsgType' => 'event') ,array(), 'wechat_menu_event');
   }
 
   public function clickField($EventKey){
-    return searchData(array('getEvent' => 'click', 'getMsgType' => 'event', 'getEventKey' => $EventKey) ,array(), 'wechat_menu_event');
+    return $this->searchData(array('getEvent' => 'click', 'getMsgType' => 'event', 'getEventKey' => $EventKey) ,array(), 'wechat_menu_event');
+  }
+
+  public function getmenus(){
+    return $this->searchData(array() ,array('mOrder', 'subOrder', 'menuName', 'eventtype', 'eventKey', 'eventUrl'), 'wechat_menu');
   }
 
   public function searchData(array $data=array() ,array $dataout=array(), $table, $limit = null){

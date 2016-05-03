@@ -12,3 +12,6 @@ parameters:
     mailer_password: null
     locale: en
     secret: d96c19363af6dad4bb028f47ddcf7d94fba67bc1
+    redis_host: 127.0.0.1
+    redis_port: 6379
+    redis_prostr: adp:

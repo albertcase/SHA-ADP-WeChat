@@ -12,14 +12,15 @@ class WechatResponse{
   private $toUsername = null;
   private $msgType = null;
   private $dataSql;
+  private $container;
 
-  public function __construct($postStr){
+  public function __construct($postStr, $container){
     $this->postStr = $postStr;
     $this->postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
     $this->msgType = strtolower($this->postObj->MsgType);
     $this->fromUsername = trim($this->postObj->FromUserName);
     $this->toUsername = $this->postObj->ToUserName;
-    $this->dataSql = new dataSql();
+    $this->dataSql = $container->get('my.dataSql');
   }
 
   public function msgResponse($rs){

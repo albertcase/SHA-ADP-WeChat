@@ -10,3 +10,16 @@ services:
         my.dataSql:
           class: ADP\WechatBundle\Modals\Database\dataSql
           arguments: [@service_container]
+
+        my.Wechat:
+          class: ADP\WechatBundle\Modals\Apis\Wechat
+          arguments: [@service_container]
+
+        php.redis:
+          class: Redis
+          calls:
+            - [connect, [%redis_host%, %redis_port%]]
+
+        my.RedisLogic:
+          class: ADP\WechatBundle\Modals\Database\RedisLogic
+          arguments: [@service_container]

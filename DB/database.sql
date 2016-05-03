@@ -3,12 +3,13 @@ DROP TABLE IF EXISTS `wechat_menu`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wechat_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `mOrder` enum('0','1','2','3') DEFAULT '0',
+  `mOrder` enum('0','1','2') DEFAULT '0',
   `subOrder` enum('0','1','2','3','4','5') DEFAULT '0',
   `menuName` varchar(80) NOT NULL,
-  `event` varchar(50) NOT NULL,
+  `eventtype` varchar(50) NOT NULL,
   `eventKey` varchar(50) DEFAULT NULL,
   `eventUrl` varchar(255) DEFAULT NULL,
+  `eventmedia_id` varchar(255) DEFAULT NULL,
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `eventkey` (`eventkey`)

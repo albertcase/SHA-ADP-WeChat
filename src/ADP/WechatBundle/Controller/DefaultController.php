@@ -4,6 +4,7 @@ namespace ADP\WechatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use ADP\WechatBundle\Modals\Apis\Wechat;
 
 class DefaultController extends Controller
 {
@@ -13,17 +14,19 @@ class DefaultController extends Controller
     }
 
     public function wechatAction(){
-      $sql = $this->container->get('vendor.MysqliDb');
-      $data = array(
-        'mOrder' => '1',
-        'subOrder' => '1',
-        'menuName' => '菜单1',
-        'event' => 'click',
-        // 'eventKey' => '',
-        'eventUrl' => 'asdasdasdasdasd',
-      );
-      $id = $sql->insert ('wechat_menu', $data);
-      $response = new Response('llllllllllll@'.$id);
+      $wechatObj = $this->container->get('my.Wechat');
+      if(isset($_GET["echostr"])){
+        return new Response($wechatObj->valid($_GET["echostr"]));
+      }
+      $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+      return new Response($wechatObj->responseMsg($postStr));
+    }
+
+    public function testAction(){
+      $wehcat = $this->container->get('my.Wechat');
+      $data = $wehcat->create_menu_array();
+      print_r($data);
+      $response = new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
       return $response;
     }
 }
