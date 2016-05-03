@@ -99,7 +99,7 @@ class Wechat{
         $redis->setString('access_token', $access_token, 5000);
         return $rs['access_token'];
       }else{
-        throw new Exception($rs['errcode']);
+        return false;
       }
     }
     return $access_token;
@@ -107,6 +107,17 @@ class Wechat{
 // token and Ticket start
 
 // creat_menu start
+  public function buildmenu(){
+    if(!$access_token = $this->getAccessToken())
+      return false;
+    $url = $this->_urls['create_menu'];
+    $url = str_replace('ACCESS_TOKEN', $access_token ,$url);
+    $result = $this->post_data($url, json_encode($this->create_menu_array(), JSON_UNESCAPED_UNICODE));
+    if(!$result['errcode'])
+      return true;
+    return false;
+  }
+
   public function create_menu_array(){
     $dataSql = $this->_container->get('my.dataSql');
     $data = array();

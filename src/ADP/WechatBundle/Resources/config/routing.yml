@@ -5,3 +5,12 @@ adp_wechat_homepage:
 adp_wechat_wechat:
     path:     /wechat/
     defaults: { _controller: ADPWechatBundle:Default:wechat }
+
+adp_wechat_api:
+    path:     /api/
+    defaults: { _controller: ADPWechatBundle:Default:api }
+
+# admin
+adp_admin_createmenu:
+    path:     /adminapi/createmenu/
+    defaults: { _controller: ADPWechatBundle:Adminapi:createmenu }

@@ -41,6 +41,17 @@ class dataSql{
     return $this->searchData(array() ,array('mOrder', 'subOrder', 'menuName', 'eventtype', 'eventKey', 'eventUrl'), 'wechat_menu');
   }
 
+  public function insertData($data, $table){
+    $db = $this->rebuilddb();
+    return $db->insert($table, $data);
+  }
+
+  public function insertsData($datas, $table){
+    foreach($datas as $x){
+      $this->insertData($x, $table);
+    }
+  }
+
   public function searchData(array $data=array() ,array $dataout=array(), $table, $limit = null){
     $db = $this->rebuilddb();
     foreach($data as $x => $x_val){
