@@ -41,13 +41,67 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\DefaultController::wechatAction',  '_route' => 'adp_wechat_wechat',);
         }
 
-        // adp_wechat_api
-        if (rtrim($pathinfo, '/') === '/api') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'adp_wechat_api');
+        if (0 === strpos($pathinfo, '/a')) {
+            // adp_wechat_api
+            if (rtrim($pathinfo, '/') === '/api') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_wechat_api');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\DefaultController::apiAction',  '_route' => 'adp_wechat_api',);
             }
 
-            return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\DefaultController::apiAction',  '_route' => 'adp_wechat_api',);
+            if (0 === strpos($pathinfo, '/adminapi')) {
+                // adp_admin_createmenu
+                if (rtrim($pathinfo, '/') === '/adminapi/createmenu') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'adp_admin_createmenu');
+                    }
+
+                    return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::createmenuAction',  '_route' => 'adp_admin_createmenu',);
+                }
+
+                // adp_admin_deletebutton
+                if (rtrim($pathinfo, '/') === '/adminapi/deletebutton') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'adp_admin_deletebutton');
+                    }
+
+                    return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::deletebuttonAction',  '_route' => 'adp_admin_deletebutton',);
+                }
+
+                if (0 === strpos($pathinfo, '/adminapi/add')) {
+                    // adp_admin_addsubbutton
+                    if (rtrim($pathinfo, '/') === '/adminapi/addsubbutton') {
+                        if (substr($pathinfo, -1) !== '/') {
+                            return $this->redirect($pathinfo.'/', 'adp_admin_addsubbutton');
+                        }
+
+                        return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::addsubbuttonAction',  '_route' => 'adp_admin_addsubbutton',);
+                    }
+
+                    // adp_admin_addmbutton
+                    if (rtrim($pathinfo, '/') === '/adminapi/addmbutton') {
+                        if (substr($pathinfo, -1) !== '/') {
+                            return $this->redirect($pathinfo.'/', 'adp_admin_addmbutton');
+                        }
+
+                        return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::addmbuttonAction',  '_route' => 'adp_admin_addmbutton',);
+                    }
+
+                }
+
+                // adp_admin_updatebutton
+                if (rtrim($pathinfo, '/') === '/adminapi/updatebutton') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'adp_admin_updatebutton');
+                    }
+
+                    return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::updatebuttonAction',  '_route' => 'adp_admin_updatebutton',);
+                }
+
+            }
+
         }
 
         // homepage

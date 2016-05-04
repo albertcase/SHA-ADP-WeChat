@@ -14,3 +14,19 @@ adp_wechat_api:
 adp_admin_createmenu:
     path:     /adminapi/createmenu/
     defaults: { _controller: ADPWechatBundle:Adminapi:createmenu }
+
+adp_admin_deletebutton:
+    path:     /adminapi/deletebutton/
+    defaults: { _controller: ADPWechatBundle:Adminapi:deletebutton }
+
+adp_admin_addsubbutton:
+    path:     /adminapi/addsubbutton/
+    defaults: { _controller: ADPWechatBundle:Adminapi:addsubbutton }
+
+adp_admin_addmbutton:
+    path:     /adminapi/addmbutton/
+    defaults: { _controller: ADPWechatBundle:Adminapi:addmbutton }
+
+adp_admin_updatebutton:
+    path:     /adminapi/updatebutton/
+    defaults: { _controller: ADPWechatBundle:Adminapi:updatebutton }
