@@ -20,7 +20,7 @@ class RedisLogic
     }
 
     public function getString($key){
-	     return $this->get($this->prostr.$key);
+	     return $this->redis->get($this->prostr.$key);
     }
 
     public function checkString($key){
