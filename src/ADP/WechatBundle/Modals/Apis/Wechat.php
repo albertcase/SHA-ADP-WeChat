@@ -113,6 +113,7 @@ class Wechat{
     $url = $this->_urls['create_menu'];
     $url = str_replace('ACCESS_TOKEN', $access_token ,$url);
     $result = $this->post_data($url, json_encode($this->create_menu_array(), JSON_UNESCAPED_UNICODE));
+    print_r($this->create_menu_array());
     print_r($result);
     if(!$result['errcode'])
       return true;
