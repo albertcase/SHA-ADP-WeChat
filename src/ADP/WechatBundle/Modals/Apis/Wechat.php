@@ -14,7 +14,7 @@ class Wechat{
 
   public function __construct($container){
     $this->_container = $container;
-    $this->_urls = $this->setUrls();
+    $this->setUrls();
     $this->_TOKEN = $container->getParameter('wechat_Token');
     $this->_appid = $container->getParameter('wechat_AppID');
     $this->_secret = $container->getParameter('wechat_AppSecret');
