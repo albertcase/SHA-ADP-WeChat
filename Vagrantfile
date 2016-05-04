@@ -7,8 +7,8 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = "apdwechat"
 
 
-  config.vm.network :forwarded_port, guest: 80, host: 8055
-  config.vm.network :forwarded_port, guest: 3306, host: 33055
+  config.vm.network :forwarded_port, guest: 80, host: 8059
+  config.vm.network :forwarded_port, guest: 3306, host: 33059
 
   config.vm.network :private_network, ip: "192.168.33.10"
 
