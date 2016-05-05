@@ -48,4 +48,8 @@ class AdminapiController extends Controller
       $data = array('code' => '10', 'id' => $id);
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
+
+  public function updateeventAction(){
+
+  }
 }

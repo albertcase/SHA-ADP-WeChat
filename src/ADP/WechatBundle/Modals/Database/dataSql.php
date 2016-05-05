@@ -45,7 +45,7 @@ class dataSql{
     return $this->searchData(array() ,array('id', 'mOrder', 'subOrder', 'menuName', 'eventtype', 'eventKey', 'eventUrl'), 'wechat_menu');
   }
 
-  public function addSubButton($mOrder){
+  public function addSubButton($mOrder){//added main button
     $count = $this->getCount(array('mOrder' => $mOrder), 'wechat_menu');
     $count = intval($count);
     if($count == '0')
@@ -57,7 +57,7 @@ class dataSql{
     return false;
   }
 
-  public function addMButton(){
+  public function addMButton(){//added main button
     $count = $this->getCount(array('subOrder' => '0'), 'wechat_menu');
     if($count >= 3)
       return false;
@@ -66,13 +66,40 @@ class dataSql{
     return false;
   }
 
-  public function updateButton($id, $data = array()){
+  public function updateButton($id, $button = array(), $event = array()){//set old button
     $change = array(
       'eventKey' => '',
       'eventUrl' => '',
       'eventmedia_id' => '',
     );
     $this->updateData(array('id' => $id ), $change, 'wechat_menu');
+    $this->updateData(array('id' => $id ), $data, 'wechat_menu');
+    $this->updateEvent(array('menuId' => $id), $event);
+    return true;
+  }
+
+  public function getEvent($data){
+    $result = array();
+    $out = $this->searchData($data, array(), 'wechat_menu_event');
+    if($out && isset($out[0])){
+      if(count($out) == '1'){
+        $result = $out['0'];
+      }else{
+        $result['getMsgType'] = $out[0]['getMsgType'];
+        $result['getContent'] = $out[0]['getContent'];
+        $result['getEvent'] = $out[0]['getEvent'];
+        $result['getEventKey'] = $out[0]['getEventKey'];
+        $result['getTicket'] = $out[0]['getTicket'];
+        $result['alldata'] = $out;
+      }
+    }
+  }
+
+  public function updateEvent($data, $change = array()){
+    $this->deleteData($data, 'wechat_menu_event');
+    if($change)
+      $this->insertsData($change, 'wechat_menu_event');
+    return true;
   }
 
 //deleteButton main start
