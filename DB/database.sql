@@ -11,8 +11,7 @@ CREATE TABLE `wechat_menu` (
   `eventUrl` varchar(255) DEFAULT NULL,
   `eventmedia_id` varchar(255) DEFAULT NULL,
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `eventkey` (`eventkey`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `wechat_menu_event`;
@@ -20,7 +19,7 @@ DROP TABLE IF EXISTS `wechat_menu_event`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wechat_menu_event` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `menuId` int(11) NOT NULL,
+  `menuId` varchar(50) NOT NULL,
   `getMsgType` varchar(50) NOT NULL,
   `getContent` varchar(250) NOT NULL,
   `getEvent` varchar(100) NOT NULL,
@@ -51,4 +50,29 @@ CREATE TABLE `wechat_getmsglog` (
   `msgXml` longtext NOT NULL,
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `wechat_admin`;
+CREATE TABLE `wechat_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `latestTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `adp_article`;
+CREATE TABLE `adp_article` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pageid` varchar(50) NOT NULL,
+  `pagename` varchar(50) NOT NULL,
+  `pagetitle` varchar(50) NOT NULL,
+  `content` longtext NOT NULL,
+  `submiter` varchar(50) NOT NULL,
+  `edittime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pageid` (`pageid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

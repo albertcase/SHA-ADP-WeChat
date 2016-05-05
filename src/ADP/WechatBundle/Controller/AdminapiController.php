@@ -50,6 +50,19 @@ class AdminapiController extends Controller
   }
 
   public function updateeventAction(){
-
+    $dataSql = $this->container->get('my.dataSql');
+    $data = array('code' => '9');
+    if($dataSql->updateEvent($data, array()))
+      $data = array('code' => '10');
+    return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
+
+  public function geteventAction(){
+    $dataSql = $this->container->get('my.dataSql');
+    $data = array('code' => '9');
+    if($out = $dataSql->getEvent($data))
+      $data = array('code' => '10', 'event' => $out);
+    return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
 }

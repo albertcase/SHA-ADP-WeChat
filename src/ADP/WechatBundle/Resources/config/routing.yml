@@ -34,3 +34,7 @@ adp_admin_updatebutton:
 adp_admin_updateevent:
     path:     /adminapi/updateevent/
     defaults: { _controller: ADPWechatBundle:Adminapi:updateevent }
+
+adp_admin_getevent:
+    path:     /adminapi/getevent/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getevent }

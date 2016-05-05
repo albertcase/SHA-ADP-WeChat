@@ -78,7 +78,7 @@ class dataSql{
     return true;
   }
 
-  public function getEvent($data){
+  public function getEvent($data){//get Event
     $result = array();
     $out = $this->searchData($data, array(), 'wechat_menu_event');
     if($out && isset($out[0])){
@@ -92,7 +92,9 @@ class dataSql{
         $result['getTicket'] = $out[0]['getTicket'];
         $result['alldata'] = $out;
       }
+      return $result;
     }
+    return false;
   }
 
   public function updateEvent($data, $change = array()){
@@ -156,7 +158,52 @@ class dataSql{
   }
 
 //deleteButton main end
+//admin start
+  public function createwechatAdmin($data){
+    $data['password'] = md5($data['password'].'185');
+    return $this->insertData($data, 'wechat_admin');
+  }
 
+  public function changepassword($data, $change){
+    $data['password'] = md5($data['password'].'185');
+    if($this->getCount($data, 'wechat_admin')){
+      $change['password'] = md5($change['password'].'185');
+      return $this->updateData($data, $change, 'wechat_admin');
+    }
+    return false;
+  }
+
+  public function comfirmAdmin($data){
+    $data['password'] = md5($data['password'].'185');
+    if($this->getCount($data, 'wechat_admin')){
+      $this->updateData($data, array('latestTime' => date('Y-m-d H:i:s' ,strtotime("now"))), 'wechat_admin');
+      return true;
+    }
+    return false;
+  }
+//admin end
+// adp_article
+  public function createArticle($data){
+    $data['pageid'] = uniqid();
+    if($this->insertData($data, 'adp_article'))
+      return $data['pageid'];
+    return false;
+  }
+
+  public function updateArticle($data, $change){
+    $change['latestTime'] = date('Y-m-d H:i:s' ,strtotime("now"));
+    return $this->updateData($data, $change), 'adp_article');
+  }
+
+  public function getArticle($data){
+    return $this->searchData($data , array(), 'adp_article');
+  }
+
+  public function getArticlelist($data){
+    return $this->searchData($data , array('pageid', 'pagename', 'pagetitle', 'submiter', 'edittime'), 'adp_article');
+  }
+
+// adp_article
   public function insertData($data, $table){
     $db = $this->rebuilddb();
     return $db->insert($table, $data);
