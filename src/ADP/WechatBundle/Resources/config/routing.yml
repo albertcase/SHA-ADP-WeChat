@@ -10,6 +10,10 @@ adp_wechat_api:
     path:     /api/
     defaults: { _controller: ADPWechatBundle:Default:api }
 
+adp_wechat_myjob:
+    path:     /myjob/
+    defaults: { _controller: ADPWechatBundle:Default:myjob }
+
 # admin
 adp_admin_createmenu:
     path:     /adminapi/createmenu/
@@ -38,3 +42,39 @@ adp_admin_updateevent:
 adp_admin_getevent:
     path:     /adminapi/getevent/
     defaults: { _controller: ADPWechatBundle:Adminapi:getevent }
+
+adp_admin_test:
+    path:     /adminapi/test/
+    defaults: { _controller: ADPWechatBundle:Adminapi:test }
+
+adp_admin_creatadmin:
+    path:     /adminapi/creatadmin/
+    defaults: { _controller: ADPWechatBundle:Adminapi:creatadmin }
+
+adp_admin_changepwd:
+    path:     /adminapi/changepwd/
+    defaults: { _controller: ADPWechatBundle:Adminapi:changepwd }
+
+adp_admin_articleadd:
+    path:     /adminapi/articleadd/
+    defaults: { _controller: ADPWechatBundle:Adminapi:articleadd }
+
+adp_admin_editarticle:
+    path:     /adminapi/editarticle/
+    defaults: { _controller: ADPWechatBundle:Adminapi:editarticle }
+
+adp_admin_deletearticle:
+    path:     /adminapi/deletearticle/
+    defaults: { _controller: ADPWechatBundle:Adminapi:deletearticle }
+# outapi
+adp_out_myjob:
+    path:     /outapi/myjob/
+    defaults: { _controller: ADPWechatBundle:Outapi:myjob }
+
+adp_out_logout:
+    path:     /outapi/logout/
+    defaults: { _controller: ADPWechatBundle:Outapi:logout }
+
+adp_out_login:
+    path:     /outapi/login/
+    defaults: { _controller: ADPWechatBundle:Outapi:login }

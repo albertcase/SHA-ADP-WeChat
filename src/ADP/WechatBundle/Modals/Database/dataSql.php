@@ -45,7 +45,7 @@ class dataSql{
     return $this->searchData(array() ,array('id', 'mOrder', 'subOrder', 'menuName', 'eventtype', 'eventKey', 'eventUrl'), 'wechat_menu');
   }
 
-  public function addSubButton($mOrder){//added main button
+  public function addSubButton($mOrder){//added sub button
     $count = $this->getCount(array('mOrder' => $mOrder), 'wechat_menu');
     $count = intval($count);
     if($count == '0')
@@ -192,11 +192,15 @@ class dataSql{
 
   public function updateArticle($data, $change){
     $change['latestTime'] = date('Y-m-d H:i:s' ,strtotime("now"));
-    return $this->updateData($data, $change), 'adp_article');
+    return $this->updateData($data, $change, 'adp_article');
   }
 
   public function getArticle($data){
     return $this->searchData($data , array(), 'adp_article');
+  }
+
+  public function delArticle($data){
+    return $this->deleteData($data, 'adp_article');
   }
 
   public function getArticlelist($data){

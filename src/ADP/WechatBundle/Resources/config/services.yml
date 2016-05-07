@@ -23,3 +23,43 @@ services:
         my.RedisLogic:
           class: ADP\WechatBundle\Modals\Database\RedisLogic
           arguments: [@service_container]
+# form list
+        form.adminadd:
+          class: ADP\WechatBundle\Forms\adminadd
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.adminlogin:
+          class: ADP\WechatBundle\Forms\adminlogin
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.changepwd:
+          class: ADP\WechatBundle\Forms\changepwd
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.articleedit:
+          class: ADP\WechatBundle\Forms\articleedit
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.articleadd:
+          class: ADP\WechatBundle\Forms\articleadd
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.articledel:
+          class: ADP\WechatBundle\Forms\articledel
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.buttondel:
+          class: ADP\WechatBundle\Forms\buttondel
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.buttonaddsub:
+          class: ADP\WechatBundle\Forms\buttonaddsub
+          scope: request
+          arguments: [@request, @service_container]

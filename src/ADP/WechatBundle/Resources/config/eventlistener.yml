@@ -1,0 +1,6 @@
+services:
+        adp.listener.controller:
+            class: ADP\WechatBundle\EventListener\listenerController
+            arguments: [@router, @service_container]
+            tags:
+                - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

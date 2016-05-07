@@ -96,4 +96,12 @@ class DefaultController extends Controller
       $sql->insertsData($datas, 'wechat_menu');
       return new Response(json_encode('111111111', JSON_UNESCAPED_UNICODE));
     }
+
+    public function myjobAction(){
+      return new Response(json_encode('111111111', JSON_UNESCAPED_UNICODE));
+    }
+
+    public function myjob2Action(){
+      return new Response(json_encode('22222222', JSON_UNESCAPED_UNICODE));
+    }
 }
