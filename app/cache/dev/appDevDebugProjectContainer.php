@@ -36,6 +36,7 @@ class appDevDebugProjectContainer extends Container
         $this->scopes = array('request' => 'container');
         $this->scopeChildren = array('request' => array());
         $this->methodMap = array(
+            'adp.listener.controller' => 'getAdp_Listener_ControllerService',
             'annotation_reader' => 'getAnnotationReaderService',
             'assetic.asset_factory' => 'getAssetic_AssetFactoryService',
             'assetic.asset_manager' => 'getAssetic_AssetManagerService',
@@ -72,6 +73,14 @@ class appDevDebugProjectContainer extends Container
             'doctrine_cache.providers.doctrine.orm.default_result_cache' => 'getDoctrineCache_Providers_Doctrine_Orm_DefaultResultCacheService',
             'file_locator' => 'getFileLocatorService',
             'filesystem' => 'getFilesystemService',
+            'form.adminadd' => 'getForm_AdminaddService',
+            'form.adminlogin' => 'getForm_AdminloginService',
+            'form.articleadd' => 'getForm_ArticleaddService',
+            'form.articledel' => 'getForm_ArticledelService',
+            'form.articleedit' => 'getForm_ArticleeditService',
+            'form.buttonaddsub' => 'getForm_ButtonaddsubService',
+            'form.buttondel' => 'getForm_ButtondelService',
+            'form.changepwd' => 'getForm_ChangepwdService',
             'form.csrf_provider' => 'getForm_CsrfProviderService',
             'form.factory' => 'getForm_FactoryService',
             'form.registry' => 'getForm_RegistryService',
@@ -139,6 +148,10 @@ class appDevDebugProjectContainer extends Container
             'monolog.logger.security' => 'getMonolog_Logger_SecurityService',
             'monolog.logger.templating' => 'getMonolog_Logger_TemplatingService',
             'monolog.logger.translation' => 'getMonolog_Logger_TranslationService',
+            'my.datasql' => 'getMy_DatasqlService',
+            'my.redislogic' => 'getMy_RedislogicService',
+            'my.wechat' => 'getMy_WechatService',
+            'php.redis' => 'getPhp_RedisService',
             'profiler' => 'getProfilerService',
             'profiler_listener' => 'getProfilerListenerService',
             'property_accessor' => 'getPropertyAccessorService',
@@ -255,6 +268,7 @@ class appDevDebugProjectContainer extends Container
             'validator.expression' => 'getValidator_ExpressionService',
             'var_dumper.cli_dumper' => 'getVarDumper_CliDumperService',
             'var_dumper.cloner' => 'getVarDumper_ClonerService',
+            'vendor.mysqlidb' => 'getVendor_MysqlidbService',
             'web_profiler.controller.exception' => 'getWebProfiler_Controller_ExceptionService',
             'web_profiler.controller.profiler' => 'getWebProfiler_Controller_ProfilerService',
             'web_profiler.controller.router' => 'getWebProfiler_Controller_RouterService',
@@ -286,6 +300,19 @@ class appDevDebugProjectContainer extends Container
     public function compile()
     {
         throw new LogicException('You cannot compile a dumped frozen container.');
+    }
+
+    /**
+     * Gets the 'adp.listener.controller' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\EventListener\listenerController A ADP\WechatBundle\EventListener\listenerController instance.
+     */
+    protected function getAdp_Listener_ControllerService()
+    {
+        return $this->services['adp.listener.controller'] = new \ADP\WechatBundle\EventListener\listenerController($this->get('router'), $this);
     }
 
     /**
@@ -516,6 +543,7 @@ class appDevDebugProjectContainer extends Container
 
         $instance->addListenerService('kernel.controller', array(0 => 'data_collector.router', 1 => 'onKernelController'), 0);
         $instance->addListenerService('kernel.request', array(0 => 'assetic.request_listener', 1 => 'onKernelRequest'), 0);
+        $instance->addListenerService('kernel.controller', array(0 => 'adp.listener.controller', 1 => 'onKernelController'), 0);
         $instance->addSubscriberService('response_listener', 'Symfony\\Component\\HttpKernel\\EventListener\\ResponseListener');
         $instance->addSubscriberService('streamed_response_listener', 'Symfony\\Component\\HttpKernel\\EventListener\\StreamedResponseListener');
         $instance->addSubscriberService('locale_listener', 'Symfony\\Component\\HttpKernel\\EventListener\\LocaleListener');
@@ -618,7 +646,7 @@ class appDevDebugProjectContainer extends Container
         $b = new \Doctrine\DBAL\Configuration();
         $b->setSQLLogger($a);
 
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'symfony', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array()), $b, new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), array());
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'adp_wechat', 'user' => 'root', 'password' => '', 'charset' => 'UTF8', 'driverOptions' => array()), $b, new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), array());
     }
 
     /**
@@ -780,6 +808,158 @@ class appDevDebugProjectContainer extends Container
     protected function getFilesystemService()
     {
         return $this->services['filesystem'] = new \Symfony\Component\Filesystem\Filesystem();
+    }
+
+    /**
+     * Gets the 'form.adminadd' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\adminadd A ADP\WechatBundle\Forms\adminadd instance.
+     * 
+     * @throws InactiveScopeException when the 'form.adminadd' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_AdminaddService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.adminadd', 'request');
+        }
+
+        return $this->services['form.adminadd'] = $this->scopedServices['request']['form.adminadd'] = new \ADP\WechatBundle\Forms\adminadd($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.adminlogin' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\adminlogin A ADP\WechatBundle\Forms\adminlogin instance.
+     * 
+     * @throws InactiveScopeException when the 'form.adminlogin' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_AdminloginService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.adminlogin', 'request');
+        }
+
+        return $this->services['form.adminlogin'] = $this->scopedServices['request']['form.adminlogin'] = new \ADP\WechatBundle\Forms\adminlogin($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.articleadd' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\articleadd A ADP\WechatBundle\Forms\articleadd instance.
+     * 
+     * @throws InactiveScopeException when the 'form.articleadd' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ArticleaddService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.articleadd', 'request');
+        }
+
+        return $this->services['form.articleadd'] = $this->scopedServices['request']['form.articleadd'] = new \ADP\WechatBundle\Forms\articleadd($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.articledel' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\articledel A ADP\WechatBundle\Forms\articledel instance.
+     * 
+     * @throws InactiveScopeException when the 'form.articledel' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ArticledelService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.articledel', 'request');
+        }
+
+        return $this->services['form.articledel'] = $this->scopedServices['request']['form.articledel'] = new \ADP\WechatBundle\Forms\articledel($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.articleedit' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\articleedit A ADP\WechatBundle\Forms\articleedit instance.
+     * 
+     * @throws InactiveScopeException when the 'form.articleedit' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ArticleeditService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.articleedit', 'request');
+        }
+
+        return $this->services['form.articleedit'] = $this->scopedServices['request']['form.articleedit'] = new \ADP\WechatBundle\Forms\articleedit($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.buttonaddsub' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\buttonaddsub A ADP\WechatBundle\Forms\buttonaddsub instance.
+     * 
+     * @throws InactiveScopeException when the 'form.buttonaddsub' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ButtonaddsubService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.buttonaddsub', 'request');
+        }
+
+        return $this->services['form.buttonaddsub'] = $this->scopedServices['request']['form.buttonaddsub'] = new \ADP\WechatBundle\Forms\buttonaddsub($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.buttondel' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\buttondel A ADP\WechatBundle\Forms\buttondel instance.
+     * 
+     * @throws InactiveScopeException when the 'form.buttondel' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ButtondelService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.buttondel', 'request');
+        }
+
+        return $this->services['form.buttondel'] = $this->scopedServices['request']['form.buttondel'] = new \ADP\WechatBundle\Forms\buttondel($this->get('request'), $this);
+    }
+
+    /**
+     * Gets the 'form.changepwd' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Forms\changepwd A ADP\WechatBundle\Forms\changepwd instance.
+     * 
+     * @throws InactiveScopeException when the 'form.changepwd' service is requested while the 'request' scope is not active
+     */
+    protected function getForm_ChangepwdService()
+    {
+        if (!isset($this->scopedServices['request'])) {
+            throw new InactiveScopeException('form.changepwd', 'request');
+        }
+
+        return $this->services['form.changepwd'] = $this->scopedServices['request']['form.changepwd'] = new \ADP\WechatBundle\Forms\changepwd($this->get('request'), $this);
     }
 
     /**
@@ -1743,6 +1923,62 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'my.datasql' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Modals\Database\dataSql A ADP\WechatBundle\Modals\Database\dataSql instance.
+     */
+    protected function getMy_DatasqlService()
+    {
+        return $this->services['my.datasql'] = new \ADP\WechatBundle\Modals\Database\dataSql($this);
+    }
+
+    /**
+     * Gets the 'my.redislogic' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Modals\Database\RedisLogic A ADP\WechatBundle\Modals\Database\RedisLogic instance.
+     */
+    protected function getMy_RedislogicService()
+    {
+        return $this->services['my.redislogic'] = new \ADP\WechatBundle\Modals\Database\RedisLogic($this);
+    }
+
+    /**
+     * Gets the 'my.wechat' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \ADP\WechatBundle\Modals\Apis\Wechat A ADP\WechatBundle\Modals\Apis\Wechat instance.
+     */
+    protected function getMy_WechatService()
+    {
+        return $this->services['my.wechat'] = new \ADP\WechatBundle\Modals\Apis\Wechat($this);
+    }
+
+    /**
+     * Gets the 'php.redis' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Redis A Redis instance.
+     */
+    protected function getPhp_RedisService()
+    {
+        $this->services['php.redis'] = $instance = new \Redis();
+
+        $instance->connect('127.0.0.1', 6379);
+
+        return $instance;
+    }
+
+    /**
      * Gets the 'profiler' service.
      *
      * This service is shared.
@@ -2014,7 +2250,7 @@ class appDevDebugProjectContainer extends Container
 
         $e = new \Symfony\Component\Security\Http\AccessMap();
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($e, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => new \Symfony\Component\Security\Core\User\InMemoryUserProvider()), 'main', $a, $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE)), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '57263fe8c41352.29723584', $a, $c), 3 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $e, $c)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), new \Symfony\Component\Security\Http\HttpUtils($d, $d), 'main', NULL, NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($e, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => new \Symfony\Component\Security\Core\User\InMemoryUserProvider()), 'main', $a, $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE)), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '572f3098116cf5.81943478', $a, $c), 3 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $e, $c)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), new \Symfony\Component\Security\Http\HttpUtils($d, $d), 'main', NULL, NULL, NULL, $a));
     }
 
     /**
@@ -3307,6 +3543,19 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'vendor.mysqlidb' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \MysqliDb A MysqliDb instance.
+     */
+    protected function getVendor_MysqlidbService()
+    {
+        return $this->services['vendor.mysqlidb'] = new \MysqliDb('127.0.0.1', 'root', '', 'adp_wechat');
+    }
+
+    /**
      * Gets the 'web_profiler.controller.exception' service.
      *
      * This service is shared.
@@ -3481,7 +3730,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('57263fe8c41352.29723584')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('572f3098116cf5.81943478')), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -3669,15 +3918,18 @@ class appDevDebugProjectContainer extends Container
             'database_driver' => 'pdo_mysql',
             'database_host' => '127.0.0.1',
             'database_port' => NULL,
-            'database_name' => 'symfony',
+            'database_name' => 'adp_wechat',
             'database_user' => 'root',
-            'database_password' => NULL,
+            'database_password' => '',
             'mailer_transport' => 'smtp',
             'mailer_host' => '127.0.0.1',
             'mailer_user' => NULL,
             'mailer_password' => NULL,
             'locale' => 'en',
             'secret' => 'd96c19363af6dad4bb028f47ddcf7d94fba67bc1',
+            'redis_host' => '127.0.0.1',
+            'redis_port' => 6379,
+            'redis_prostr' => 'adp:',
             'controller_resolver.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerResolver',
             'controller_name_converter.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerNameParser',
             'response_listener.class' => 'Symfony\\Component\\HttpKernel\\EventListener\\ResponseListener',
@@ -4233,6 +4485,10 @@ class appDevDebugProjectContainer extends Container
             'sensio_framework_extra.converter.doctrine.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DoctrineParamConverter',
             'sensio_framework_extra.converter.datetime.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DateTimeParamConverter',
             'sensio_framework_extra.view.listener.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\TemplateListener',
+            'wechat_token' => 'adp_wechat_samesame',
+            'wechat_appid' => 'wx4868f82730292835',
+            'wechat_appsecret' => 'b994d3233e85e53712189f21880b83e3',
+            'session_login' => 'username',
             'web_profiler.controller.profiler.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ProfilerController',
             'web_profiler.controller.router.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\RouterController',
             'web_profiler.controller.exception.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ExceptionController',

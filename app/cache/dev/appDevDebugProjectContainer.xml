@@ -28,15 +28,18 @@
     <parameter key="database_driver">pdo_mysql</parameter>
     <parameter key="database_host">127.0.0.1</parameter>
     <parameter key="database_port">null</parameter>
-    <parameter key="database_name">symfony</parameter>
+    <parameter key="database_name">adp_wechat</parameter>
     <parameter key="database_user">root</parameter>
-    <parameter key="database_password">null</parameter>
+    <parameter key="database_password"></parameter>
     <parameter key="mailer_transport">smtp</parameter>
     <parameter key="mailer_host">127.0.0.1</parameter>
     <parameter key="mailer_user">null</parameter>
     <parameter key="mailer_password">null</parameter>
     <parameter key="locale">en</parameter>
     <parameter key="secret">d96c19363af6dad4bb028f47ddcf7d94fba67bc1</parameter>
+    <parameter key="redis_host">127.0.0.1</parameter>
+    <parameter key="redis_port">6379</parameter>
+    <parameter key="redis_prostr">adp:</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
     <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>
@@ -572,6 +575,10 @@
     <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
     <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
+    <parameter key="wechat_token">adp_wechat_samesame</parameter>
+    <parameter key="wechat_appid">wx4868f82730292835</parameter>
+    <parameter key="wechat_appsecret">b994d3233e85e53712189f21880b83e3</parameter>
+    <parameter key="session_login">username</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -1647,6 +1654,14 @@
         </argument>
         <argument>0</argument>
       </call>
+      <call method="addListenerService">
+        <argument>kernel.controller</argument>
+        <argument type="collection">
+          <argument>adp.listener.controller</argument>
+          <argument>onKernelController</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
       <call method="addSubscriberService">
         <argument>response_listener</argument>
         <argument>Symfony\Component\HttpKernel\EventListener\ResponseListener</argument>
@@ -1770,7 +1785,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>57263fe8c41352.29723584</argument>
+            <argument>572f3098116cf5.81943478</argument>
           </service>
         </argument>
       </argument>
@@ -1889,7 +1904,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>57263fe8c41352.29723584</argument>
+            <argument>572f3098116cf5.81943478</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -2258,9 +2273,9 @@
         <argument key="driver">pdo_mysql</argument>
         <argument key="host">127.0.0.1</argument>
         <argument key="port">null</argument>
-        <argument key="dbname">symfony</argument>
+        <argument key="dbname">adp_wechat</argument>
         <argument key="user">root</argument>
-        <argument key="password">null</argument>
+        <argument key="password"></argument>
         <argument key="charset">UTF8</argument>
         <argument key="driverOptions" type="collection"/>
       </argument>
@@ -2432,6 +2447,64 @@
       <argument type="service" id="security.role_hierarchy" on-invalid="null"/>
       <argument type="service" id="security.token_storage" on-invalid="null"/>
       <argument type="service" id="security.authorization_checker" on-invalid="null"/>
+    </service>
+    <service id="vendor.mysqlidb" class="MysqliDb">
+      <argument>127.0.0.1</argument>
+      <argument>root</argument>
+      <argument></argument>
+      <argument>adp_wechat</argument>
+    </service>
+    <service id="my.datasql" class="ADP\WechatBundle\Modals\Database\dataSql">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="my.wechat" class="ADP\WechatBundle\Modals\Apis\Wechat">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="php.redis" class="Redis">
+      <call method="connect">
+        <argument>127.0.0.1</argument>
+        <argument>6379</argument>
+      </call>
+    </service>
+    <service id="my.redislogic" class="ADP\WechatBundle\Modals\Database\RedisLogic">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.adminadd" class="ADP\WechatBundle\Forms\adminadd" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.adminlogin" class="ADP\WechatBundle\Forms\adminlogin" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.changepwd" class="ADP\WechatBundle\Forms\changepwd" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.articleedit" class="ADP\WechatBundle\Forms\articleedit" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.articleadd" class="ADP\WechatBundle\Forms\articleadd" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.articledel" class="ADP\WechatBundle\Forms\articledel" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.buttondel" class="ADP\WechatBundle\Forms\buttondel" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="form.buttonaddsub" class="ADP\WechatBundle\Forms\buttonaddsub" scope="request">
+      <argument type="service" id="request"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="adp.listener.controller" class="ADP\WechatBundle\EventListener\listenerController">
+      <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController"/>
+      <argument type="service" id="router"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="data_collector.dump" class="Symfony\Component\HttpKernel\DataCollector\DumpDataCollector">
       <tag name="data_collector" id="dump" template="@Debug/Profiler/dump.html.twig"/>

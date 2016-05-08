@@ -45,7 +45,7 @@ class __TwigTemplate_dac36a490df619c2fe334fe76ad68bf8d6c8d7a21678156404190a4ef7c
                     Your application is ready to start working on it at:
                     <code>";
         // line 15
-        echo twig_escape_filter($this->env, (isset($context["base_dir"]) ? $context["base_dir"] : null), "html", null, true);
+        echo twig_escape_filter($this->env, (isset($context["base_dir"]) ? $context["base_dir"] : $this->getContext($context, "base_dir")), "html", null, true);
         echo "/</code>
                 </p>
             </div>

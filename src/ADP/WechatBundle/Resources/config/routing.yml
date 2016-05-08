@@ -66,6 +66,7 @@ adp_admin_editarticle:
 adp_admin_deletearticle:
     path:     /adminapi/deletearticle/
     defaults: { _controller: ADPWechatBundle:Adminapi:deletearticle }
+
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/
@@ -78,3 +79,8 @@ adp_out_logout:
 adp_out_login:
     path:     /outapi/login/
     defaults: { _controller: ADPWechatBundle:Outapi:login }
+
+# system
+adp_manage_index:
+    path:     /manage/
+    defaults: { _controller: ADPWechatBundle:Manage:index }

@@ -159,6 +159,33 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
             }
 
+            // adp_admin_articleadd
+            if (rtrim($pathinfo, '/') === '/adminapi/articleadd') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_admin_articleadd');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::articleaddAction',  '_route' => 'adp_admin_articleadd',);
+            }
+
+            // adp_admin_editarticle
+            if (rtrim($pathinfo, '/') === '/adminapi/editarticle') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_admin_editarticle');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::editarticleAction',  '_route' => 'adp_admin_editarticle',);
+            }
+
+            // adp_admin_deletearticle
+            if (rtrim($pathinfo, '/') === '/adminapi/deletearticle') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_admin_deletearticle');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\AdminapiController::deletearticleAction',  '_route' => 'adp_admin_deletearticle',);
+            }
+
         }
 
         if (0 === strpos($pathinfo, '/outapi')) {
@@ -192,6 +219,15 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
             }
 
+        }
+
+        // adp_manage_index
+        if (rtrim($pathinfo, '/') === '/manage') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'adp_manage_index');
+            }
+
+            return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::indexAction',  '_route' => 'adp_manage_index',);
         }
 
         // homepage
