@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="keywords" content="Photography, Photo Images, Responsive, Business, Corporate, Gallery, Notebook" />
+<meta name="description" content="PhotoBax Responsive Photography Business Template" />
+<!-- basehead -->
+    <head>
+        <meta charset="UTF-8" />
+        <!-- title -->
+        <title>{% block title %}Page Name{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+{% block stylesheets %}
+        <link href="/source/manage/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/source/change/css/main.css" rel="stylesheet"  />
+        <link href="/source/manage/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+<script src="/source/manage/js/jquery-1.11.0.js"></script>
+<script src="/source/manage/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/source/change/js/main.js"></script>
+{% endblock %}
+</head>
+<body>
+  <div id="adpmain">
+    <div>
+<span class="text-primary" style="font-size:20px">ADP MANAGE</span>
+<i class="fa fa-user pull-right btn-lg"></i>
+    </div>
+    <ul class="nav nav-tabs" style="margin-top:20px">
+       <li class="{% block navmenu %}{% endblock %}"><a href="/manage/menu/">NAVIGATION</a></li>
+       <li class="{% block navpag %}{% endblock %}"><a href="/manage/pag/">PAG</a></li>
+       <li class="{% block navkeyword %}{% endblock %}"><a href="/manage/keyword/">KEYWORD</a></li>
+       <li class="{% block navreplay %}{% endblock %}"><a href="/manage/replay/">AUTO-REPLAY</a></li>
+    </ul>
+    <div>
+{% block maincontent %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

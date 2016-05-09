@@ -63,3 +63,13 @@ services:
           class: ADP\WechatBundle\Forms\buttonaddsub
           scope: request
           arguments: [@request, @service_container]
+
+        form.buttonaddm:
+          class: ADP\WechatBundle\Forms\buttonaddm
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.buttonupdate:
+          class: ADP\WechatBundle\Forms\buttonupdate
+          scope: request
+          arguments: [@request, @service_container]

@@ -4,16 +4,14 @@ namespace ADP\WechatBundle\Forms;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class buttonaddsub extends FormRequest{
+class buttonaddm extends FormRequest{
 
   public function rule(){
-    return array(
-      'mOrder' => new Assert\Range(array('min' => 0, 'max' => 2)),
-    );
+    return array();
   }
 
   public function FormName(){
-    return 'buttonaddsub';
+    return 'buttonaddm';
   }
 
   public function DoData(){
@@ -25,7 +23,7 @@ class buttonaddsub extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($id = $dataSql->addSubButton($this->getdata['mOrder'])){
+    if($id = $dataSql->addMButton()){
       return array('code' => '10', 'id' => $id,'msg' => 'add button success');
     }
     return array('code' => '9', 'msg' => 'add button error');

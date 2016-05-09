@@ -73,7 +73,7 @@ class dataSql{
       'eventmedia_id' => '',
     );
     $this->updateData(array('id' => $id ), $change, 'wechat_menu');
-    $this->updateData(array('id' => $id ), $data, 'wechat_menu');
+    $this->updateData(array('id' => $id ), $button, 'wechat_menu');
     $this->updateEvent(array('menuId' => $id), $event);
     return true;
   }

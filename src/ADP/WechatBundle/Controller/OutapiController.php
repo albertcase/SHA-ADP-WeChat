@@ -49,4 +49,16 @@ class OutapiController extends Controller
     print_r($violations->count());
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
+
+  public function uploadimageAction(Request $request){
+    $fs = new \Symfony\Component\Filesystem\Filesystem();
+    $dir = date('Ym' ,strtotime("now"));
+    if(!$fs->exists('upload/image/'.$dir)){
+      $fs->mkdir('upload/image/'.$dir);
+    }
+    $photo = $request->files->get('uploadfile');
+    $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
+    $fs->rename($photo, $image, true);
+    return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));
+  }
 }

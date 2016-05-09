@@ -80,7 +80,26 @@ adp_out_login:
     path:     /outapi/login/
     defaults: { _controller: ADPWechatBundle:Outapi:login }
 
+adp_out_uploadimage:
+    path:     /outapi/uploadimage/
+    defaults: { _controller: ADPWechatBundle:Outapi:uploadimage }
 # system
 adp_manage_index:
     path:     /manage/
     defaults: { _controller: ADPWechatBundle:Manage:index }
+
+adp_manage_menu:
+    path:     /manage/menu/
+    defaults: { _controller: ADPWechatBundle:Manage:menu }
+
+adp_manage_keyword:
+    path:     /manage/keyword/
+    defaults: { _controller: ADPWechatBundle:Manage:keyword }
+
+adp_manage_pag:
+    path:     /manage/pag/
+    defaults: { _controller: ADPWechatBundle:Manage:pag }
+
+adp_manage_replay:
+    path:     /manage/replay/
+    defaults: { _controller: ADPWechatBundle:Manage:replay }

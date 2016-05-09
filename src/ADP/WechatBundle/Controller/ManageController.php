@@ -13,9 +13,19 @@ class ManageController extends Controller
       return $this->render('ADPWechatBundle:Manage:index.html.twig');
   }
 
-  public function systemAction(){
-
+  public function menuAction(){
+    return $this->render('ADPWechatBundle:Manage:menu.html.twig');
   }
 
+  public function keywordAction(){
+    return $this->render('ADPWechatBundle:Manage:keyword.html.twig');
+  }
 
+  public function pagAction(){
+    return $this->render('ADPWechatBundle:Manage:pag.html.twig');
+  }
+
+  public function replayAction(){
+    return $this->render('ADPWechatBundle:Manage:replay.html.twig');
+  }
 }

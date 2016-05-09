@@ -219,15 +219,63 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
             }
 
-        }
+            // adp_out_uploadimage
+            if (rtrim($pathinfo, '/') === '/outapi/uploadimage') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_out_uploadimage');
+                }
 
-        // adp_manage_index
-        if (rtrim($pathinfo, '/') === '/manage') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'adp_manage_index');
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\OutapiController::uploadimageAction',  '_route' => 'adp_out_uploadimage',);
             }
 
-            return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::indexAction',  '_route' => 'adp_manage_index',);
+        }
+
+        if (0 === strpos($pathinfo, '/manage')) {
+            // adp_manage_index
+            if (rtrim($pathinfo, '/') === '/manage') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_manage_index');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::indexAction',  '_route' => 'adp_manage_index',);
+            }
+
+            // adp_manage_menu
+            if (rtrim($pathinfo, '/') === '/manage/menu') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_manage_menu');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::menuAction',  '_route' => 'adp_manage_menu',);
+            }
+
+            // adp_manage_keyword
+            if (rtrim($pathinfo, '/') === '/manage/keyword') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_manage_keyword');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::keywordAction',  '_route' => 'adp_manage_keyword',);
+            }
+
+            // adp_manage_pag
+            if (rtrim($pathinfo, '/') === '/manage/pag') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_manage_pag');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::pagAction',  '_route' => 'adp_manage_pag',);
+            }
+
+            // adp_manage_replay
+            if (rtrim($pathinfo, '/') === '/manage/replay') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'adp_manage_replay');
+                }
+
+                return array (  '_controller' => 'ADP\\WechatBundle\\Controller\\ManageController::replayAction',  '_route' => 'adp_manage_replay',);
+            }
+
         }
 
         // homepage

@@ -1,0 +1,30 @@
+{% extends 'ADPWechatBundle:Manage:base.html.twig' %}
+{% block title %}ADP MENU{% endblock %}
+{% block navmenu %}active{% endblock %}
+
+{% block maincontent %}
+<div class="menuview">
+    <div class="menumap">
+  <div>Appname</div>
+  <div>
+      <ul class="wemenulist">
+
+      </ul>
+  </div>
+    </div>
+    <div class="changeson">
+  <div><span>Name</span><span class="faright">delete</span></div>
+  <div>
+      <dl>
+    <dt>menu name:</dt>
+    <dd><input id="sonmenu"><p>字数不超过8个汉字或16个字母</p></dd>
+      </dl>
+  </div>
+  <div>
+      <div>子菜单内容
+
+      </div>
+  </div>
+    </div>
+</div>
+{% endblock %}

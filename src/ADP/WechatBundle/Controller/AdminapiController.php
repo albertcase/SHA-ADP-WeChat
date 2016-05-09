@@ -30,18 +30,14 @@ class AdminapiController extends Controller
   }
 
   public function addmbuttonAction(){
-    $dataSql = $this->container->get('my.dataSql');
-    $data = array('code' => '9');
-    if($id = $dataSql->addMButton())
-      $data = array('code' => '10', 'id' => $id);
+    $adminadd = $this->container->get('form.buttonaddm');
+    $data = $adminadd->DoData();
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
   public function updatebuttonAction(){
-    $dataSql = $this->container->get('my.dataSql');
-    $data = array('code' => '9');
-    if($id = $dataSql->updateButton('23'))
-      $data = array('code' => '10', 'id' => $id);
+    $adminadd = $this->container->get('form.buttonupdate');
+    $data = $adminadd->DoData();
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
@@ -105,4 +101,5 @@ class AdminapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 //article end
+
 }
