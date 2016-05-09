@@ -48,7 +48,7 @@
                                     <input class="form-control" placeholder="Username" name="email" id="adpusername" type="email" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" id="adpadppassword" type="password" value="">
+                                    <input class="form-control" placeholder="Password" name="password" id="adppassword" type="password" value="">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <button class="btn btn-lg btn-success btn-block" id="adplogin" >Login</button>
@@ -60,8 +60,7 @@
         </div>
     </div>
 <!-- popbox start-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-   aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
@@ -70,18 +69,15 @@
                   &times;
             </button>
             <h4 class="modal-title" id="myModalLabel">
-               模态框（Modal）标题
+               Warning
             </h4>
          </div>
-         <div class="modal-body">
-            在这里添加一些文本
+         <div class="modal-body" style="color:red;font-size:120%">
+           <!-- conetnt -->
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default"
-               data-dismiss="modal">关闭
-            </button>
-            <button type="button" class="btn btn-primary">
-               提交更改
+               data-dismiss="modal">Close
             </button>
          </div>
       </div>
@@ -102,26 +98,56 @@
 <!-- personal add JavaScript -->
 <script>
 var comfirmlog = {
-  adpusername: null,
-  adppassword: null,
-  tadpusername: function(
-    var self = this;
+  tnonull:function(str){
+    var tname = new RegExp("^.{1,50}$");
+    if(tname.test(str)){
+      return true;
+    }
+    return false;
+  },
+  tadpusername: function(){
     var val = $("#adpusername").val();
-    self.company  = formstr.tnonull(val);
+    return this.tnonull(val);
 
-  ),
+  },
   tadppassword: function(){
-    var self = this;
-    var val = $("#companyname").val();
-    self.company  = formstr.tnonull(val);
-    self.ttest(self.company ,"#companyname");
+    var val = $("#adppassword").val();
+    return this.tnonull(val);
+  },
+  openpopup: function(a){
+    $('#myModal .modal-body').text(a);
+    $('#myModal').modal('show');
   }
 }
   $(function(){
     $("#adplogin").click(function(event){
       event.preventDefault();
+      if(!comfirmlog.tadpusername()){
+        comfirmlog.openpopup('Username is empty');
+        return false;
+      }
+      if(!comfirmlog.tadppassword()){
+        comfirmlog.openpopup('Password is empty');
+        return false;
+      }
       $.ajax({
-
+        url: "/outapi/login/",
+        dataType:"json",
+        type: "POST",
+        data:{
+          "adminlogin[username]": $("#adpusername").val(),
+          "adminlogin[password]": $("#adppassword").val()
+        },
+        success: function(data){
+          if(data.code == "10"){
+            location.reload();
+          }else{
+            comfirmlog.openpopup(data.msg);
+          }
+        },
+        error: function(data){
+          comfirmlog.openpopup('Unknown Error');
+        }
       });
     });
   })
