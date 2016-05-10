@@ -11,13 +11,20 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 {% block stylesheets %}
         <link href="/source/manage/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/source/manage/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+        <link href="/source/manage/css/plugins/dataTables.bootstrap.css" rel="stylesheet">
+        <link href="/source/manage/css/sb-admin-2.css" rel="stylesheet">
         <link href="/source/change/css/main.css" rel="stylesheet"  />
         <link href="/source/manage/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascripts %}
-<script src="/source/manage/js/jquery-1.11.0.js"></script>
-<script src="/source/manage/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/source/manage/js/jquery-1.11.0.js"></script>
+<script type="text/javascript" src="/source/manage/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/source/manage/js/plugins/metisMenu/metisMenu.min.js"></script>
+<script type="text/javascript" src="/source/manage/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/source/manage/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="/source/manage/js/sb-admin-2.js"></script>
 <script type="text/javascript" src="/source/change/js/main.js"></script>
 {% endblock %}
 </head>
@@ -33,8 +40,9 @@
        <li class="{% block navkeyword %}{% endblock %}"><a href="/manage/keyword/">KEYWORD</a></li>
        <li class="{% block navreplay %}{% endblock %}"><a href="/manage/replay/">AUTO-REPLAY</a></li>
     </ul>
-    <div>
-{% block maincontent %}{% endblock %}
+    <div id="maincontent">
+{% block maincontent %}
+{% endblock %}
     </div>
   </div>
 </body>

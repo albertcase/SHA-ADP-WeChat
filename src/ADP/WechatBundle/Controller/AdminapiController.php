@@ -101,5 +101,18 @@ class AdminapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 //article end
-
+  public function uploadimageAction(Request $request){ //upload image
+    $fs = new \Symfony\Component\Filesystem\Filesystem();
+    $dir = date('Ym' ,strtotime("now"));
+    if(!$fs->exists('upload/image/'.$dir)){
+      $fs->mkdir('upload/image/'.$dir);
+    }
+    $photo = $request->files->get('uploadfile');
+    $Ext = strtolower($photo->getClientOriginalExtension());
+    if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
+      return new Response(json_encode(array('code' => '9', 'msg' => 'this is not a image file'), JSON_UNESCAPED_UNICODE));
+    $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
+    $fs->rename($photo, $image, true);
+    return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));
+  }
 }

@@ -3,28 +3,131 @@
 {% block navmenu %}active{% endblock %}
 
 {% block maincontent %}
-<div class="menuview">
-    <div class="menumap">
-  <div>Appname</div>
-  <div>
-      <ul class="wemenulist">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Menu List
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Menu Name</th>
+                                <th>Menu Type</th>
+                                <th>Belong to</th>
+                                <th>Menu Event</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd gradeX">
+                                <td>Trident</td>
+                                <td>Internet Explorer 4.0</td>
+                                <td>Win 95+</td>
+                                <td>Win 44+</td>
+                                <td class="center">4</td>
+                                <td class="center">X</td>
+                            </tr>
 
-      </ul>
-  </div>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
     </div>
-    <div class="changeson">
-  <div><span>Name</span><span class="faright">delete</span></div>
-  <div>
-      <dl>
-    <dt>menu name:</dt>
-    <dd><input id="sonmenu"><p>字数不超过8个汉字或16个字母</p></dd>
-      </dl>
-  </div>
-  <div>
-      <div>子菜单内容
-
-      </div>
-  </div>
-    </div>
+    <!-- /.col-lg-12 -->
 </div>
+<div style="text-align:center;">
+  <button type="button" class="btn btn-primary">Add Menu</button>
+  <button type="button" class="btn btn-success">Publish</button>
+</div>
+<!-- popup -->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+               aria-hidden="true">
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               Add Menu
+            </h4>
+         </div>
+         <div class="modal-body">
+<!-- menu form -->
+<div class="form-group">
+  <label>Menu Name</label>
+  <input class="form-control" placeholder="Enter Menu Name">
+</div>
+<div class="btn-group btn-group-sm" id="buttontype">
+  <button type="button" class="btn btn-default active" MsgType="">EXTERNAL PAGE</button>
+  <button type="button" class="btn btn-default" MsgType="text">PUSH MESSAGE</button>
+  <button type="button" class="btn btn-default" MsgType="news">TEXT MESSAGE</button>
+</div>
+<div class="externalpage menuhiden">
+  <br>
+  <div class="form-group">
+    <label>Redirect to:</label>
+    <input class="form-control" placeholder="Enter Your Url" style="width:90%">
+  </div>
+</div>
+<div class="pushmessage">
+<br>
+<div class="newslist">
+   <i class="fa fa-minus-square" style="color:red"></i>
+<div class="form-group">
+  <label>Title:</label>
+  <input class="form-control" placeholder="Enter TITLE" style="width:90%">
+</div>
+<div class="form-group">
+  <label>Description:</label>
+  <input class="form-control" placeholder="Enter Your Url" style="width:90%">
+</div>
+<div class="form-group">
+  <label>Link:</label>
+  <input class="form-control" placeholder="Enter Your Url" style="width:90%" name="link">
+</div>
+<div class="form-group">
+  <label>Cover:</label>
+  <input type="file" name="uploadfile">
+</div>
+<hr>
+</div>
+<i class="fa fa-plus-square" style="color:green"></i>
+</div>
+<div class="textmessage menuhiden">
+
+</div>
+<!-- menu form end  -->
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default"
+               data-dismiss="modal">Close
+            </button>
+            <button type="button" class="btn btn-primary">
+               Add Menu
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- popup end -->
+
+<script>
+$(document).ready(function() {
+    $('#dataTables-example').dataTable();
+    $('#myModal').modal({keyboard: true});
+});
+</script>
+
 {% endblock %}
