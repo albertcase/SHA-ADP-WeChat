@@ -1,3 +1,58 @@
 {% extends 'ADPWechatBundle:Manage:base.html.twig' %}
 {% block title %}ADP REPLAY{% endblock %}
 {% block navreplay %}active{% endblock %}
+
+{% block maincontent %}
+<div class="panel panel-default" id="autoreload">
+   <div class="panel-heading">
+         AUTO REPLAY
+   </div>
+   <div class="panel-body">
+     <ul class="nav nav-tabs" style="margin-top:20px" id="autoreplaynav">
+        <li class="active"><a href="#" active="welcomemessage" class="message">Welcome Message</a></li>
+        <li class=""><a href="#" active="defaultmessage" class="message">Default Message</a></li>
+     </ul>
+<!-- welcome message -->
+     <div id="welcomemessage">
+       <div class="btn-group btn-group-sm buttontype">
+         <button type="button" class="btn btn-default" MsgType="news" action="textmessage">TEXT MESSAGE</button>
+         <button type="button" class="btn btn-default" MsgType="text" action="pushmessage">PUSH MESSAGE</button>
+       </div>
+       <div class="pushmessage">
+
+       </div>
+       <div class="textmessage">
+
+       </div>
+       <hr>
+       <div>
+         <button type="button" class="btn btn-primary save">
+            SAVE
+         </button>
+       </div>
+     </div>
+<!-- welcome message end-->
+<!-- defalut Message -->
+     <div id="defaultmessage">
+       <div class="btn-group btn-group-sm buttontype">
+         <button type="button" class="btn btn-default" MsgType="news" action="textmessage">TEXT MESSAGE</button>
+         <button type="button" class="btn btn-default" MsgType="text" action="pushmessage">PUSH MESSAGE</button>
+       </div>
+       <div class="pushmessage">
+
+       </div>
+       <div class="textmessage">
+
+       </div>
+       <hr>
+       <div>
+         <button type="button" class="btn btn-primary save">
+            SAVE
+         </button>
+       </div>
+     </div>
+
+<!-- defalut Message end -->
+   </div>
+</div>
+{% endblock %}

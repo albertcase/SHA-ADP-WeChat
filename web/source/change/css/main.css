@@ -7,8 +7,40 @@
 
 #maincontent{
   padding: 10px;
+  background-color: #FFF;
 }
 
-.menuhiden{
+#autoreload{
+    background-color: #F5F5F5;
+}
+
+.menushow,.navshow{
+  display: block !important;
+}
+
+.externalpage,.pushmessage,.textmessage,#welcomemessage,#defaultmessage{
   display: none;
+}
+
+#welcomemessage,#defaultmessage{
+  background-color: #FFF;
+  padding:20px;
+}
+
+.fa-edit{
+  color: green;
+}
+
+.fa-edit:hover{
+  color: #3F6E3F;
+  cursor: pointer;
+}
+
+.fa-trash-o{
+  color:red;
+}
+
+.fa-trash-o:hover{
+  color:#933030;
+  cursor: pointer;
 }

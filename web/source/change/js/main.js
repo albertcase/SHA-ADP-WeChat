@@ -77,34 +77,146 @@ var formstr = {//comfirm string
 
 
 var htmlconetnt = {
-  externalpage:function(url){
+  externalpage:function(){
     var a = '<br>';
     a += '<div class="form-group">';
     a += '<label>Redirect to:</label>';
-    a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%" value="'+url+'">';
+    a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%">';
     a += '</div>';
     return a;
   },
   pushmessage:function(){
-    var a = '<div class="newslist">';
-       '<i class="fa fa-minus-square" style="color:red"></i>';
-    '<div class="form-group">';
-      '<label>Title:</label>';
-      '<input class="form-control" placeholder="Enter TITLE" style="width:90%">';
-    '</div>';
-    '<div class="form-group">';
-      '<label>Description:</label>';
-      '<input class="form-control" placeholder="Enter Your Url" style="width:90%">';
-    '</div>';
-    '<div class="form-group">';
-      '<label>Link:</label>';
-      '<input class="form-control" placeholder="Enter Your Url" style="width:90%" name="link">';
-    '</div>';
-    '<div class="form-group">';
-      '<label>Cover:</label>';
-      '<input type="file" name="uploadfile">';
-    '</div>';
-    '<hr>';
-    '</div>';
+    var a = '<br>';
+        a += '<div class="newslist">';
+        a += '<i class="fa fa-minus-square" style="color:red"></i>';
+        a += '<div class="form-group">';
+        a += '<label>Title:</label>';
+        a += '<input class="form-control" placeholder="Enter TITLE" style="width:90%">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Description:</label>';
+        a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Link:</label>';
+        a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%" name="link">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Cover:</label>';
+        a += '<input type="file" name="uploadfile">';
+        a += '</div>';
+        a += '<hr>';
+        a += '</div>';
+        a += '<i class="fa fa-plus-square" style="color:green"></i>';
+    return a;
+  },
+  textmessage:function(){
+      var a = '<br>';
+        a += '<div class="form-group">';
+        a += '<label>MESSAGE</label>';
+        a += '<textarea class="form-control" rows="3"></textarea>';
+        a += '</div>';
+    return a;
+  }
+
+}
+
+var menu = {
+  showfeedback: function(obj){//add menu
+    var action = obj.attr('action');
+    if($("#myModal ."+action+" div").length == 0)
+      $("#myModal ."+action).html(htmlconetnt[action]());
+    $("#myModal .menushow").removeClass("menushow");
+    $("#myModal ."+action).addClass("menushow");
+  },
+  showfeedback2: function(obj){//add submenu
+    var action = obj.attr('action');
+    if($("#submenu ."+action+" div").length == 0)
+      $("#submenu ."+action).html(htmlconetnt[action]());
+    $("#submenu .menushow").removeClass("menushow");
+    $("#submenu ."+action).addClass("menushow");
+  },
+  onload: function(){
+    var self = this;
+    $("#myModal .buttontype .btn").click(function(){//add main menu 's submenu
+      $("#myModal .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showfeedback($(this));
+    });
+    $("#menufun>.addmainmenu").click(function(){//add main menu
+      $('#myModal').modal('show');
+    });
+    $("#menufun>.addsubmenu").click(function(){//add main menu
+      $('#submenu').modal('show');
+    });
+    $("#submenu .buttontype .btn").click(function(){//add main menu 's submenu
+      $("#submenu .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showfeedback2($(this));
+    });
+  },
+}
+
+var keyword = {
+  showaddedit: function(obj){
+    var action = obj.attr('action');
+    if($("#addkeyword ."+action+" div").length == 0)
+      $("#addkeyword ."+action).html(htmlconetnt[action]());
+    $("#addkeyword .menushow").removeClass("menushow");
+    $("#addkeyword ."+action).addClass("menushow");
+  },
+  onload: function(){
+    var self = this;
+    $("#menufun>.addkeyword").click(function(){
+      $("#addkeyword").modal('show');
+    });
+    $("#addkeyword .buttontype .btn").click(function(){//add main menu 's submenu
+      $("#addkeyword .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showaddedit($(this));
+    });
   }
 }
+
+var autoreplay = {
+  showwelcome: function(obj){
+    var action = obj.attr('action');
+    if($("#welcomemessage ."+action+" div").length == 0)
+      $("#welcomemessage ."+action).html(htmlconetnt[action]());
+    $("#welcomemessage .menushow").removeClass("menushow");
+    $("#welcomemessage ."+action).addClass("menushow");
+  },
+  showdefault:function(obj){
+    var action = obj.attr('action');
+    if($("#defaultmessage ."+action+" div").length == 0)
+      $("#defaultmessage ."+action).html(htmlconetnt[action]());
+    $("#defaultmessage .menushow").removeClass("menushow");
+    $("#defaultmessage ."+action).addClass("menushow");
+  },
+  onload: function(){
+    var self = this;
+    $("#autoreplaynav .message").click(function(){
+      $("#autoreplaynav .active").removeClass("active");
+      $(this).parent().addClass("active");
+      $("#autoreload .navshow").removeClass("navshow");
+      var active = $(this).attr("active");
+      $("#"+active).addClass("navshow");
+    });
+    $("#welcomemessage .buttontype>.btn").click(function(){
+      $("#welcomemessage .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showwelcome($(this));
+    });
+    $("#defaultmessage .buttontype>.btn").click(function(){
+      $("#defaultmessage .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showdefault($(this));
+    });
+  }
+}
+
+$(function(){
+  menu.onload();
+  keyword.onload();
+  autoreplay.onload();
+});
