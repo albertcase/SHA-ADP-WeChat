@@ -122,7 +122,7 @@ class AdminapiController extends Controller
   public function ckeditoruploadimageAction(Request $request){ //upload Ckeditor image
     $fs = new \Symfony\Component\Filesystem\Filesystem();
     $dir = date('Ym' ,strtotime("now"));
-    $e1 = '<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction("67",""," 文件格式不正确（必须为.jpg/.gif/.bmp/.png文件）");</script>';
+    $e1 = '<script type=\"text/javascript\">alert('.'this file is not a image'.');</script>';
     if(!$fs->exists('upload/image/'.$dir)){
       $fs->mkdir('upload/image/'.$dir);
     }

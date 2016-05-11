@@ -75,7 +75,6 @@
 <!-- addpage end-->
   </div>
 </div>
-
   <script>
     window.onload = function() {
         var config = {
@@ -88,24 +87,5 @@
     $(document).ready(function() {
         $('#dataTables-example').dataTable();
     });
-    // myedit
-//     $("#editor1").on( 'paste', function( evt ) {
-//         if ( CKEDITOR.fileTools.isTypeSupported( file, /image\/png/ ) ) {
-//             var loader = editor.uploadsRepository.create( file );
-//
-//             loader.on( 'update', function() {
-//                 document.getElementById( 'uploadProgress' ).innerHTML = loader.status;
-//             } );
-//
-//             loader.on( 'error', function() {
-//                 alert( 'Error!' );
-//             } );
-//
-//             loader.loadAndUpload( '/adminapi/uploadimage/' );
-//
-//             evt.data.dataValue += 'loading...'
-//         }
-// } );
-    // myedit end
 </script>
 {% endblock %}
