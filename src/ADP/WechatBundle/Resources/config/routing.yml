@@ -67,6 +67,13 @@ adp_admin_deletearticle:
     path:     /adminapi/deletearticle/
     defaults: { _controller: ADPWechatBundle:Adminapi:deletearticle }
 
+adp_admin_uploadimage:
+    path:     /adminapi/uploadimage/
+    defaults: { _controller: ADPWechatBundle:Adminapi:uploadimage }
+
+adp_admin_ckeditoruploadimage:
+    path:     /adminapi/ckeditoruploadimage/
+    defaults: { _controller: ADPWechatBundle:Adminapi:ckeditoruploadimage }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/
@@ -80,9 +87,6 @@ adp_out_login:
     path:     /outapi/login/
     defaults: { _controller: ADPWechatBundle:Outapi:login }
 
-adp_out_uploadimage:
-    path:     /outapi/uploadimage/
-    defaults: { _controller: ADPWechatBundle:Outapi:uploadimage }
 # system
 adp_manage_index:
     path:     /manage/
@@ -103,3 +107,7 @@ adp_manage_pag:
 adp_manage_replay:
     path:     /manage/replay/
     defaults: { _controller: ADPWechatBundle:Manage:replay }
+
+adp_manage_preference:
+    path:     /manage/preference/
+    defaults: { _controller: ADPWechatBundle:Manage:preference }

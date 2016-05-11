@@ -215,8 +215,35 @@ var autoreplay = {
   }
 }
 
+var preference = {
+  onload: function(){
+    var self = this;
+    $("#preferencenav .message").click(function(){
+      $("#preferencenav .active").removeClass("active");
+      $(this).parent().addClass("active");
+      $("#preference .navshow").removeClass("navshow");
+      var active = $(this).attr("active");
+      $("#"+active).addClass("navshow");
+    });
+  }
+}
+
+var webpage = {
+  onload: function(){
+    $("#pagmanagenav .message").click(function(){
+      $("#pagmanagenav .active").removeClass("active");
+      $(this).parent().addClass("active");
+      $("#pagmanage .navshow").removeClass("navshow");
+      var active = $(this).attr("active");
+      $("#"+active).addClass("navshow");
+    });
+  }
+}
+
 $(function(){
   menu.onload();
   keyword.onload();
   autoreplay.onload();
+  preference.onload();
+  webpage.onload();
 });

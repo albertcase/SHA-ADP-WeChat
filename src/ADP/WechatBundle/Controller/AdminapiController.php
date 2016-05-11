@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use ADP\WechatBundle\Modals\Apis\Wechat;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdminapiController extends Controller
 {
@@ -107,10 +108,30 @@ class AdminapiController extends Controller
     if(!$fs->exists('upload/image/'.$dir)){
       $fs->mkdir('upload/image/'.$dir);
     }
+    if(!$request->files->has('uploadfile'))
+      return new Response(json_encode(array('code' => '8', 'msg'=> 'error params'), JSON_UNESCAPED_UNICODE));
     $photo = $request->files->get('uploadfile');
     $Ext = strtolower($photo->getClientOriginalExtension());
     if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
       return new Response(json_encode(array('code' => '9', 'msg' => 'this is not a image file'), JSON_UNESCAPED_UNICODE));
+    $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
+    $fs->rename($photo, $image, true);
+    return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));
+  }
+
+  public function ckeditoruploadimageAction(Request $request){ //upload Ckeditor image
+    $fs = new \Symfony\Component\Filesystem\Filesystem();
+    $dir = date('Ym' ,strtotime("now"));
+    $e1 = '<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction("67",""," 文件格式不正确（必须为.jpg/.gif/.bmp/.png文件）");</script>';
+    if(!$fs->exists('upload/image/'.$dir)){
+      $fs->mkdir('upload/image/'.$dir);
+    }
+    if(!$request->files->has('upload'))
+      return new Response(json_encode(array('code' => '8', 'msg'=> 'error params'), JSON_UNESCAPED_UNICODE));
+    $photo = $request->files->get('upload');
+    $Ext = strtolower($photo->getClientOriginalExtension());
+    if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
+      return new Response($e1);
     $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
     $fs->rename($photo, $image, true);
     return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));

@@ -10,7 +10,7 @@
   background-color: #FFF;
 }
 
-#autoreload{
+#autoreload,#preference,#pagmanage{
     background-color: #F5F5F5;
 }
 
@@ -18,13 +18,16 @@
   display: block !important;
 }
 
-.externalpage,.pushmessage,.textmessage,#welcomemessage,#defaultmessage{
+.externalpage,.pushmessage,.textmessage,#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
   display: none;
 }
 
-#welcomemessage,#defaultmessage{
+#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
   background-color: #FFF;
   padding:20px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .fa-edit{

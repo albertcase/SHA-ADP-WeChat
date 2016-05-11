@@ -28,4 +28,13 @@ class ManageController extends Controller
   public function replayAction(){
     return $this->render('ADPWechatBundle:Manage:replay.html.twig');
   }
+
+  public function preferenceAction(){
+    $Session = new Session();
+    // $admin = false;
+    // if($Session->get($this->container->getParameter('session_login')) == 'admin')
+      $admin = true;
+    return $this->render('ADPWechatBundle:Manage:preference.html.twig', array('admin' => $admin));
+  }
+
 }
