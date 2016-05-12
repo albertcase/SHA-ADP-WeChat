@@ -57,7 +57,7 @@ class dataSql{
     return false;
   }
 
-  public function addMButton(){//added main button
+  public function addMButton($data){//added main button
     $count = $this->getCount(array('subOrder' => '0'), 'wechat_menu');
     if($count >= 3)
       return false;

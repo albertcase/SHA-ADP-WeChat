@@ -23,6 +23,10 @@ services:
         my.RedisLogic:
           class: ADP\WechatBundle\Modals\Database\RedisLogic
           arguments: [@service_container]
+
+        my.functions:
+          class: ADP\WechatBundle\Modals\Apis\functions
+          arguments: [@service_container]
 # form list
         form.adminadd:
           class: ADP\WechatBundle\Forms\adminadd

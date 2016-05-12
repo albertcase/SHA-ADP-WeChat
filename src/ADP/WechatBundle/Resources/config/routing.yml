@@ -71,9 +71,9 @@ adp_admin_uploadimage:
     path:     /adminapi/uploadimage/
     defaults: { _controller: ADPWechatBundle:Adminapi:uploadimage }
 
-adp_admin_ckeditoruploadimage:
-    path:     /adminapi/ckeditoruploadimage/
-    defaults: { _controller: ADPWechatBundle:Adminapi:ckeditoruploadimage }
+adp_admin_getmenus:
+    path:     /adminapi/getmenus/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getmenus }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/
@@ -87,6 +87,9 @@ adp_out_login:
     path:     /outapi/login/
     defaults: { _controller: ADPWechatBundle:Outapi:login }
 
+adp_out_ckeditoruploadimage:
+    path:     /outapi/ckeditoruploadimage/
+    defaults: { _controller: ADPWechatBundle:Outapi:ckeditoruploadimage }
 # system
 adp_manage_index:
     path:     /manage/

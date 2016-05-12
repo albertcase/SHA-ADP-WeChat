@@ -47,3 +47,118 @@
   color:#933030;
   cursor: pointer;
 }
+
+/*warningpopup*/
+#warningpopup{
+  top:0px;
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+.warningpopup{
+  position:fixed;
+  top:25%;
+  width:30%;
+  left:35%;
+  background-color: #f8f8f7;
+  box-shadow: 0px 0px 5px #f8f8f7;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.warningpopup>div{
+	width:100%;
+	display: block;
+	font-size: 120%;
+	text-align: center;
+	padding:0px;
+}
+
+.warningpopup>div:nth-child(1){
+	padding-top:10px;
+	position: relative;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.warningpopup>div:nth-child(2) button{
+	font-size: 130%;
+	color: #0979ff;
+	border: 0px solid #bbb;
+	background-color: #f8f8f7;
+	width:100%;
+	height:100%;
+}
+
+.warningpopup>div:nth-child(2) button:hover{
+	background-color: #ddd;
+}
+/*warningpopup end*/
+
+/*comfirmpopup*/
+#comfirmpopup{
+  top:0px;
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+.comfirmpopu{
+  position:fixed;
+  top:25%;
+  width:30%;
+  left:35%;
+  background-color: #f8f8f7;
+  box-shadow: 0px 0px 5px #f8f8f7;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.comfirmpopu>div{
+	width:100%;
+	display: block;
+	font-size: 120%;
+	text-align: center;
+	padding:0px;
+}
+
+.comfirmpopu>div:nth-child(1){
+	padding-top:10px;
+	position: relative;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+  padding-bottom: 30px;
+}
+/*comfirmpopup end*/
+#loadingpopup{
+  top:0px;
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+#loadingpopup>.loadingpopup{
+  position:fixed;
+  top:40%;
+  left:48%;
+  text-align: center;
+}
+
+.loadingpopup>.fa-spinner{
+  font-size: 300%;
+  color:#428bca;
+}

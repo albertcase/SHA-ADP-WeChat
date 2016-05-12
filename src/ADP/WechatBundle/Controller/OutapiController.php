@@ -21,6 +21,27 @@ class OutapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
+  public function ckeditoruploadimageAction(Request $request){ //upload Ckeditor image
+    $fs = new \Symfony\Component\Filesystem\Filesystem();
+    $CKEditorFuncNum = $request->get('CKEditorFuncNum');
+    $dir = date('Ym' ,strtotime("now"));
+    if(!$fs->exists('upload/image/'.$dir)){
+      $fs->mkdir('upload/image/'.$dir);
+    }
+    $e0 = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$CKEditorFuncNum.',"","error params");</script>';
+    if(!$request->files->has('upload'))
+      return new Response($e0);
+    $photo = $request->files->get('upload');
+    $e1 = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$CKEditorFuncNum.',"","it is not a image file");</script>';
+    $Ext = strtolower($photo->getClientOriginalExtension());
+    if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
+      return new Response($e1);
+    $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
+    $fs->rename($photo, $image, true);
+    $e2 = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$CKEditorFuncNum.',"/'.$image.'","upload image success");window.close();</script>';
+    return new Response($e2);
+  }
+
   public function myjobAction(Request $request){
     $data = $request->request->get('dologin');
     // $Validation = new Validation();

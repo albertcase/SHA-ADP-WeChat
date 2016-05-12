@@ -75,6 +75,38 @@ var formstr = {//comfirm string
 
 }
 
+var popup = {
+  openwarning:function(text){
+    var a = '<div>'+text+'</div>';
+    a += '<div><button type="button" onclick="popup.closewarning()" class="btn btn-default btn-sm">TRUE</button></div>';
+    $("#warningpopup>.warningpopup").append(a);
+    $("#warningpopup").show();
+  },
+  closewarning:function(){
+    $("#warningpopup>.warningpopup").empty();
+    $("#warningpopup").hide();
+  },
+  opencomfirm:function(text,fun){
+    var a = '<div>'+text+'</div>';
+    a += '<div>';
+    a += '<button type="button" onclick="popup.closecomfirm()" class="btn btn-default btn-sm">CANCEL</button>&nbsp;&nbsp;';
+    a += '<button type="button" onclick="'+fun+'" class="btn btn-primary btn-sm">TRUE</button>';
+    a += '</div>';
+    $("#comfirmpopu>.comfirmpopu").append(a);
+    $("#comfirmpopu").show();
+  },
+  closecomfirm:function(){
+    $("#comfirmpopu>.comfirmpopu").empty();
+    $("#comfirmpopu").hide();
+  },
+  openloading:function(){
+    $("#comfirmpopu").show();
+  },
+  closeloading:function(){
+    $("#comfirmpopu").hide();
+  }
+}
+
 
 var htmlconetnt = {
   externalpage:function(){

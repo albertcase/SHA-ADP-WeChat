@@ -14,7 +14,9 @@ class ManageController extends Controller
   }
 
   public function menuAction(){
-    return $this->render('ADPWechatBundle:Manage:menu.html.twig');
+    $functions = $this->container->get('my.functions');
+    $menus = $functions->getmenus();
+    return $this->render('ADPWechatBundle:Manage:menu.html.twig', array('menus' => $menus));
   }
 
   public function keywordAction(){

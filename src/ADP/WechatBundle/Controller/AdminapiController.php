@@ -10,6 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminapiController extends Controller
 {
+  public function getmenusAction(){
+    $fun = $this->container->get('my.functions');
+    $data = array(
+      'code' => '10',
+      'menus' => $fun->getmenus(),
+    );
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
   public function createmenuAction(){
     $wehcat = $this->container->get('my.Wechat');
     $data = array('code' => '9', 'msg' => 'update wechat menus error');
@@ -119,21 +128,4 @@ class AdminapiController extends Controller
     return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));
   }
 
-  public function ckeditoruploadimageAction(Request $request){ //upload Ckeditor image
-    $fs = new \Symfony\Component\Filesystem\Filesystem();
-    $dir = date('Ym' ,strtotime("now"));
-    $e1 = '<script type=\"text/javascript\">alert('.'this file is not a image'.');</script>';
-    if(!$fs->exists('upload/image/'.$dir)){
-      $fs->mkdir('upload/image/'.$dir);
-    }
-    if(!$request->files->has('upload'))
-      return new Response(json_encode(array('code' => '8', 'msg'=> 'error params'), JSON_UNESCAPED_UNICODE));
-    $photo = $request->files->get('upload');
-    $Ext = strtolower($photo->getClientOriginalExtension());
-    if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
-      return new Response($e1);
-    $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
-    $fs->rename($photo, $image, true);
-    return new Response(json_encode(array('code' => '10', 'path'=> $image), JSON_UNESCAPED_UNICODE));
-  }
 }
