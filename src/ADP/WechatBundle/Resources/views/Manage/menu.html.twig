@@ -12,7 +12,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="table table-striped table-bordered table-hover" id="menutable">
                         <thead>
                             <tr>
                                 <th>Menu Name</th>
@@ -67,7 +67,7 @@
 <!-- add main menu form -->
 <div class="form-group">
   <label>Menu Name</label>
-  <input class="form-control" placeholder="Enter Menu Name">
+  <input class="form-control menuname" placeholder="Enter Menu Name">
 </div>
 <div class="btn-group btn-group-sm buttontype">
   <button type="button" class="btn btn-default" MsgType="" action="externalpage" >EXTERNAL PAGE</button>
@@ -89,7 +89,7 @@
             <button type="button" class="btn btn-default"
                data-dismiss="modal">Close
             </button>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary addmmenusubmit">
                Add Menu
             </button>
          </div>
@@ -158,7 +158,7 @@
 
 <script>
 $(document).ready(function() {
-    $('#dataTables-example').dataTable();
+    $('#menutable').dataTable();
 });
 </script>
 

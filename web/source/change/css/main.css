@@ -56,6 +56,7 @@
   position:fixed;
   background-color:rgba(0, 0, 0, 0.3);
   display: none;
+  z-index: 1055;
 }
 
 .warningpopup{
@@ -110,9 +111,10 @@
   position:fixed;
   background-color:rgba(0, 0, 0, 0.3);
   display: none;
+
 }
 
-.comfirmpopu{
+.comfirmpopup{
   position:fixed;
   top:25%;
   width:30%;
@@ -124,7 +126,7 @@
   padding-bottom: 10px;
 }
 
-.comfirmpopu>div{
+.comfirmpopup>div{
 	width:100%;
 	display: block;
 	font-size: 120%;
@@ -132,7 +134,7 @@
 	padding:0px;
 }
 
-.comfirmpopu>div:nth-child(1){
+.comfirmpopup>div:nth-child(1){
 	padding-top:10px;
 	position: relative;
 	border-top-left-radius: 10px;
@@ -149,6 +151,7 @@
   position:fixed;
   background-color:rgba(0, 0, 0, 0.2);
   display: none;
+
 }
 
 #loadingpopup>.loadingpopup{

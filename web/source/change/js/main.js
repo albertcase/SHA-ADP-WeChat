@@ -92,12 +92,12 @@ var popup = {
     a += '<button type="button" onclick="popup.closecomfirm()" class="btn btn-default btn-sm">CANCEL</button>&nbsp;&nbsp;';
     a += '<button type="button" onclick="'+fun+'" class="btn btn-primary btn-sm">TRUE</button>';
     a += '</div>';
-    $("#comfirmpopu>.comfirmpopu").append(a);
-    $("#comfirmpopu").show();
+    $("#comfirmpopup > .comfirmpopup").html(a);
+    $("#comfirmpopup").show();
   },
   closecomfirm:function(){
-    $("#comfirmpopu>.comfirmpopu").empty();
-    $("#comfirmpopu").hide();
+    $("#comfirmpopup>.comfirmpopu").empty();
+    $("#comfirmpopup").hide();
   },
   openloading:function(){
     $("#comfirmpopu").show();
@@ -113,7 +113,7 @@ var htmlconetnt = {
     var a = '<br>';
     a += '<div class="form-group">';
     a += '<label>Redirect to:</label>';
-    a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%">';
+    a += '<input class="form-control viewurl" placeholder="Enter Your Url" style="width:90%">';
     a += '</div>';
     return a;
   },
@@ -146,7 +146,7 @@ var htmlconetnt = {
       var a = '<br>';
         a += '<div class="form-group">';
         a += '<label>MESSAGE</label>';
-        a += '<textarea class="form-control" rows="3"></textarea>';
+        a += '<textarea class="form-control textcontent" rows="3"></textarea>';
         a += '</div>';
     return a;
   }
@@ -154,12 +154,17 @@ var htmlconetnt = {
 }
 
 var menu = {
+  mbuttonfun:null,
+  subbuttonfun:null,
+  delobj:null,
   showfeedback: function(obj){//add menu
+    var self = this;
     var action = obj.attr('action');
     if($("#myModal ."+action+" div").length == 0)
       $("#myModal ."+action).html(htmlconetnt[action]());
     $("#myModal .menushow").removeClass("menushow");
     $("#myModal ."+action).addClass("menushow");
+    self.mbuttonfun = "m"+action;
   },
   showfeedback2: function(obj){//add submenu
     var action = obj.attr('action');
@@ -167,6 +172,119 @@ var menu = {
       $("#submenu ."+action).html(htmlconetnt[action]());
     $("#submenu .menushow").removeClass("menushow");
     $("#submenu ."+action).addClass("menushow");
+  },
+  mnone:function(){
+    var a={
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+    };
+    return a;
+  },
+  mexternalpage:function(){
+    var a={
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+      "buttonaddm[eventtype]": 'view',
+      "buttonaddm[eventUrl]": $("#myModal .viewurl").val(),
+    };
+    return a;
+  },
+  mpushmessage:function(){
+    var a={};
+    return a;
+  },
+  mtextmessage:function(){
+    var key = new Date().getTime();
+    var a={
+      "buttonaddm[menuName]":$("#myModal .menuname").val(),
+      "buttonaddm[eventtype]":'click',
+      "buttonaddm[Content]": $("#myModal .textcontent").val(),
+      "buttonaddm[MsgType]": 'text',
+      "buttonaddm[eventKey]": "e"+key,
+    };
+    return a;
+  },
+  cleaninput:function(obj){
+    obj.each(function(){
+      $(this).val("");
+    });
+  },
+  ajaxaddmbutton:function(){
+    popup.openloading();
+    var self = this;
+    var up = menu[self.mbuttonfun]();
+    $.ajax({
+      type:'post',
+      url: '/adminapi/addmbutton/',
+      data: up,
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          menu.cleaninput($("#myModal input"));
+          $('#myModal').modal('hide');
+          popup.openwarning(data.msg);
+          menu.ajaxreload();
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        menu.ajaxreload();
+        popup.openwarning('unknow error');
+      }
+    });
+  },
+  ajaxreload:function(){
+    $.ajax({
+      type:"post",
+      url: "/adminapi/getmenus/",
+      dataType:"json",
+      success: function(data){
+        menu.buildtd(data['menus']);
+      },
+      error:function(){
+        popup.openwarning('unknow error');
+      },
+    });
+  },
+  buildtd:function(data){
+    var la = data.length;
+    var a = "";
+    for(var i=0 ;i<la ;i++){
+      a += '<tr class="odd gradeX" menuid="'+data[i]['id']+'">';
+      a += '<td>'+data[i]['menuName']+'</td>';
+      a += '<td>'+data[i]['belongto']+'</td>';
+      a += '<td>'+data[i]['eventtype']+'</td>';
+      a += '<td class="center"><i class="fa fa-edit fa-lg"></i></td>';
+      a += '<td class="center"><i class="fa fa-trash-o fa-lg"></i></td>';
+      a +='</tr>';
+    }
+    $("#menutable tbody").html(a);
+  },
+  delbutton: function(){
+    obj = this.delobj;
+    var id = obj.parent().parent().attr('menuid');
+    popup.openloading();
+    $.ajax({
+      type:'post',
+      url: '/adminapi/deletebutton/',
+      dataType:'json',
+      data: {
+          "buttondel[id]": id,
+        },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow error');
+      }
+    });
   },
   onload: function(){
     var self = this;
@@ -176,6 +294,8 @@ var menu = {
       self.showfeedback($(this));
     });
     $("#menufun>.addmainmenu").click(function(){//add main menu
+      if(!self.mbuttonfun)
+        self.mbuttonfun = "mnone";
       $('#myModal').modal('show');
     });
     $("#menufun>.addsubmenu").click(function(){//add main menu
@@ -185,6 +305,17 @@ var menu = {
       $("#submenu .buttontype .active").removeClass("active");
       $(this).addClass("active");
       self.showfeedback2($(this));
+    });
+    $("#myModal .addmmenusubmit").click(function(){
+      self.ajaxaddmbutton();
+    });
+    $("#menufun>.publish").click(function(){
+      menu.ajaxreload();
+    });
+    $("#menutable").on("click", "tbody .fa-trash-o", function(){
+      self.delobj = $(this);
+      popup.opencomfirm("delete this menu???","menu.delbutton()");
+
     });
   },
 }

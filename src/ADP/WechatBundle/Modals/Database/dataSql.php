@@ -104,6 +104,12 @@ class dataSql{
     return true;
   }
 
+  public function addEvent($change = array()){
+    if($change)
+      $this->insertsData($change, 'wechat_menu_event');
+    return true;
+  }
+
 //deleteButton main start
   public function deleteButton($id){
     $info = $this->searchData(array('id' => $id), array('mOrder','subOrder'), 'wechat_menu');
