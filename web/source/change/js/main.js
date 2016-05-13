@@ -317,15 +317,17 @@ var menu = {
   },
   subnone:function(){
     var a={
-      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+      "buttonaddsub[menuName]": $("#submenu .menuname").val(),
+      "buttonaddsub[mOrder]": $("#submenu .belongto").val(),
     };
     return a;
   },
   subexternalpage:function(){
     var a={
-      "buttonaddm[menuName]": $("#myModal .menuname").val(),
-      "buttonaddm[eventtype]": 'view',
-      "buttonaddm[eventUrl]": $("#myModal .viewurl").val(),
+      "buttonaddsub[menuName]": $("#submenu .menuname").val(),
+      "buttonaddsub[mOrder]": $("#submenu .belongto").val(),
+      "buttonaddsub[eventtype]": 'view',
+      "buttonaddsub[eventUrl]": $("#submenu .viewurl").val(),
     };
     return a;
   },
@@ -333,11 +335,12 @@ var menu = {
     var self = this;
     var key = new Date().getTime();
     var a = {
-      "buttonaddm[menuName]": $("#myModal .menuname").val(),
-      "buttonaddm[eventtype]": 'click',
-      "buttonaddm[MsgType]": 'news',
-      "buttonaddm[eventKey]": "e"+key,
-      "buttonaddm[newslist]": self.getnewslist($("#myModal .pushmessage .newslist")),
+      "buttonaddsub[menuName]": $("#submenu .menuname").val(),
+      "buttonaddsub[mOrder]": $("#submenu .belongto").val(),
+      "buttonaddsub[eventtype]": 'click',
+      "buttonaddsub[MsgType]": 'news',
+      "buttonaddsub[eventKey]": "e"+key,
+      "buttonaddsub[newslist]": self.getnewslist($("#submenu .pushmessage .newslist")),
     };
     return a;
   },
@@ -471,6 +474,7 @@ var menu = {
           $('#submenu').modal('show');
           return true;
         }
+        popup.openwarning(data.msg);
       },
       error:function(){
         popup.closeloading();
@@ -490,7 +494,9 @@ var menu = {
         self.mbuttonfun = "mnone";
       $('#myModal').modal('show');
     });
-    $("#menufun>.addsubmenu").click(function(){//add main menu ajax
+    $("#menufun>.addsubmenu").click(function(){//add submenu ajax
+      if(!self.subbuttonfun)
+        self.subbuttonfun = "subnone";
       self.ajaxgetmbuttom();
     });
     $("#submenu .buttontype .btn").click(function(){//add main menu 's submenu
@@ -522,6 +528,23 @@ var menu = {
       fileupload.sendfiles($(this)[0].files[0], $(this));
     });
     $("#myModal").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
+    // dfdsfdsf
+    $("#submenu").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#submenu").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#submenu .pushmessage .fa-minus-square").length >= 10)
+        $("#submenu .pushmessage .fa-plus-square").remove();
+    });
+    $("#submenu").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#submenu").on("click",".fa-times",function(){
       fileupload.replaceimage($(this));
     });
   },
