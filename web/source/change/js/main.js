@@ -231,6 +231,14 @@ var htmlconetnt = {
         a += '<i class="fa fa-plus-square" style="color:green"></i>';
     return a;
   },
+  belongtohtml:function(data){
+    var a = "";
+    var la = data.length;
+    for (var i in data){
+      a += '<option value="'+i+'">'+data[i]+'</option>';
+    }
+    return a;
+  }
 }
 
 var menu = {
@@ -252,6 +260,7 @@ var menu = {
       $("#submenu ."+action).html(htmlconetnt[action]());
     $("#submenu .menushow").removeClass("menushow");
     $("#submenu ."+action).addClass("menushow");
+    self.subbuttonfun = "sub"+action;
   },
   mnone:function(){
     var a={
@@ -296,6 +305,43 @@ var menu = {
     return JSON.stringify(a);
   },
   mtextmessage:function(){
+    var key = new Date().getTime();
+    var a={
+      "buttonaddm[menuName]":$("#myModal .menuname").val(),
+      "buttonaddm[eventtype]":'click',
+      "buttonaddm[Content]": $("#myModal .textcontent").val(),
+      "buttonaddm[MsgType]": 'text',
+      "buttonaddm[eventKey]": "e"+key,
+    };
+    return a;
+  },
+  subnone:function(){
+    var a={
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+    };
+    return a;
+  },
+  subexternalpage:function(){
+    var a={
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+      "buttonaddm[eventtype]": 'view',
+      "buttonaddm[eventUrl]": $("#myModal .viewurl").val(),
+    };
+    return a;
+  },
+  subpushmessage:function(){
+    var self = this;
+    var key = new Date().getTime();
+    var a = {
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+      "buttonaddm[eventtype]": 'click',
+      "buttonaddm[MsgType]": 'news',
+      "buttonaddm[eventKey]": "e"+key,
+      "buttonaddm[newslist]": self.getnewslist($("#myModal .pushmessage .newslist")),
+    };
+    return a;
+  },
+  subtextmessage:function(){
     var key = new Date().getTime();
     var a={
       "buttonaddm[menuName]":$("#myModal .menuname").val(),
@@ -412,6 +458,26 @@ var menu = {
       }
     });
   },
+  ajaxgetmbuttom:function(){
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getmmenu/",
+      type:"post",
+      dataType:'json',
+      success:function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          $("#submenu .belongto").html(htmlconetnt.belongtohtml(data.menus));
+          $('#submenu').modal('show');
+          return true;
+        }
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
+  },
   onload: function(){
     var self = this;
     $("#myModal .buttontype .btn").click(function(){//add main menu 's submenu
@@ -424,8 +490,8 @@ var menu = {
         self.mbuttonfun = "mnone";
       $('#myModal').modal('show');
     });
-    $("#menufun>.addsubmenu").click(function(){//add main menu
-      $('#submenu').modal('show');
+    $("#menufun>.addsubmenu").click(function(){//add main menu ajax
+      self.ajaxgetmbuttom();
     });
     $("#submenu .buttontype .btn").click(function(){//add main menu 's submenu
       $("#submenu .buttontype .active").removeClass("active");

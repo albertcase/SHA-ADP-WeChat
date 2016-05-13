@@ -8,7 +8,14 @@ class buttonaddsub extends FormRequest{
 
   public function rule(){
     return array(
-      'mOrder' => new Assert\Range(array('min' => 0, 'max' => 2)),
+      // 'mOrder' => new Assert\Range(array('min' => 0, 'max' => 2)),
+      // 'menuName' => new Assert\NotBlank(),
+      // 'eventtype' => '',
+      // 'eventKey' => '',
+      // 'eventUrl' => '',
+      // 'MsgType' =>  '',
+      // 'Content' => '',
+      // 'newslist' => '',
     );
   }
 
@@ -25,10 +32,62 @@ class buttonaddsub extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($id = $dataSql->addSubButton($this->getdata['mOrder'])){
-      return array('code' => '10', 'id' => $id,'msg' => 'add button success');
-    }
-    return array('code' => '9', 'msg' => 'add button error');
+    $count = $dataSql->getCount(array('mOrder' => $this->getdata['mOrder']), 'wechat_menu');
+    $count = intval($count);
+    if($count == '0')
+      return array('code' => '6', 'msg' => 'the main button which include this submenu not exists');
+    if($count > '5')
+      return array('code' => '17', 'msg' => 'the total of the subbutton not more than 5');
+    $button = $this->getbutton();
+    $button['mOrder'] = $this->getdata['mOrder'];
+    $button['subOrder'] = $count+1;
+    if(!$id = $dataSql->insertData($button, 'wechat_menu'))
+      return array('code' => '7', 'msg' => 'add menu error');
+    $event = $this->getevents($id);
+    if(count($event))
+      $dataSql->addEvent($event);
+    return array('code' => '10', 'msg' => 'add menu success');
   }
+
+
+    public function getevents($id){
+      $events = array();
+      if(!isset($this->getdata['MsgType']))
+        return $events;
+      if($this->getdata['MsgType'] == 'text'){
+        $events[0] = array(
+          'menuId' => $id,
+          'getMsgType' => 'event',
+          'getEvent' => 'click',
+          'getEventKey' => $this->getdata['eventKey'],
+          'MsgType' => 'text',
+          'Content' => $this->getdata['Content'],
+        );
+        return $events;
+      }
+      if($this->getdata['MsgType'] == 'news'){
+        $newslist = json_decode($this->getdata['newslist'] ,true);
+        foreach($newslist as $x=>$_val){
+          $newslist[$x]['menuId'] = $id;
+          $newslist[$x]['getMsgType'] = 'event';
+          $newslist[$x]['getEvent'] = 'click';
+          $newslist[$x]['getEventKey'] = $this->getdata['eventKey'];
+          $newslist[$x]['MsgType'] = 'news';
+        }
+        return $newslist;
+      }
+      return $events;
+    }
+
+    public function getbutton(){
+      $button = array();
+      foreach($this->getdata as $x => $x_val){
+        if($x_val){
+          if($x == 'menuName' || $x == 'eventtype' || $x == 'eventKey' || $x == 'eventUrl')
+            $button[$x] = $x_val;
+        }
+      }
+      return $button;
+    }
 
 }

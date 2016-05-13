@@ -29,4 +29,16 @@ class functions{
     }
     return $menus;
   }
+
+  public function getmmenu(){
+    $dataSql = $this->_container->get('my.dataSql');
+    $menus = $dataSql->getmenusDb();
+    $main = array();
+    foreach($menus as $x => $x_val){
+      if($x_val['subOrder'] == '0'){
+        $main[$x_val['mOrder']] = $x_val['menuName'];
+      }
+    }
+    return $main;
+  }
 }

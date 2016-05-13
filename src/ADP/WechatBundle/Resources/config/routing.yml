@@ -74,6 +74,10 @@ adp_admin_uploadimage:
 adp_admin_getmenus:
     path:     /adminapi/getmenus/
     defaults: { _controller: ADPWechatBundle:Adminapi:getmenus }
+
+adp_admin_getmmenu:
+    path:     /adminapi/getmmenu/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getmmenu }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

@@ -19,6 +19,15 @@ class AdminapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
+  public function getmmenuAction(){
+    $fun = $this->container->get('my.functions');
+    $data = array(
+      'code' => '10',
+      'menus' => $fun->getmmenu(),
+    );
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
   public function createmenuAction(){
     $wehcat = $this->container->get('my.Wechat');
     $data = array('code' => '9', 'msg' => 'update wechat menus error');
