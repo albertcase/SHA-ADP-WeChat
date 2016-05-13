@@ -75,7 +75,64 @@ var formstr = {//comfirm string
 
 }
 
+var fileupload = {
+  sendfiles:function(data, obj){
+	var self=this;
+  popup.openprogress();
+	var formData = new FormData();
+	var xhr = new XMLHttpRequest();
+	formData.append("uploadfile",data);
+	xhr.open ('POST',"/adminapi/uploadimage/");
+	xhr.onload = function(event) {
+    popup.closeprogress();
+    if (xhr.status === 200) {
+      var aa = JSON.parse(xhr.responseText);
+      if(aa.code == '10'){
+        fileupload.replaceinput(aa.path,obj);
+        popup.openwarning('upload success');
+        return true;
+      }
+      popup.openwarning(aa.msg);
+    } else {
+      popup.openwarning('upload error');
+    }
+  };
+    xhr.upload.onprogress = self.updateProgress;
+    xhr.send (formData);
+  },
+  updateProgress:function(event){
+    if (event.lengthComputable){
+        var percentComplete = event.loaded;
+        var percentCompletea = event.total;
+        var press = (percentComplete*100/percentCompletea).toFixed(2);//onprogress show
+      	popup.goprogress(press);
+    }
+  },
+  replaceinput:function(url ,obj){
+    var a= '<i class="fa fa-times"></i><img src="'+url+'" style="width:200px;display:block;">';
+    obj.after(a);
+    obj.remove();
+  },
+  replaceimage:function(obj){
+    var a = '<input type="file" name="uploadfile" class="newsfile">';
+    obj.next().remove();
+    obj.after(a);
+    obj.remove();
+  }
+}
+
 var popup = {
+  openprogress:function(){
+    $("#myprogress").show();
+  },
+  closeprogress:function(){
+    $("#myprogress").hide();
+  },
+  goprogress:function(t){
+    $("#myprogress .progress-bar").attr("aria-valuenow" ,t);
+    $("#myprogress .progress-bar").css("width", t+"%");
+    $("#myprogress .sr-only").text(t+"%");
+  },
   openwarning:function(text){
     var a = '<div>'+text+'</div>';
     a += '<div><button type="button" onclick="popup.closewarning()" class="btn btn-default btn-sm">TRUE</button></div>';
@@ -100,10 +157,10 @@ var popup = {
     $("#comfirmpopup").hide();
   },
   openloading:function(){
-    $("#comfirmpopu").show();
+    $("#loadingpopup").show();
   },
   closeloading:function(){
-    $("#comfirmpopu").hide();
+    $("#loadingpopup").hide();
   }
 }
 
@@ -123,19 +180,19 @@ var htmlconetnt = {
         a += '<i class="fa fa-minus-square" style="color:red"></i>';
         a += '<div class="form-group">';
         a += '<label>Title:</label>';
-        a += '<input class="form-control" placeholder="Enter TITLE" style="width:90%">';
+        a += '<input class="form-control newstitle" placeholder="Enter TITLE" style="width:90%">';
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Description:</label>';
-        a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%">';
+        a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%">';
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Link:</label>';
-        a += '<input class="form-control" placeholder="Enter Your Url" style="width:90%" name="link">';
+        a += '<input class="form-control newslink" placeholder="Enter Your Url" style="width:90%" name="link">';
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Cover:</label>';
-        a += '<input type="file" name="uploadfile">';
+        a += '<input type="file" name="uploadfile" class="newsfile">';
         a += '</div>';
         a += '<hr>';
         a += '</div>';
@@ -149,8 +206,31 @@ var htmlconetnt = {
         a += '<textarea class="form-control textcontent" rows="3"></textarea>';
         a += '</div>';
     return a;
-  }
-
+  },
+  addnewshtml:function(){
+    var a = '<div class="newslist">';
+        a += '<i class="fa fa-minus-square" style="color:red"></i>';
+        a += '<div class="form-group">';
+        a += '<label>Title:</label>';
+        a += '<input class="form-control newstitle" placeholder="Enter TITLE" style="width:90%">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Description:</label>';
+        a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Link:</label>';
+        a += '<input class="form-control newslink" placeholder="Enter Your Url" style="width:90%" name="link">';
+        a += '</div>';
+        a += '<div class="form-group">';
+        a += '<label>Cover:</label>';
+        a += '<input type="file" name="uploadfile" class="newsfile">';
+        a += '</div>';
+        a += '<hr>';
+        a += '</div>';
+        a += '<i class="fa fa-plus-square" style="color:green"></i>';
+    return a;
+  },
 }
 
 var menu = {
@@ -275,6 +355,8 @@ var menu = {
       success: function(data){
         popup.closeloading();
         if(data.code == '10'){
+          popup.closecomfirm();
+          menu.ajaxreload();
           popup.openwarning(data.msg);
           return true;
         }
@@ -315,7 +397,22 @@ var menu = {
     $("#menutable").on("click", "tbody .fa-trash-o", function(){
       self.delobj = $(this);
       popup.opencomfirm("delete this menu???","menu.delbutton()");
-
+    });
+    $("#myModal").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#myModal").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#myModal .pushmessage .fa-minus-square").length >= 10)
+        $("#myModal .pushmessage .fa-plus-square").remove();
+    });
+    $("#myModal").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#myModal").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
     });
   },
 }

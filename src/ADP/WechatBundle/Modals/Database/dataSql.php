@@ -133,11 +133,14 @@ class dataSql{
     $ids = $this->searchData(array('mOrder' => $mOrder), array('id'), 'wechat_menu');
     foreach($ids as $x)
       $menuid[] = $x['id'];
-    $db = $this->rebuilddb();
-    $db->where('menuId', $menuid, 'IN');
-    if($db->delete('wechat_menu_event'))
-      return true;
-    return false;
+    if($menuid){
+      $db = $this->rebuilddb();
+      $db->where('menuId', $menuid, 'IN');
+      if($db->delete('wechat_menu_event'))
+        return true;
+      return false;
+    }
+    return true;
   }
 
   public function decsubOrder($mOrder, $subOrder){
