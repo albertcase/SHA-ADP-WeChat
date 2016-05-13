@@ -109,7 +109,7 @@ var fileupload = {
     }
   },
   replaceinput:function(url ,obj){
-    var a= '<i class="fa fa-times"></i><img src="'+url+'" style="width:200px;display:block;">';
+    var a= '<i class="fa fa-times"></i><img src="'+url+'" style="width:200px;display:block;" class="newspic">';
     obj.after(a);
     obj.remove();
   },
@@ -268,8 +268,32 @@ var menu = {
     return a;
   },
   mpushmessage:function(){
-    var a={};
+    var self = this;
+    var key = new Date().getTime();
+    var a = {
+      "buttonaddm[menuName]": $("#myModal .menuname").val(),
+      "buttonaddm[eventtype]": 'click',
+      "buttonaddm[MsgType]": 'news',
+      "buttonaddm[eventKey]": "e"+key,
+      "buttonaddm[newslist]": self.getnewslist($("#myModal .pushmessage .newslist")),
+    };
     return a;
+  },
+  getnewslist:function(obj){
+    var a = [];
+    var la = obj.length;
+    obj.each(function(){
+      var mself = $(this);
+      var b = {};
+      b = {
+        "Title": mself.find(".newstitle").val(),
+        "Description": mself.find(".newsdescription").val(),
+        "Url": mself.find(".newslink").val(),
+        "PicUrl": mself.find(".newspic").attr("src"),
+      }
+      a.push(b);
+    });
+    return JSON.stringify(a);
   },
   mtextmessage:function(){
     var key = new Date().getTime();
@@ -368,6 +392,26 @@ var menu = {
       }
     });
   },
+  publishmenu:function(){
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/createmenu/",
+      type:"post",
+      dataType:'json',
+      success:function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
+  },
   onload: function(){
     var self = this;
     $("#myModal .buttontype .btn").click(function(){//add main menu 's submenu
@@ -392,7 +436,7 @@ var menu = {
       self.ajaxaddmbutton();
     });
     $("#menufun>.publish").click(function(){
-      menu.ajaxreload();
+      self.publishmenu();
     });
     $("#menutable").on("click", "tbody .fa-trash-o", function(){
       self.delobj = $(this);
