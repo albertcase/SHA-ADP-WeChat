@@ -255,6 +255,7 @@ var menu = {
     self.mbuttonfun = "m"+action;
   },
   showfeedback2: function(obj){//add submenu
+    var self = this;
     var action = obj.attr('action');
     if($("#submenu ."+action+" div").length == 0)
       $("#submenu ."+action).html(htmlconetnt[action]());
@@ -347,11 +348,12 @@ var menu = {
   subtextmessage:function(){
     var key = new Date().getTime();
     var a={
-      "buttonaddm[menuName]":$("#myModal .menuname").val(),
-      "buttonaddm[eventtype]":'click',
-      "buttonaddm[Content]": $("#myModal .textcontent").val(),
-      "buttonaddm[MsgType]": 'text',
-      "buttonaddm[eventKey]": "e"+key,
+      "buttonaddsub[menuName]": $("#submenu .menuname").val(),
+      "buttonaddsub[mOrder]": $("#submenu .belongto").val(),
+      "buttonaddsub[eventtype]":'click',
+      "buttonaddsub[Content]": $("#submenu .textcontent").val(),
+      "buttonaddsub[MsgType]": 'text',
+      "buttonaddsub[eventKey]": "e"+key,
     };
     return a;
   },
@@ -374,6 +376,33 @@ var menu = {
         if(data.code == '10'){
           menu.cleaninput($("#myModal input"));
           $('#myModal').modal('hide');
+          popup.openwarning(data.msg);
+          menu.ajaxreload();
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        menu.ajaxreload();
+        popup.openwarning('unknow error');
+      }
+    });
+  },
+  ajaxaddsubbutton:function(){
+    popup.openloading();
+    var self = this;
+    var up = menu[self.subbuttonfun]();
+    $.ajax({
+      type:'post',
+      url: '/adminapi/addsubbutton/',
+      data: up,
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          menu.cleaninput($("#submenu input"));
+          $('#submenu').modal('hide');
           popup.openwarning(data.msg);
           menu.ajaxreload();
           return true;
@@ -546,6 +575,10 @@ var menu = {
     });
     $("#submenu").on("click",".fa-times",function(){
       fileupload.replaceimage($(this));
+    });
+    $("#addsubmenusubmit").click(function(){
+      self.ajaxaddsubbutton();
+      // alert(self.subbuttonfun);
     });
   },
 }
