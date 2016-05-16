@@ -8,14 +8,14 @@ class buttonupdate extends FormRequest{
 
   public function rule(){
     return array(
-      'id' => new Assert\NotBlank(),
-      'menuName' => new Assert\NotBlank(),
-      'eventtype' => new Assert\NotBlank(),
-      'eventKey' => '',
-      'eventUrl' => '',
-      'MsgType' =>  new Assert\NotBlank(),
-      'Content' => '',
-      'newslist' => '',
+      // 'id' => new Assert\NotBlank(),
+      // 'menuName' => new Assert\NotBlank(),
+      // 'eventtype' => new Assert\NotBlank(),
+      // 'eventKey' => '',
+      // 'eventUrl' => '',
+      // 'MsgType' =>  new Assert\NotBlank(),
+      // 'Content' => '',
+      // 'newslist' => '',
     );
   }
 
@@ -34,8 +34,8 @@ class buttonupdate extends FormRequest{
     $dataSql = $this->container->get('my.dataSql');
     $button = $this->getbutton();
     $event = $this->getevents();
-    if($dataSql->updateButton($id, $button, $event)){
-      return array('code' => '10', 'id' => $id,'msg' => 'update button success');
+    if($dataSql->updateButton($this->getdata['id'], $button, $event)){
+      return array('code' => '10', 'msg' => 'update button success');
     }
     return array('code' => '9', 'msg' => 'update button error');
   }
@@ -53,8 +53,11 @@ class buttonupdate extends FormRequest{
 
   public function getevents(){
     $events = array();
+    if(!isset($this->getdata['MsgType']))
+      return $events;
     if($this->getdata['MsgType'] == 'text'){
       $events[0] = array(
+        'menuId' => $this->getdata['id'],
         'getMsgType' => 'event',
         'getEvent' => 'click',
         'getEventKey' => $this->getdata['eventKey'],
@@ -66,6 +69,7 @@ class buttonupdate extends FormRequest{
     if($this->getdata['MsgType'] == 'news'){
       $newslist = json_decode($this->getdata['newslist'] ,true);
       foreach($newslist as $x=>$_val){
+        $newslist[$x]['menuId'] = $this->getdata['id'];
         $newslist[$x]['getMsgType'] = 'event';
         $newslist[$x]['getEvent'] = 'click';
         $newslist[$x]['getEventKey'] = $this->getdata['eventKey'];

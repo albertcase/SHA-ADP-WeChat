@@ -166,6 +166,10 @@ var popup = {
 
 
 var htmlconetnt = {
+  none:function(){
+    var a = '';
+    return a;
+  },
   externalpage:function(){
     var a = '<br>';
     a += '<div class="form-group">';
@@ -249,7 +253,7 @@ var htmlconetnt = {
       var a = '<br>';
         a += '<div class="form-group">';
         a += '<label>MESSAGE</label>';
-        a += '<textarea class="form-control textcontent" rows="3" value="'+conetnt+'"></textarea>';
+        a += '<textarea class="form-control textcontent" rows="3">'+conetnt+'</textarea>';
         a += '</div>';
     return a;
   },
@@ -290,7 +294,8 @@ var htmlconetnt = {
 var menu = {
   mbuttonfun:null,
   subbuttonfun:null,
-  editbutton:null,
+  editbuttonfun:null,
+  editinfo:null,
   delobj:null,
   showfeedback: function(obj){//add menu
     var self = this;
@@ -317,7 +322,7 @@ var menu = {
       $("#editmenu ."+action).html(htmlconetnt[action]());
     $("#editmenu .menushow").removeClass("menushow");
     $("#editmenu ."+action).addClass("menushow");
-    self.editbutton = "m"+action;
+    self.editbuttonfun = "edit"+action;
   },
   mnone:function(){
     var a={
@@ -413,10 +418,55 @@ var menu = {
     };
     return a;
   },
+  editexternalpage:function(){
+    var self = this;
+    var a={
+      "buttonupdate[id]": self.editinfo['id'],
+      "buttonupdate[menuName]": $("#editmenu .menuname").val(),
+      "buttonupdate[eventtype]": 'view',
+      "buttonupdate[eventUrl]": $("#editmenu .viewurl").val(),
+    };
+    return a;
+  },
+  editpushmessage:function(){
+    var self = this;
+    var a = {
+      "buttonupdate[id]": self.editinfo['id'],
+      "buttonupdate[menuName]": $("#editmenu .menuname").val(),
+      "buttonupdate[eventtype]": 'click',
+      "buttonupdate[MsgType]": 'news',
+      "buttonupdate[eventKey]": self.editinfo['eventKey'],
+      "buttonupdate[newslist]": self.getnewslist($("#editmenu .pushmessage .newslist")),
+    };
+    return a;
+  },
+  edittextmessage:function(){
+    var self = this;
+    var a={
+      "buttonupdate[id]": self.editinfo['id'],
+      "buttonupdate[menuName]": $("#editmenu .menuname").val(),
+      "buttonupdate[eventtype]":'click',
+      "buttonupdate[Content]": $("#editmenu .textcontent").val(),
+      "buttonupdate[MsgType]": 'text',
+      "buttonupdate[eventKey]": self.editinfo['eventKey'],
+    };
+    return a;
+  },
+  editnone:function(){
+    var self = this;
+    var a={
+      "buttonupdate[id]": self.editinfo['id'],
+      "buttonupdate[menuName]": $("#editmenu .menuname").val(),
+    };
+    return a;
+  },
   cleaninput:function(obj){
-    obj.each(function(){
+    obj.find("input").each(function(){
       $(this).val("");
     });
+    obj.find(".externalpage").html('');
+    obj.find(".pushmessage").html('');
+    obj.find(".textmessage").html('');
   },
   ajaxaddmbutton:function(){
     popup.openloading();
@@ -430,7 +480,7 @@ var menu = {
       success: function(data){
         popup.closeloading();
         if(data.code == '10'){
-          menu.cleaninput($("#myModal input"));
+          menu.cleaninput($("#myModal"));
           $('#myModal').modal('hide');
           popup.openwarning(data.msg);
           menu.ajaxreload();
@@ -457,7 +507,7 @@ var menu = {
       success: function(data){
         popup.closeloading();
         if(data.code == '10'){
-          menu.cleaninput($("#submenu input"));
+          menu.cleaninput($("#submenu"));
           $('#submenu').modal('hide');
           popup.openwarning(data.msg);
           menu.ajaxreload();
@@ -467,7 +517,6 @@ var menu = {
       },
       error:function(){
         popup.closeloading();
-        menu.ajaxreload();
         popup.openwarning('unknow error');
       }
     });
@@ -567,16 +616,20 @@ var menu = {
       }
     });
   },
-  ajaxgetbuttoninfo(){
+  ajaxgetbuttoninfo:function(id){
     popup.openloading();
     $.ajax({
       url:"/adminapi/getbuttoninfo/",
       type:"post",
       dataType:'json',
+      data:{
+        "buttoninfo[id]": id,
+      },
       success:function(data){
         popup.closeloading();
         if(data.code == '10'){
-
+          menu.editbutton(data['info']);
+          $('#editmenu').modal('show');
           return true;
         }
         popup.openwarning(data.msg);
@@ -587,8 +640,61 @@ var menu = {
       }
     });
   },
-  editbutton:function(){
-
+  editbutton:function(data){
+    var self = this;
+    self.editinfo = data;
+    $("#editmenu .buttontype .active").removeClass("active");
+    $('#editmenu .menuname').val(data['menuName']);
+    $("#editmenu .menushow").removeClass("menushow");
+    if(data['eventtype'] == 'view'){
+      $("#editmenu .externalpage").addClass("menushow");
+      $("#editmenu .buttontype .btn").eq(0).addClass("active");
+      $("#editmenu .externalpage").html(htmlconetnt.aview(data['eventUrl']));
+      self.editbuttonfun = "editexternalpage"
+      return true;
+    }
+    if(data['eventtype'] == 'click'){
+      if(data['buttonevent'].hasOwnProperty('newslist')){
+        $("#editmenu .pushmessage").addClass("menushow");
+        $("#editmenu .buttontype .btn").eq(1).addClass("active");
+        $("#editmenu .pushmessage").html(htmlconetnt.apushmessage(data['buttonevent']['newslist']));
+        self.editbuttonfun = "editpushmessage"
+        return true;
+      }
+      if(data['buttonevent']['MsgType'] == 'text'){
+        $("#editmenu .textmessage").addClass("menushow");
+        $("#editmenu .buttontype .btn").eq(2).addClass("active");
+        $("#editmenu .textmessage").html(htmlconetnt.atextmessage(data['buttonevent']['Content']));
+        self.editbuttonfun = "edittextmessage";
+        return true;
+      }
+    }
+  },
+  ajaxupdatebutton:function(){
+    popup.openloading();
+    var self = this;
+    var up = menu[self.editbuttonfun]();
+    $.ajax({
+      url: "/adminapi/updatebutton/",
+      data: up,
+      type:"post",
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          menu.ajaxreload();
+          menu.cleaninput($("#editmenu"));
+          popup.openwarning(data.msg);
+          $('#editmenu').modal('hide');
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
   },
   onload: function(){
     var self = this;
@@ -643,7 +749,6 @@ var menu = {
     $("#myModal").on("click",".fa-times",function(){
       fileupload.replaceimage($(this));
     });
-    // dfdsfdsf
     $("#submenu").on("click",".fa-minus-square", function(){
       $(this).parent().remove();
     });
@@ -660,12 +765,32 @@ var menu = {
     $("#submenu").on("click",".fa-times",function(){
       fileupload.replaceimage($(this));
     });
+    $("#editmenu").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#editmenu").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#editmenu .pushmessage .fa-minus-square").length >= 10)
+        $("#editmenu .pushmessage .fa-plus-square").remove();
+    });
+    $("#editmenu").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#editmenu").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
     $("#addsubmenusubmit").click(function(){
       self.ajaxaddsubbutton();
       // alert(self.subbuttonfun);
     });
     $("#maincontent").on("click", "tbody .fa-edit", function(){
-      $('#editmenu').modal('show');
+      var id = $(this).parent().parent().attr("menuid");
+      self.ajaxgetbuttoninfo(id);
+    });
+    $("#savechange").click(function(){
+      self.ajaxupdatebutton();
     });
   },
 }

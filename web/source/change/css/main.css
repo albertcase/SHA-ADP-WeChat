@@ -18,7 +18,7 @@
   display: block !important;
 }
 
-.externalpage,.pushmessage,.textmessage,#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
+.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
   display: none;
 }
 

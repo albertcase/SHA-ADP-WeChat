@@ -85,6 +85,7 @@ class dataSql{
 
   public function updateButton($id, $button = array(), $event = array()){//set old button
     $change = array(
+      'eventtype' => '',
       'eventKey' => '',
       'eventUrl' => '',
       'eventmedia_id' => '',
