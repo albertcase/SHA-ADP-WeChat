@@ -77,3 +77,8 @@ services:
           class: ADP\WechatBundle\Forms\buttonupdate
           scope: request
           arguments: [@request, @service_container]
+
+        form.buttoninfo:
+          class: ADP\WechatBundle\Forms\buttoninfo
+          scope: request
+          arguments: [@request, @service_container]

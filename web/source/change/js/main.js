@@ -174,6 +174,14 @@ var htmlconetnt = {
     a += '</div>';
     return a;
   },
+  aview:function(content){
+    var a = '<br>';
+    a += '<div class="form-group">';
+    a += '<label>Redirect to:</label>';
+    a += '<input class="form-control viewurl" placeholder="Enter Your Url" style="width:90%" value="'+content+'">';
+    a += '</div>';
+    return a;
+  },
   pushmessage:function(){
     var a = '<br>';
         a += '<div class="newslist">';
@@ -199,11 +207,49 @@ var htmlconetnt = {
         a += '<i class="fa fa-plus-square" style="color:green"></i>';
     return a;
   },
+  apushmessage:function(data){
+    var la = data.length;
+    var a = "<br>";
+    for(var i = 0 ;i<la ;i++){
+      a += '<div class="newslist">';
+      a += '<i class="fa fa-minus-square" style="color:red"></i>';
+      a += '<div class="form-group">';
+      a += '<label>Title:</label>';
+      a += '<input class="form-control newstitle" placeholder="Enter TITLE" style="width:90%" value="'+data[i]['Title']+'">';
+      a += '</div>';
+      a += '<div class="form-group">';
+      a += '<label>Description:</label>';
+      a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%" value="'+data[i]['Description']+'">';
+      a += '</div>';
+      a += '<div class="form-group">';
+      a += '<label>Link:</label>';
+      a += '<input class="form-control newslink" placeholder="Enter Your Url" style="width:90%" name="link" value="'+data[i]['Url']+'">';
+      a += '</div>';
+      a += '<div class="form-group">';
+      a += '<label>Cover:</label>';
+      a += '<i class="fa fa-times"></i><img src="'+data[i]['PicUrl']+'" style="width:200px;display:block;" class="newspic">';
+      a += '</div>';
+      a += '<hr>';
+      a += '</div>';
+    }
+    if(la < 10){
+      a += '<i class="fa fa-plus-square" style="color:green"></i>';
+    }
+    return a;
+  },
   textmessage:function(){
       var a = '<br>';
         a += '<div class="form-group">';
         a += '<label>MESSAGE</label>';
         a += '<textarea class="form-control textcontent" rows="3"></textarea>';
+        a += '</div>';
+    return a;
+  },
+  atextmessage:function(conetnt){
+      var a = '<br>';
+        a += '<div class="form-group">';
+        a += '<label>MESSAGE</label>';
+        a += '<textarea class="form-control textcontent" rows="3" value="'+conetnt+'"></textarea>';
         a += '</div>';
     return a;
   },
@@ -244,6 +290,7 @@ var htmlconetnt = {
 var menu = {
   mbuttonfun:null,
   subbuttonfun:null,
+  editbutton:null,
   delobj:null,
   showfeedback: function(obj){//add menu
     var self = this;
@@ -262,6 +309,15 @@ var menu = {
     $("#submenu .menushow").removeClass("menushow");
     $("#submenu ."+action).addClass("menushow");
     self.subbuttonfun = "sub"+action;
+  },
+  showfeedback3: function(obj){//add submenu
+    var self = this;
+    var action = obj.attr('action');
+    if($("#editmenu ."+action+" div").length == 0)
+      $("#editmenu ."+action).html(htmlconetnt[action]());
+    $("#editmenu .menushow").removeClass("menushow");
+    $("#editmenu ."+action).addClass("menushow");
+    self.editbutton = "m"+action;
   },
   mnone:function(){
     var a={
@@ -511,6 +567,29 @@ var menu = {
       }
     });
   },
+  ajaxgetbuttoninfo(){
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getbuttoninfo/",
+      type:"post",
+      dataType:'json',
+      success:function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
+  },
+  editbutton:function(){
+
+  },
   onload: function(){
     var self = this;
     $("#myModal .buttontype .btn").click(function(){//add main menu 's submenu
@@ -532,6 +611,11 @@ var menu = {
       $("#submenu .buttontype .active").removeClass("active");
       $(this).addClass("active");
       self.showfeedback2($(this));
+    });
+    $("#editmenu .buttontype .btn").click(function(){//edit menu 's submenu
+      $("#editmenu .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showfeedback3($(this));
     });
     $("#myModal .addmmenusubmit").click(function(){
       self.ajaxaddmbutton();
@@ -579,6 +663,9 @@ var menu = {
     $("#addsubmenusubmit").click(function(){
       self.ajaxaddsubbutton();
       // alert(self.subbuttonfun);
+    });
+    $("#maincontent").on("click", "tbody .fa-edit", function(){
+      $('#editmenu').modal('show');
     });
   },
 }

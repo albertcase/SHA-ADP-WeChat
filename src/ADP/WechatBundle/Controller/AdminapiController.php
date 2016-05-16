@@ -36,6 +36,12 @@ class AdminapiController extends Controller
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
+  public function getbuttoninfoAction(){
+    $adminadd = $this->container->get('form.buttoninfo');
+    $data = $adminadd->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
   public function deletebuttonAction(){
     $adminadd = $this->container->get('form.buttondel');
     $data = $adminadd->DoData();

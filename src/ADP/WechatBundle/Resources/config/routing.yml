@@ -78,6 +78,10 @@ adp_admin_getmenus:
 adp_admin_getmmenu:
     path:     /adminapi/getmmenu/
     defaults: { _controller: ADPWechatBundle:Adminapi:getmmenu }
+
+adp_admin_getbuttoninfo:
+    path:     /adminapi/getbuttoninfo/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getbuttoninfo }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

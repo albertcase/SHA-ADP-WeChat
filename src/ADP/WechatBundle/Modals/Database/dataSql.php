@@ -52,7 +52,14 @@ class dataSql{
       return false;
     if($count > '5')
       return false;
-    if($id = $this->insertData(array('mOrder' => $mOrder, 'subOrder' => $count+1, 'menuName' => '新菜单', 'eventtype' => 'view', 'eventUrl' => 'http://'), 'wechat_menu'))
+    if($id = $this->insertData(array(
+      'mOrder' => $mOrder,
+      'subOrder' => $count+1,
+      'menuName' => '新菜单',
+      'eventtype' => 'view',
+      'eventUrl' => 'http://'),
+      'wechat_menu'
+    ))
       return $id;
     return false;
   }
@@ -66,6 +73,16 @@ class dataSql{
     return false;
   }
 
+  public function buttoninfo($id){
+    $info = $this->searchData(array('id' => $id) ,array(), 'wechat_menu');
+    if(isset($info[0])){
+      $info = $info[0];
+      $info['buttonevent'] = $this->getbuttonEvent(array('menuId' => $id));
+      return $info;
+    }
+    return false;
+  }
+
   public function updateButton($id, $button = array(), $event = array()){//set old button
     $change = array(
       'eventKey' => '',
@@ -76,6 +93,20 @@ class dataSql{
     $this->updateData(array('id' => $id ), $button, 'wechat_menu');
     $this->updateEvent(array('menuId' => $id), $event);
     return true;
+  }
+
+  public function getbuttonEvent($data){
+    $result = array();
+    $out = $this->searchData($data, array(), 'wechat_menu_event');
+    if($out && isset($out['0'])){
+      if($out['0']['MsgType'] == 'news'){
+        $result['newslist'] = $out;
+      }else{
+        $result = $out['0'];
+      }
+      return $result;
+    }
+    return false;
   }
 
   public function getEvent($data){//get Event
@@ -133,14 +164,11 @@ class dataSql{
     $ids = $this->searchData(array('mOrder' => $mOrder), array('id'), 'wechat_menu');
     foreach($ids as $x)
       $menuid[] = $x['id'];
-    if($menuid){
-      $db = $this->rebuilddb();
-      $db->where('menuId', $menuid, 'IN');
-      if($db->delete('wechat_menu_event'))
-        return true;
-      return false;
-    }
-    return true;
+    $db = $this->rebuilddb();
+    $db->where('menuId', $menuid, 'IN');
+    if($db->delete('wechat_menu_event'))
+      return true;
+    return false;
   }
 
   public function decsubOrder($mOrder, $subOrder){
