@@ -108,7 +108,7 @@ class AdminapiController extends Controller
   }
 // admin manage end
 // article start
-  public function creatarticleAction(){
+  public function articleaddAction(){
     $adminadd = $this->container->get('form.articleadd');
     $data = $adminadd->DoData();
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));

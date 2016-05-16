@@ -867,13 +867,75 @@ var preference = {
 }
 
 var webpage = {
+  cleaninput:function(){
+    $("#addpage .pagename").val('');
+    $("#addpage .pagetitle").val('');
+    CKEDITOR.instances.editor1.setData('');
+  },
+  ajaxarticleup:function(){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/articleadd/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "articleadd[pagename]": $("#addpage .pagename").val(),
+        "articleadd[pagetitle]": $("#addpage .pagetitle").val(),
+        "articleadd[content]": CKEDITOR.instances.editor1.getData(),
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          webpage.cleaninput();
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxdelarticle: function(pageid){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/deletearticle/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "articledel[pageid]": pageid,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == 'id'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
   onload: function(){
+    var self = this;
     $("#pagmanagenav .message").click(function(){
       $("#pagmanagenav .active").removeClass("active");
       $(this).parent().addClass("active");
       $("#pagmanage .navshow").removeClass("navshow");
       var active = $(this).attr("active");
       $("#"+active).addClass("navshow");
+    });
+    $("#articlesubmit").click(function(){
+      self.ajaxarticleup();
+    });
+    $("#pagelist").on("click","tbody .fa-trash-o" ,function(){
+      var pageid = $(this).parent().parent().attr("pageid");
+      self.ajaxdelarticle(pageid);
     });
   }
 }

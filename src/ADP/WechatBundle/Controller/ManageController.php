@@ -23,8 +23,13 @@ class ManageController extends Controller
     return $this->render('ADPWechatBundle:Manage:keyword.html.twig');
   }
 
-  public function pagAction(){
-    return $this->render('ADPWechatBundle:Manage:pag.html.twig');
+  public function pageAction(){
+    $sql = $this->container->get('my.dataSql');
+    if(!$w = $sql->getArticlelist(array())){
+      $w = array();
+    }
+    $host = $this->getRequest()->getSchemeAndHttpHost();
+    return $this->render('ADPWechatBundle:Manage:pag.html.twig', array('list' => $w, 'host' => $host));
   }
 
   public function replayAction(){

@@ -22,6 +22,15 @@ class DefaultController extends Controller
       return new Response($wechatObj->responseMsg($postStr));
     }
 
+    public function articleAction($pageid = ''){
+      $sql = $this->container->get('my.dataSql');
+      if($w = $sql->getArticle(array('pageid' => $pageid))){
+        $w = $w['0'];
+        return $this->render('ADPWechatBundle:Default:article.html.twig', $w);
+      }
+      return $this->render('ADPWechatBundle:Default:index.html.twig', array('name' => '404'));
+    }
+
     public function testAction(){
       $wehcat = $this->container->get('my.Wechat');
       $data = $wehcat->create_menu_array();

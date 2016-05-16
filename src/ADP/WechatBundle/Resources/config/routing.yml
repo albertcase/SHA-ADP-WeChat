@@ -14,6 +14,9 @@ adp_wechat_myjob:
     path:     /myjob/
     defaults: { _controller: ADPWechatBundle:Default:myjob }
 
+adp_wechat_article:
+    path:     /article/{pageid}
+    defaults: { _controller: ADPWechatBundle:Default:article }
 # admin
 adp_admin_createmenu:
     path:     /adminapi/createmenu/
@@ -112,8 +115,8 @@ adp_manage_keyword:
     defaults: { _controller: ADPWechatBundle:Manage:keyword }
 
 adp_manage_pag:
-    path:     /manage/pag/
-    defaults: { _controller: ADPWechatBundle:Manage:pag }
+    path:     /manage/page/
+    defaults: { _controller: ADPWechatBundle:Manage:page }
 
 adp_manage_replay:
     path:     /manage/replay/
