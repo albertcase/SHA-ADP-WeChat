@@ -22,13 +22,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="odd gradeX">
-                                <td>Trident</td>
-                                <td>Internet Explorer 4.0</td>
+{% for x in wordlist %}
+                            <tr class="odd gradeX" menuid="{{ x.menuId|e }}">
+                                <td>{{ x.getContent|e }}</td>
+                                <td>{{ x.MsgType|e }}</td>
                                 <td class="center"><i class="fa fa-edit fa-lg"></i></td>
                                 <td class="center"><i class="fa fa-trash-o fa-lg"></i></td>
                             </tr>
-
+{% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -61,7 +62,7 @@
 <!-- add main menu form -->
 <div class="form-group">
   <label>keyword:</label>
-  <input class="form-control" placeholder="Enter Keyword">
+  <input class="form-control inputkeyword" placeholder="Enter Keyword">
 </div>
 <div class="btn-group btn-group-sm buttontype">
   <button type="button" class="btn btn-default" MsgType="news" action="textmessage">TEXT MESSAGE</button>
@@ -79,7 +80,7 @@
             <button type="button" class="btn btn-default"
                data-dismiss="modal">Close
             </button>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary addkeywordsubmit">
                Add Keyword
             </button>
          </div>

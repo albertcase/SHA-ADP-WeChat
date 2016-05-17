@@ -142,6 +142,11 @@ class dataSql{
     return true;
   }
 
+  public function getkeywordlist(){
+    $sql = "SELECT distinct menuId,getContent,MsgType FROM wechat_menu_event WHERE getMsgType='text'";
+    return $this->querysql($sql);
+  }
+
 //deleteButton main start
   public function deleteButton($id){
     $info = $this->searchData(array('id' => $id), array('mOrder','subOrder'), 'wechat_menu');
@@ -292,6 +297,11 @@ class dataSql{
     }
     $stats = $db->getOne ($table, "count(*) as cnt");
     return $stats['cnt'];
+  }
+
+  public function querysql($sql){
+    $db = $this->rebuilddb();
+    return $db->rawQuery ($sql);
   }
 
 }

@@ -20,7 +20,9 @@ class ManageController extends Controller
   }
 
   public function keywordAction(){
-    return $this->render('ADPWechatBundle:Manage:keyword.html.twig');
+    $sql = $this->container->get('my.dataSql');
+    $wordlist = $sql->getkeywordlist();
+    return $this->render('ADPWechatBundle:Manage:keyword.html.twig', array('wordlist' => $wordlist));
   }
 
   public function pageAction(){

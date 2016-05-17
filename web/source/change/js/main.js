@@ -196,7 +196,7 @@ var htmlconetnt = {
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Description:</label>';
-        a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%">';
+        a += '<input class="form-control newsdescription" placeholder="Enter Your Description" style="width:90%">';
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Link:</label>';
@@ -223,7 +223,7 @@ var htmlconetnt = {
       a += '</div>';
       a += '<div class="form-group">';
       a += '<label>Description:</label>';
-      a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%" value="'+data[i]['Description']+'">';
+      a += '<input class="form-control newsdescription" placeholder="Enter Your Description" style="width:90%" value="'+data[i]['Description']+'">';
       a += '</div>';
       a += '<div class="form-group">';
       a += '<label>Link:</label>';
@@ -266,7 +266,7 @@ var htmlconetnt = {
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Description:</label>';
-        a += '<input class="form-control newsdescription" placeholder="Enter Your Url" style="width:90%">';
+        a += '<input class="form-control newsdescription" placeholder="Enter Your Description" style="width:90%">';
         a += '</div>';
         a += '<div class="form-group">';
         a += '<label>Link:</label>';
@@ -796,22 +796,125 @@ var menu = {
 }
 
 var keyword = {
+  addfun:null,
+  cleanall: function(){
+    $("#addkeyword .pushmessage").html('');
+    $("#addkeyword .textmessage").html('');
+    $("#addkeyword .inputkeyword").val('');
+  },
   showaddedit: function(obj){
+    var self = this;
     var action = obj.attr('action');
     if($("#addkeyword ."+action+" div").length == 0)
       $("#addkeyword ."+action).html(htmlconetnt[action]());
     $("#addkeyword .menushow").removeClass("menushow");
     $("#addkeyword ."+action).addClass("menushow");
+    self.addfun = "a"+action;
+  },
+  ajaxaddkeyword: function(){
+    var self = this;
+    popup.openloading();
+    var up = keyword[keyword.addfun]();
+    $.ajax({
+      url:"/adminapi/keywordadd/",
+      type:"post",
+      dataType:'json',
+      data: up,
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          keyword.cleanall();
+          $("#addkeyword").modal('hide');
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
+  },
+  ajaxlist: function(){
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getkeywordlist/",
+      type:"post",
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error:function(){
+        popup.closeloading();
+        popup.openwarning('unknow errors');
+      }
+    });
+  },
+  ajaxdel:function(){
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getkeywordlist/",
+      type:"post",
+      dataType:'json',
+    });
+  },
+  apushmessage:function(){
+    var self = this;
+    var a = {
+      "keywordadd[getMsgType]": 'text',
+      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
+      "keywordadd[MsgType]": 'news',
+      "keywordadd[newslist]": menu.getnewslist($("#addkeyword .pushmessage .newslist")),
+    };
+    return a;
+  },
+  atextmessage:function(){
+    var self = this;
+    var a={
+      "keywordadd[getMsgType]": 'text',
+      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
+      "keywordadd[MsgType]": 'text',
+      "keywordadd[Content]": $("#addkeyword .textmessage .textcontent").val(),
+    };
+    return a;
   },
   onload: function(){
     var self = this;
     $("#menufun>.addkeyword").click(function(){
+      if(!self.addfun)
+        self.addfun = "atextmessage";
       $("#addkeyword").modal('show');
     });
     $("#addkeyword .buttontype .btn").click(function(){//add main menu 's submenu
       $("#addkeyword .buttontype .active").removeClass("active");
       $(this).addClass("active");
       self.showaddedit($(this));
+    });
+    $("#addkeyword .addkeywordsubmit").click(function(){
+      self.ajaxaddkeyword();
+    });
+    //model button
+    $("#addkeyword").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#addkeyword").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#myModal .pushmessage .fa-minus-square").length >= 10)
+        $("#myModal .pushmessage .fa-plus-square").remove();
+    });
+    $("#addkeyword").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#addkeyword").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
     });
   }
 }

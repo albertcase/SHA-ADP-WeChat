@@ -92,3 +92,8 @@ services:
           class: ADP\WechatBundle\Forms\articleinfo
           scope: request
           arguments: [@request, @service_container]
+
+        form.keywordadd:
+          class: ADP\WechatBundle\Forms\keywordadd
+          scope: request
+          arguments: [@request, @service_container]

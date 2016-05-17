@@ -126,6 +126,19 @@ class AdminapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 //article end
+// keyword
+  public function keywordaddAction(){
+    $adminadd = $this->container->get('form.keywordadd');
+    $data = $adminadd->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function getkeywordlistAction(){
+    $sql = $this->container->get('my.dataSql');
+    $data = $sql->getkeywordlist();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+// keyword end
   public function uploadimageAction(Request $request){ //upload image
     $fs = new \Symfony\Component\Filesystem\Filesystem();
     $dir = date('Ym' ,strtotime("now"));

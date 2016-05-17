@@ -85,6 +85,14 @@ adp_admin_getmmenu:
 adp_admin_getbuttoninfo:
     path:     /adminapi/getbuttoninfo/
     defaults: { _controller: ADPWechatBundle:Adminapi:getbuttoninfo }
+
+adp_admin_keywordadd:
+    path:     /adminapi/keywordadd/
+    defaults: { _controller: ADPWechatBundle:Adminapi:keywordadd }
+
+adp_admin_getkeywordlist:
+    path:     /adminapi/getkeywordlist/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getkeywordlist }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/
