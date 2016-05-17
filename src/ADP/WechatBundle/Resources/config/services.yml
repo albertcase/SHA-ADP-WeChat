@@ -82,3 +82,13 @@ services:
           class: ADP\WechatBundle\Forms\buttoninfo
           scope: request
           arguments: [@request, @service_container]
+
+        form.articlelist:
+          class: ADP\WechatBundle\Forms\articlelist
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.articleinfo:
+          class: ADP\WechatBundle\Forms\articleinfo
+          scope: request
+          arguments: [@request, @service_container]

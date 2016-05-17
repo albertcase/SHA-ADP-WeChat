@@ -101,6 +101,14 @@ adp_out_login:
 adp_out_ckeditoruploadimage:
     path:     /outapi/ckeditoruploadimage/
     defaults: { _controller: ADPWechatBundle:Outapi:ckeditoruploadimage }
+
+adp_out_articlelist:
+    path:     /outapi/articlelist/
+    defaults: { _controller: ADPWechatBundle:Outapi:articlelist }
+
+adp_out_getarticle:
+    path:     /outapi/getarticle/
+    defaults: { _controller: ADPWechatBundle:Outapi:getarticle }
 # system
 adp_manage_index:
     path:     /manage/

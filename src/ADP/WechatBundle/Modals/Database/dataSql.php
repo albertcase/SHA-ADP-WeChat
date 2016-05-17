@@ -229,7 +229,7 @@ class dataSql{
   }
 
   public function updateArticle($data, $change){
-    $change['latestTime'] = date('Y-m-d H:i:s' ,strtotime("now"));
+    $change['edittime'] = date('Y-m-d H:i:s' ,strtotime("now"));
     return $this->updateData($data, $change, 'adp_article');
   }
 

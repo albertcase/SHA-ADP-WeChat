@@ -785,7 +785,7 @@ var menu = {
       self.ajaxaddsubbutton();
       // alert(self.subbuttonfun);
     });
-    $("#maincontent").on("click", "tbody .fa-edit", function(){
+    $("#menutable").on("click", "tbody .fa-edit", function(){
       var id = $(this).parent().parent().attr("menuid");
       self.ajaxgetbuttoninfo(id);
     });
@@ -867,6 +867,7 @@ var preference = {
 }
 
 var webpage = {
+  editpageid:null,
   cleaninput:function(){
     $("#addpage .pagename").val('');
     $("#addpage .pagetitle").val('');
@@ -887,6 +888,8 @@ var webpage = {
         popup.closeloading();
         if(data.code == "10"){
           webpage.cleaninput();
+          webpage.ajaxpagelist();
+          webpage.gotolist();
           popup.openwarning(data.msg);
           return true;
         }
@@ -910,6 +913,103 @@ var webpage = {
       success: function(data){
         popup.closeloading();
         if(data.code == 'id'){
+          popup.openwarning(data.msg);
+          webpage.ajaxpagelist();
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  gotolist:function(){
+    $("#pagmanagenav .active").removeClass("active");
+    $("#pagmanagenav").eq(0).addClass("active");
+    $("#pagmanage .navshow").removeClass("navshow");
+    $("#pagelist").addClass("navshow");
+  },
+  ajaxpagelist:function(){
+    popup.openloading();
+    $.ajax({
+      url: "/outapi/articlelist/",
+      type:"post",
+      dataType:'json',
+      success:function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $("#pagelisttable tbody").html(webpage.buildlist(data['list']));
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildlist: function(data){
+    var la = data.length;
+    var a = "";
+    for(var i = 0;i<la ;i++){
+      a += '<tr class="odd gradeX" pageid="'+data[i]['pageid']+'">';
+      a += '<td>'+data[i]['pagename']+'</td>';
+      a += '<td>'+data[i]['pagetitle']+'</td>';
+      a += '<th><a target="_blank" href="/article/'+data[i]['pageid']+'">'+pagecode.hosts+'/article/'+data[i]['pageid']+'</a></th>';
+      a += '<td>'+data[i]['submiter']+'</td>';
+      a += '<td>'+data[i]['edittime']+'</td>';
+      a += '<td class="center"><i class="fa fa-edit fa-lg"></i></td>';
+      a += '<td class="center"><i class="fa fa-trash-o fa-lg"></i></td>';
+      a += '</tr>';
+    }
+    return a;
+  },
+  getarticle: function(pageid){
+    popup.openloading();
+    $.ajax({
+      url: "/outapi/getarticle/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "articleinfo[pageid]": pageid,
+      },
+      success:function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          webpage.editpageid = data.article.pageid;
+          $("#editpage .pagename").val(data.article.pagename);
+          $("#editpage .pagetitle").val(data.article.pagetitle);
+          CKEDITOR.instances.editor2.setData(data.article.content);
+          $('#editpage').modal('show');
+          return true;
+        }
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  updatearticle:function(){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/editarticle/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "articleedit[pageid]": webpage.editpageid,
+        "articleedit[pagename]":$("#editpage .pagename").val(),
+        "articleedit[pagetitle]":$("#editpage .pagetitle").val(),
+        "articleedit[content]":CKEDITOR.instances.editor2.getData(),
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $('#editpage').modal('hide');
+          webpage.ajaxpagelist();
           popup.openwarning(data.msg);
           return true;
         }
@@ -936,6 +1036,13 @@ var webpage = {
     $("#pagelist").on("click","tbody .fa-trash-o" ,function(){
       var pageid = $(this).parent().parent().attr("pageid");
       self.ajaxdelarticle(pageid);
+    });
+    $("#pagelist").on("click","tbody .fa-edit" ,function(){
+      var pageid = $(this).parent().parent().attr("pageid");
+      self.getarticle(pageid);
+    });
+    $("#editpage .savepagechange").click(function(){
+      self.updatearticle();
     });
   }
 }

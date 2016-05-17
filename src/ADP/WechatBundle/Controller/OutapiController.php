@@ -42,6 +42,18 @@ class OutapiController extends Controller
     return new Response($e2);
   }
 
+  public function articlelistAction(){
+    $adminadd = $this->container->get('form.articlelist');
+    $data = $adminadd->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function getarticleAction(){
+    $adminadd = $this->container->get('form.articleinfo');
+    $data = $adminadd->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
   public function myjobAction(Request $request){
     $data = $request->request->get('dologin');
     // $Validation = new Validation();
