@@ -34,7 +34,7 @@ class ManageController extends Controller
     return $this->render('ADPWechatBundle:Manage:pag.html.twig', array('list' => $w, 'host' => $host));
   }
 
-  public function replayAction(){
+  public function replyAction(){
     return $this->render('ADPWechatBundle:Manage:replay.html.twig');
   }
 

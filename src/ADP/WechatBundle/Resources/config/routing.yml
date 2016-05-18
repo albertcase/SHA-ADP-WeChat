@@ -143,8 +143,8 @@ adp_manage_pag:
     defaults: { _controller: ADPWechatBundle:Manage:page }
 
 adp_manage_replay:
-    path:     /manage/replay/
-    defaults: { _controller: ADPWechatBundle:Manage:replay }
+    path:     /manage/reply/
+    defaults: { _controller: ADPWechatBundle:Manage:reply }
 
 adp_manage_preference:
     path:     /manage/preference/

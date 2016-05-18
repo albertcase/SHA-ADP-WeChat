@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use ADP\WechatBundle\Controller\DefaultController;
 use ADP\WechatBundle\Controller\AdminapiController;
+use ADP\WechatBundle\Controller\ManageController;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class listenerController{
@@ -21,10 +22,14 @@ class listenerController{
 
   public function onKernelController(FilterControllerEvent $event){
     $controller = $event->getController();
-    if($controller[0] instanceof AdminapiController){
-      $Session = new Session();
-      if(!$Session->has($this->container->getParameter('session_login')))
-        $controller[1] = 'notpassedeAction';//if not login print error msg
+    $Session = new Session();
+    if(!$Session->has($this->container->getParameter('session_login'))){
+      if($controller[0] instanceof AdminapiController){
+          $controller[1] = 'notpassedeAction';//if not login print error msg
+      }
+      if($controller[0] instanceof ManageController){
+          $controller[1] = 'indexAction';//if not login pag
+      }
     }
     return $event->setController($controller);
   }

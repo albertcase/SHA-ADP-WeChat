@@ -38,33 +38,32 @@ class keywordadd extends FormRequest{
     return array('code' => '10', 'msg' => 'add menu success');
   }
 
-
-    public function getevents($menuId){
-      $events = array();
-      if(!isset($this->getdata['MsgType']))
-        return $events;
-      if($this->getdata['MsgType'] == 'text'){
-        $events[0] = array(
-          'menuId' => $menuId,
-          'getMsgType' => 'text',
-          'getContent' => $this->getdata['getContent'],
-          'MsgType' => 'text',
-          'Content' => $this->getdata['Content'],
-        );
-        return $events;
-      }
-      if($this->getdata['MsgType'] == 'news'){
-        $newslist = json_decode($this->getdata['newslist'] ,true);
-        foreach($newslist as $x=>$_val){
-          $newslist[$x]['menuId'] = $menuId;
-          $newslist[$x]['getContent'] = $this->getdata['getContent'];
-          $newslist[$x]['getMsgType'] = 'text';
-          $newslist[$x]['MsgType'] = 'news';
-        }
-        return $newslist;
-      }
+  public function getevents($menuId){
+    $events = array();
+    if(!isset($this->getdata['MsgType']))
+      return $events;
+    if($this->getdata['MsgType'] == 'text'){
+      $events[0] = array(
+        'menuId' => $menuId,
+        'getMsgType' => 'text',
+        'getContent' => $this->getdata['getContent'],
+        'MsgType' => 'text',
+        'Content' => $this->getdata['Content'],
+      );
       return $events;
     }
+    if($this->getdata['MsgType'] == 'news'){
+      $newslist = json_decode($this->getdata['newslist'] ,true);
+      foreach($newslist as $x=>$_val){
+        $newslist[$x]['menuId'] = $menuId;
+        $newslist[$x]['getContent'] = $this->getdata['getContent'];
+        $newslist[$x]['getMsgType'] = 'text';
+        $newslist[$x]['MsgType'] = 'news';
+      }
+      return $newslist;
+    }
+    return $events;
+  }
 
 
 }
