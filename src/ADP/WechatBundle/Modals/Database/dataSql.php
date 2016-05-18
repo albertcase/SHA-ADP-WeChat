@@ -98,12 +98,14 @@ class dataSql{
 
   public function getbuttonEvent($data){
     $result = array();
-    $out = $this->searchData($data, array(), 'wechat_menu_event');
+    $out = $this->searchData($data, array(), 'wechat_feedbacks');
     if($out && isset($out['0'])){
+      $MsgData = json_decode($out['0']['MsgData'], true);
       if($out['0']['MsgType'] == 'news'){
-        $result['newslist'] = $out;
+        $result['newslist'] = $MsgData['Articles'];
       }else{
-        $result = $out['0'];
+        $result = $MsgData;
+        $result['MsgType'] = $out['0']['MsgType'];
       }
       return $result;
     }
@@ -131,15 +133,19 @@ class dataSql{
 
 // do event
   public function updateEvent($data, $change = array()){
-    $this->deleteData($data, 'wechat_menu_event');
+    $this->deleteData($data, 'wechat_feedbacks');
+    $this->deleteData($data, 'wechat_events');
     if($change)
-      $this->insertsData($change, 'wechat_menu_event');
+    $this->insertData($change['feedbacks'], 'wechat_feedbacks');
+    $this->insertData($change['getevent'], 'wechat_events');
     return true;
   }
 
   public function addEvent($change = array()){
-    if($change)
-      $this->insertsData($change, 'wechat_menu_event');
+    if($change){
+      $this->insertData($change['feedbacks'], 'wechat_feedbacks');
+      $this->insertData($change['getevent'], 'wechat_events');
+    }
     return true;
   }
 
@@ -180,7 +186,8 @@ class dataSql{
       return false;
     $info = $info[0];
     $this->deleteData(array('id' => $id), 'wechat_menu');
-    $this->deleteData(array('menuId' => $id), 'wechat_menu_event');
+    $this->deleteData(array('menuId' => $id), 'wechat_feedbacks');
+    $this->deleteData(array('menuId' => $id), 'wechat_events');
     if($info['subOrder'] == '0'){
       $this->deleteButtonEvent($info['mOrder']);
       $this->deleteData(array('mOrder' => $info['mOrder']), 'wechat_menu');
@@ -196,11 +203,24 @@ class dataSql{
     $ids = $this->searchData(array('mOrder' => $mOrder), array('id'), 'wechat_menu');
     foreach($ids as $x)
       $menuid[] = $x['id'];
-    $db = $this->rebuilddb();
-    $db->where('menuId', $menuid, 'IN');
-    if($db->delete('wechat_menu_event'))
+    if($this->deletesubevents($menuid))
       return true;
     return false;
+  }
+
+  public function deletesubevents($menuid){
+    if($menuid && is_array($menuid)){
+      $db = $this->rebuilddb();
+      $db2 = $this->rebuilddb();
+      $db->where('menuId', $menuid, 'IN');
+      $db2->where('menuId', $menuid, 'IN');
+      if(!$db->delete('wechat_feedbacks'))
+        return false;
+      if(!$db2->delete('wechat_events'))
+        return false;
+      return true;
+    }
+    return true;
   }
 
   public function decsubOrder($mOrder, $subOrder){

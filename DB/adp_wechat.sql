@@ -1,4 +1,11 @@
 DROP TABLE IF EXISTS `wechat_menu`;
+DROP TABLE IF EXISTS `wechat_menu_event`;
+DROP TABLE IF EXISTS `wechat_getmsglog`;
+DROP TABLE IF EXISTS `wechat_admin`;
+DROP TABLE IF EXISTS `adp_article`;
+
+
+DROP TABLE IF EXISTS `wechat_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wechat_menu` (

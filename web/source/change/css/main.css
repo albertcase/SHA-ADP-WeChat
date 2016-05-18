@@ -18,11 +18,11 @@
   display: block !important;
 }
 
-.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
+.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#addtagdiv,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist,#taglist{
   display: none;
 }
 
-#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist{
+#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#addtagdiv,#pagelist,#taglist{
   background-color: #FFF;
   padding:20px;
   border-left: 1px solid #ddd;
@@ -30,20 +30,20 @@
   border-bottom: 1px solid #ddd;
 }
 
-.fa-edit{
+.fa-edit,.fa-plus-circle{
   color: green;
 }
 
-.fa-edit:hover{
+.fa-edit:hover,.fa-plus-circle:hover{
   color: #3F6E3F;
   cursor: pointer;
 }
 
-.fa-trash-o,.fa-times{
+.fa-trash-o,.fa-times,.fa-minus-circle{
   color:red;
 }
 
-.fa-trash-o:hover,.fa-times:hover{
+.fa-trash-o:hover,.fa-times:hover,.fa-minus-circle:hover{
   color:#933030;
   cursor: pointer;
 }

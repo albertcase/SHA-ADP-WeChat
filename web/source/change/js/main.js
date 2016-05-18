@@ -281,6 +281,14 @@ var htmlconetnt = {
         a += '<i class="fa fa-plus-square" style="color:green"></i>';
     return a;
   },
+  tagkeyword:function(){
+    var a = '<div class="form-group">';
+        a += '<label>Key Word:</label>';
+        a += '<i class="fa fa-minus-circle"></i>';
+        a += '<input class="form-control inputkeyword" placeholder="Enter Key Word" style="width:80%">';
+        a += '</div>';
+    return a;
+  },
   belongtohtml:function(data){
     var a = "";
     var la = data.length;
@@ -804,15 +812,15 @@ var keyword = {
     $("#addkeyword .textmessage").html('');
     $("#addkeyword .inputkeyword").val('');
   },
-  showaddedit: function(obj){
-    var self = this;
-    var action = obj.attr('action');
-    if($("#addkeyword ."+action+" div").length == 0)
-      $("#addkeyword ."+action).html(htmlconetnt[action]());
-    $("#addkeyword .menushow").removeClass("menushow");
-    $("#addkeyword ."+action).addClass("menushow");
-    self.addfun = "a"+action;
-  },
+  // showaddedit: function(obj){
+  //   var self = this;
+  //   var action = obj.attr('action');
+  //   if($("#addkeyword ."+action+" div").length == 0)
+  //     $("#addkeyword ."+action).html(htmlconetnt[action]());
+  //   $("#addkeyword .menushow").removeClass("menushow");
+  //   $("#addkeyword ."+action).addClass("menushow");
+  //   self.addfun = "a"+action;
+  // },
   showaddedit2: function(obj){
     var self = this;
     var action = obj.attr('action');
@@ -991,6 +999,16 @@ var keyword = {
     };
     return a;
   },
+  // add
+  showaddedit: function(obj){
+    var self = this;
+    var action = obj.attr('action');
+    if($("#addtagdiv ."+action+" div").length == 0)
+      $("#addtagdiv ."+action).html(htmlconetnt[action]());
+    $("#addtagdiv .menushow").removeClass("menushow");
+    $("#addtagdiv ."+action).addClass("menushow");
+    self.addfun = "a"+action;
+  },
   onload: function(){
     var self = this;
     $("#menufun>.addkeyword").click(function(){
@@ -1012,22 +1030,22 @@ var keyword = {
       self.ajaxaddkeyword();
     });
     //model addevent
-    $("#addkeyword").on("click",".fa-minus-square", function(){
-      $(this).parent().remove();
-    });
-    $("#addkeyword").on("click",".fa-plus-square", function(){
-      var a = htmlconetnt.addnewshtml();
-      $(this).after(a);
-      $(this).remove();
-      if($("#addkeyword .pushmessage .fa-minus-square").length >= 10)
-        $("#addkeyword .pushmessage .fa-plus-square").remove();
-    });
-    $("#addkeyword").on("change", ".newsfile", function(){
-      fileupload.sendfiles($(this)[0].files[0], $(this));
-    });
-    $("#addkeyword").on("click",".fa-times",function(){
-      fileupload.replaceimage($(this));
-    });
+    // $("#addkeyword").on("click",".fa-minus-square", function(){
+    //   $(this).parent().remove();
+    // });
+    // $("#addkeyword").on("click",".fa-plus-square", function(){
+    //   var a = htmlconetnt.addnewshtml();
+    //   $(this).after(a);
+    //   $(this).remove();
+    //   if($("#addkeyword .pushmessage .fa-minus-square").length >= 10)
+    //     $("#addkeyword .pushmessage .fa-plus-square").remove();
+    // });
+    // $("#addkeyword").on("change", ".newsfile", function(){
+    //   fileupload.sendfiles($(this)[0].files[0], $(this));
+    // });
+    // $("#addkeyword").on("click",".fa-times",function(){
+    //   fileupload.replaceimage($(this));
+    // });
     // edit event
     $("#editkeyword").on("click",".fa-minus-square", function(){
       $(this).parent().remove();
@@ -1053,6 +1071,43 @@ var keyword = {
       var menuId = $(this).parent().parent().attr("menuid");
       self.ajaxeventinfo(menuId);
     });
+// addaddaddadd
+    $("#addtagdiv .buttontype .btn").click(function(){//add event 's submenu
+      $("#addtagdiv .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showaddedit($(this));
+    });
+    $("#tagnav .message").click(function(){
+      $("#tagmanage .active").removeClass("active");
+      $(this).parent().addClass("active");
+      $("#tagmanage .navshow").removeClass("navshow");
+      var active = $(this).attr("active");
+      $("#"+active).addClass("navshow");
+    });
+    $("#addtagdiv .taglist").on("click",".fa-plus-circle", function(){
+      $(this).before(htmlconetnt.tagkeyword);
+    });
+    $("#addtagdiv .taglist").on("click",".fa-minus-circle", function(){
+      $(this).parent().remove();
+    });
+//add tag message
+    $("#addtagdiv").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#addtagdiv").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#addtagdiv .pushmessage .fa-minus-square").length >= 10)
+        $("#addtagdiv .pushmessage .fa-plus-square").remove();
+    });
+    $("#addtagdiv").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#addtagdiv").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
+//add tag message end
   }
 }
 

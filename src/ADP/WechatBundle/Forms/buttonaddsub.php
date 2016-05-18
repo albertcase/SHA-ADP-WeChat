@@ -50,34 +50,48 @@ class buttonaddsub extends FormRequest{
   }
 
 
-    public function getevents($id){
-      $events = array();
-      if(!isset($this->getdata['MsgType']))
-        return $events;
-      if($this->getdata['MsgType'] == 'text'){
-        $events[0] = array(
-          'menuId' => $id,
-          'getMsgType' => 'event',
-          'getEvent' => 'click',
-          'getEventKey' => $this->getdata['eventKey'],
-          'MsgType' => 'text',
-          'Content' => $this->getdata['Content'],
-        );
-        return $events;
-      }
-      if($this->getdata['MsgType'] == 'news'){
-        $newslist = json_decode($this->getdata['newslist'] ,true);
-        foreach($newslist as $x=>$_val){
-          $newslist[$x]['menuId'] = $id;
-          $newslist[$x]['getMsgType'] = 'event';
-          $newslist[$x]['getEvent'] = 'click';
-          $newslist[$x]['getEventKey'] = $this->getdata['eventKey'];
-          $newslist[$x]['MsgType'] = 'news';
-        }
-        return $newslist;
-      }
+  public function getevents($id){
+    $events = array();
+    if(!isset($this->getdata['MsgType']))
+      return $events;
+    if($this->getdata['MsgType'] == 'text'){
+      $MsgData = array(
+        'Content' => $this->getdata['Content'],
+      );
+      $events['feedbacks'] = array(
+        'menuId' => $id,
+        'MsgType' => 'text',
+        'MsgData' => json_encode($MsgData, JSON_UNESCAPED_UNICODE),
+      );
+      $events['getevent'] = array(
+        'menuId' => $id,
+        'getMsgType' => 'event',
+        'getEvent' => 'click',
+        'getEventKey' => $this->getdata['eventKey'],
+        'MsgType' => 'text',
+      );
       return $events;
     }
+    if($this->getdata['MsgType'] == 'news'){
+      $MsgData = array(
+        'Articles' => json_decode($this->getdata['newslist'] ,true),
+      );
+      $events['feedbacks'] = array(
+        'menuId' => $id,
+        'MsgType' => 'news',
+        'MsgData' => json_encode($MsgData, JSON_UNESCAPED_UNICODE),
+      );
+      $events['getevent'] = array(
+        'menuId' => $id,
+        'getMsgType' => 'event',
+        'getEvent' => 'click',
+        'getEventKey' => $this->getdata['eventKey'],
+        'MsgType' => 'news',
+      );
+      return $events;
+    }
+    return $events;
+  }
 
     public function getbutton(){
       $button = array();
