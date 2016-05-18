@@ -135,7 +135,24 @@ class AdminapiController extends Controller
 
   public function getkeywordlistAction(){
     $sql = $this->container->get('my.dataSql');
-    $data = $sql->getkeywordlist();
+    if(!$list = $sql->getkeywordlist())
+      return new Response(json_encode(array('code' => '9', 'msg' => 'there not any event'), JSON_UNESCAPED_UNICODE));
+    $data = array(
+      'code' => '10',
+      'list' => $list,
+    );
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function keyworddelAction(){
+    $sql = $this->container->get('form.keyworddel');
+    $data = $sql->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function getkeywordinfoAction(){
+    $sql = $this->container->get('form.keywordinfo');
+    $data = $sql->DoData();
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 // keyword end

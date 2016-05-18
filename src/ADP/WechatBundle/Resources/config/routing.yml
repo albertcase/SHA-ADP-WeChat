@@ -93,6 +93,14 @@ adp_admin_keywordadd:
 adp_admin_getkeywordlist:
     path:     /adminapi/getkeywordlist/
     defaults: { _controller: ADPWechatBundle:Adminapi:getkeywordlist }
+
+adp_admin_keyworddel:
+    path:     /adminapi/keyworddel/
+    defaults: { _controller: ADPWechatBundle:Adminapi:keyworddel }
+
+adp_admin_getkeywordinfo:
+    path:     /adminapi/getkeywordinfo/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getkeywordinfo }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

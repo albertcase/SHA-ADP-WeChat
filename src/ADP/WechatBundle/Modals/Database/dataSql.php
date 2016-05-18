@@ -129,6 +129,7 @@ class dataSql{
     return false;
   }
 
+// do event
   public function updateEvent($data, $change = array()){
     $this->deleteData($data, 'wechat_menu_event');
     if($change)
@@ -142,6 +143,31 @@ class dataSql{
     return true;
   }
 
+  public function delEvent($menuId){
+    return $this->deleteData(array('menuId' => $menuId), 'wechat_menu_event');
+  }
+
+  public function getEvents($menuId){
+    $result = array();
+    $out = $this->searchData(array('menuId' => $menuId), array(), 'wechat_menu_event');
+    if($out && isset($out['0'])){
+      if($out['0']['MsgType'] == 'news'){
+        $result['menuId'] = $out['0']['menuId'];
+        $result['getMsgType'] = $out['0']['getMsgType'];
+        $result['getContent'] = $out['0']['getContent'];
+        $result['getEvent'] = $out['0']['getEvent'];
+        $result['getEventKey'] = $out['0']['getEventKey'];
+        $result['getTicket'] = $out['0']['getTicket'];
+        $result['MsgType'] = $out['0']['MsgType'];
+        $result['newslist'] = $out;
+      }else{
+        $result = $out['0'];
+      }
+      return $result;
+    }
+    return false;
+  }
+// do event end
   public function getkeywordlist(){
     $sql = "SELECT distinct menuId,getContent,MsgType FROM wechat_menu_event WHERE getMsgType='text'";
     return $this->querysql($sql);

@@ -4,7 +4,7 @@ namespace ADP\WechatBundle\Forms;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class keyworddel extends FormRequest{
+class keywordinfo extends FormRequest{
 
   public function rule(){
     return array(
@@ -13,7 +13,7 @@ class keyworddel extends FormRequest{
   }
 
   public function FormName(){
-    return 'keyworddel';
+    return 'keywordinfo';
   }
 
   public function DoData(){
@@ -25,9 +25,9 @@ class keyworddel extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($dataSql->delEvent($this->getdata['menuId'])){
-      return array('code' => '8', 'msg' => 'delete success');
+    if($info = $dataSql->getEvents($this->getdata['menuId'])){
+      return array('code' => '10', 'info' => $info,'msg' => 'delete success');
     }
-    return array('code' => '10', 'msg' => 'delete errors');
+    return array('code' => '9', 'msg' => 'delete errors');
   }
 }

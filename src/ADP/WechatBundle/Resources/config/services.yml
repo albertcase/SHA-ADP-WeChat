@@ -97,3 +97,13 @@ services:
           class: ADP\WechatBundle\Forms\keywordadd
           scope: request
           arguments: [@request, @service_container]
+
+        form.keyworddel:
+          class: ADP\WechatBundle\Forms\keyworddel
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.keywordinfo:
+          class: ADP\WechatBundle\Forms\keywordinfo
+          scope: request
+          arguments: [@request, @service_container]
