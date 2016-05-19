@@ -149,33 +149,79 @@ class dataSql{
     return true;
   }
 
-  public function delEvent($menuId){
-    return $this->deleteData(array('menuId' => $menuId), 'wechat_menu_event');
+  public function addTagEvents($change = array()){
+    if($change){
+      $this->insertsData($change['getevent'],'wechat_events');
+      $this->insertData($change['feedbacks'], 'wechat_feedbacks');
+    }
+    return true;
   }
 
-  public function getEvents($menuId){
+  public function delTag($menuId){
+    $this->delEvent($menuId);
+    return $this->deleteData(array('menuId' => $menuId), 'wechat_keyword_tag');
+  }
+
+  public function checktagnewname($menuId,$Tagname){
+    $sql = 'SELECT count(*) from wechat_keyword_tag where Tagname = ? and menuId != ?';
+    $param = array($Tagname, $menuId);
+    return $this->querysqlp($sql,$param);
+  }
+
+  public function checktagnewkey($menuId,$getContent){
+    $sql = 'SELECT count(*) from wechat_events where getContent = ? and menuId != ?';
+    $param = array($getContent, $menuId);
+    return $this->querysqlp($sql,$param);
+  }
+
+  public function delEvent($menuId){
+    $this->deleteData(array('menuId' => $menuId), 'wechat_feedbacks');
+    $this->deleteData(array('menuId' => $menuId), 'wechat_events');
+    return true;
+  }
+
+  public function getTagEvents($menuId){
     $result = array();
-    $out = $this->searchData(array('menuId' => $menuId), array(), 'wechat_menu_event');
-    if($out && isset($out['0'])){
-      if($out['0']['MsgType'] == 'news'){
-        $result['menuId'] = $out['0']['menuId'];
-        $result['getMsgType'] = $out['0']['getMsgType'];
-        $result['getContent'] = $out['0']['getContent'];
-        $result['getEvent'] = $out['0']['getEvent'];
-        $result['getEventKey'] = $out['0']['getEventKey'];
-        $result['getTicket'] = $out['0']['getTicket'];
-        $result['MsgType'] = $out['0']['MsgType'];
-        $result['newslist'] = $out;
+    $tag = $this->searchData(array('menuId' => $menuId), array(), 'wechat_keyword_tag');
+    $feedbacks = $this->searchData(array('menuId' => $menuId), array(), 'wechat_feedbacks');
+    $events = $this->searchData(array('menuId' => $menuId), array(), 'wechat_events');
+    if($tag && isset($tag['0'])){
+      if(!isset($feedbacks['0']))
+        $feedbacks['0'] = array();
+      if(!isset($events['0']))
+        $events['0'] = array();
+      if(isset($feedbacks['0']['MsgType']) && $feedbacks['0']['MsgType'] == 'news'){
+        $newslist = json_decode(($feedbacks['0']['MsgData']?$feedbacks['0']['MsgData']:array()), true);
+        $result['menuId'] = $menuId;
+        $result['Tagname'] = isset($tag['0']['Tagname'])?$tag['0']['Tagname']:'';
+        $result['getMsgType'] = 'text';
+        $result['getContent'] = $this->getkeywords($events);
+        $result['newslist'] = $newslist['Articles'];
+        $result['MsgType'] = isset($events['0']['MsgType'])?$events['0']['MsgType']:'';
       }else{
-        $result = $out['0'];
+        $MsgData = json_decode(($feedbacks['0']['MsgData']?$feedbacks['0']['MsgData']:array()), true);
+        $result = $MsgData;
+        $result['menuId'] = $menuId;
+        $result['Tagname'] = isset($tag['0']['Tagname'])?$tag['0']['Tagname']:'';
+        $result['getMsgType'] = 'text';
+        $result['getContent'] = $this->getkeywords($events);
+        $result['MsgType'] = isset($events['0']['MsgType'])?$events['0']['MsgType']:'';
       }
       return $result;
     }
     return false;
   }
+
+  public function getkeywords($events){
+    $keys = array();
+    foreach($events as $x){
+      $keys[] = $x['getContent'];
+    }
+    return $keys;
+  }
 // do event end
   public function getkeywordlist(){
-    $sql = "SELECT distinct menuId,getContent,MsgType FROM wechat_menu_event WHERE getMsgType='text'";
+    $sql = "SELECT menuId,Tagname FROM wechat_keyword_tag";
     return $this->querysql($sql);
   }
 
@@ -350,4 +396,8 @@ class dataSql{
     return $db->rawQuery ($sql);
   }
 
+  public function querysqlp($sql, $param){
+    $db = $this->rebuilddb();
+    return $db->rawQuery ($sql,$param);
+  }
 }

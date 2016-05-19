@@ -10,7 +10,7 @@
   background-color: #FFF;
 }
 
-#autoreload,#preference,#pagmanage{
+#autoreload,#preference,#pagmanage,#tagmanagepanel{
     background-color: #F5F5F5;
 }
 
@@ -18,11 +18,11 @@
   display: block !important;
 }
 
-.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#addtagdiv,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist,#taglist{
+.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#tagkeyslist,#addtagdiv,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist,#taglist{
   display: none;
 }
 
-#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#addtagdiv,#pagelist,#taglist{
+#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#tagkeyslist,#addtagdiv,#pagelist,#taglist,#maincontent{
   background-color: #FFF;
   padding:20px;
   border-left: 1px solid #ddd;
@@ -39,11 +39,11 @@
   cursor: pointer;
 }
 
-.fa-trash-o,.fa-times,.fa-minus-circle{
+.fa-trash-o,.fa-times,.fa-minus-circle,.fa-mail-reply{
   color:red;
 }
 
-.fa-trash-o:hover,.fa-times:hover,.fa-minus-circle:hover{
+.fa-trash-o:hover,.fa-times:hover,.fa-minus-circle:hover,.fa-mail-reply:hover{
   color:#933030;
   cursor: pointer;
 }

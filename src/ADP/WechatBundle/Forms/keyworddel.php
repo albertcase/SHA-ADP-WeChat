@@ -25,9 +25,9 @@ class keyworddel extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($dataSql->delEvent($this->getdata['menuId'])){
-      return array('code' => '8', 'msg' => 'delete success');
+    if($dataSql->delTag($this->getdata['menuId'])){
+      return array('code' => '10', 'msg' => 'delete success');
     }
-    return array('code' => '10', 'msg' => 'delete errors');
+    return array('code' => '8', 'msg' => 'delete errors');
   }
 }

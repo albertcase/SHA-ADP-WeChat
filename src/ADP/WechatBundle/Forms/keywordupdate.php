@@ -14,6 +14,8 @@ class keywordupdate extends FormRequest{
       // 'MsgType' =>  '',
       // 'Content' => '',
       // 'newslist' => '',
+      // 'Tagname' => '',
+      // 'keywords' => ''
     );
   }
 
@@ -30,12 +32,68 @@ class keywordupdate extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    $dataSql = $this->container->get('my.dataSql');
-    if($dataSql->getCount(array('getContent' => $this->getdata['getContent']), 'wechat_menu_event'))
-      return array('code' => '8', 'msg' => 'this keyword already exists');
-    if($info = $dataSql->getEvents($this->getdata['menuId'])){
-      return array('code' => '10', 'info' => $info,'msg' => 'delete success');
+    if($dataSql->checktagnewname($this->getdata['menuId'],$this->getdata['Tagname']))
+      return array('code' => '8', 'msg' => 'this Tagname already exists');
+    $keywords = json_decode($this->getdata['keywords'], true);
+    if(!$keywords || !is_array($keywords))
+      return array('code' => '6', 'msg' => 'less than include one keyword');
+    foreach($keywords as $x){
+      if($dataSql->checktagnewkey($this->getdata['menuId'],$x)) //check keywords exists
+        return array('code' => '5', 'msg' => 'this keyword <<'.$x.'>> already exists in the other TAG');
     }
-    return array('code' => '9', 'msg' => 'delete errors');
+    $dataSql->delTag($this->getdata['menuId']);
+    if(!$dataSql->insertData(array('menuId' => $this->getdata['menuId'],'Tagname' => $this->getdata['Tagname']), 'wechat_keyword_tag'))
+      return array('code' => '7', 'msg' => 'Tag add errors');
+    $event = $this->getevents($this->getdata['menuId'], $keywords);
+    if(count($event))
+      $dataSql->addTagEvents($event);
+    return array('code' => '10', 'msg' => 'edit tag success');
+  }
+
+  public function getevents($id, $keywords){
+    $events = array();
+    if(!isset($this->getdata['MsgType']))
+      return $events;
+    if($this->getdata['MsgType'] == 'text'){
+      $MsgData = array(
+        'Content' => $this->getdata['Content'],
+      );
+      $events['feedbacks'] = array(
+        'menuId' => $id,
+        'MsgType' => 'text',
+        'MsgData' => json_encode($MsgData, JSON_UNESCAPED_UNICODE),
+      );
+      $events['getevent'] = array();
+      foreach($keywords as $k){
+        $events['getevent'][] = array(
+          'menuId' => $id,
+          'getMsgType' => 'text',
+          'getContent' => $k,
+          'MsgType' => 'text',
+        );
+      }
+      return $events;
+    }
+    if($this->getdata['MsgType'] == 'news'){
+      $MsgData = array(
+        'Articles' => json_decode($this->getdata['newslist'] ,true),
+      );
+      $events['feedbacks'] = array(
+        'menuId' => $id,
+        'MsgType' => 'news',
+        'MsgData' => json_encode($MsgData, JSON_UNESCAPED_UNICODE),
+      );
+      $events['getevent'] = array();
+      foreach($keywords as $k){
+        $events['getevent'][] = array(
+          'menuId' => $id,
+          'getMsgType' => 'text',
+          'getContent' => $k,
+          'MsgType' => 'news',
+        );
+      }
+      return $events;
+    }
+    return $events;
   }
 }

@@ -25,7 +25,7 @@ class keywordinfo extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($info = $dataSql->getEvents($this->getdata['menuId'])){
+    if($info = $dataSql->getTagEvents($this->getdata['menuId'])){
       return array('code' => '10', 'info' => $info,'msg' => 'delete success');
     }
     return array('code' => '9', 'msg' => 'delete errors');

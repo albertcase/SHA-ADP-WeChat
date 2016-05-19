@@ -289,6 +289,19 @@ var htmlconetnt = {
         a += '</div>';
     return a;
   },
+  showtagkeyword:function(data){
+    var la = data.length;
+    var a = "";
+    for(var i=0;i<la; i++){
+      a += '<div class="form-group">';
+      a += '<label>Key Word:</label>';
+      a += '<i class="fa fa-minus-circle"></i>';
+      a += '<input class="form-control inputkeyword" placeholder="Enter Key Word" style="width:80%" value="'+data[i]+'">';
+      a += '</div>';
+    }
+    a +='<i class="fa fa-plus-circle"></i>';
+    return a;
+  },
   belongtohtml:function(data){
     var a = "";
     var la = data.length;
@@ -658,7 +671,7 @@ var menu = {
       $("#editmenu .externalpage").addClass("menushow");
       $("#editmenu .buttontype .btn").eq(0).addClass("active");
       $("#editmenu .externalpage").html(htmlconetnt.aview(data['eventUrl']));
-      self.editbuttonfun = "editexternalpage"
+      self.editbuttonfun = "editexternalpage";
       return true;
     }
     if(data['eventtype'] == 'click'){
@@ -666,7 +679,7 @@ var menu = {
         $("#editmenu .pushmessage").addClass("menushow");
         $("#editmenu .buttontype .btn").eq(1).addClass("active");
         $("#editmenu .pushmessage").html(htmlconetnt.apushmessage(data['buttonevent']['newslist']));
-        self.editbuttonfun = "editpushmessage"
+        self.editbuttonfun = "editpushmessage";
         return true;
       }
       if(data['buttonevent']['MsgType'] == 'text'){
@@ -807,199 +820,24 @@ var keyword = {
   editinfo:null,
   addfun:null,
   editfun:null,
-  cleanall: function(){
-    $("#addkeyword .pushmessage").html('');
-    $("#addkeyword .textmessage").html('');
-    $("#addkeyword .inputkeyword").val('');
+  cleanadd: function(){
+    $("#addtagdiv .inputtagname").val('');
+    var a = '<div class="form-group">';
+        a += '<label>Key Word:</label>';
+        a += '<i class="fa fa-minus-circle"></i>';
+        a += '<input class="form-control inputkeyword" placeholder="Enter Key Word" style="width:80%">';
+        a += '</div>';
+        a += '<i class="fa fa-plus-circle"></i>';
+    $("#addtagdiv .taglist").html(a);
+    $("#addtagdiv .pushmessage").html(htmlconetnt['pushmessage']());
+    $("#addtagdiv .textmessage").html(htmlconetnt['textmessage']());
   },
-  // showaddedit: function(obj){
-  //   var self = this;
-  //   var action = obj.attr('action');
-  //   if($("#addkeyword ."+action+" div").length == 0)
-  //     $("#addkeyword ."+action).html(htmlconetnt[action]());
-  //   $("#addkeyword .menushow").removeClass("menushow");
-  //   $("#addkeyword ."+action).addClass("menushow");
-  //   self.addfun = "a"+action;
-  // },
-  showaddedit2: function(obj){
-    var self = this;
-    var action = obj.attr('action');
-    if($("#editkeyword ."+action+" div").length == 0)
-      $("#editkeyword ."+action).html(htmlconetnt[action]());
-    $("#editkeyword .menushow").removeClass("menushow");
-    $("#editkeyword ."+action).addClass("menushow");
-    self.editfun = "edit"+action;
+  gotolist:function(){
+    $("#tagnav .active").removeClass("active");
+    $("#tagnav li").eq(0).addClass("active");
+    $("#tagmanage .navshow").removeClass("navshow");
+    $("#taglist").addClass("navshow");
   },
-  ajaxaddkeyword: function(){
-    var self = this;
-    popup.openloading();
-    var up = keyword[keyword.addfun]();
-    $.ajax({
-      url:"/adminapi/keywordadd/",
-      type:"post",
-      dataType:'json',
-      data: up,
-      success: function(data){
-        popup.closeloading();
-        if(data.code == '10'){
-          popup.openwarning(data.msg);
-          keyword.cleanall();
-          keyword.ajaxlist();
-          $("#addkeyword").modal('hide');
-          return true;
-        }
-        popup.openwarning(data.msg);
-      },
-      error:function(){
-        popup.closeloading();
-        popup.openwarning('unknow errors');
-      }
-    });
-  },
-  buildlist: function(data){
-    var la = data.length;
-    var a = "";
-    for(var i=0; i<la; i++){
-      a += '<tr class="odd gradeX" menuid="'+data[i]["menuId"]+'">';
-      a += '<td>'+data[i]["getContent"]+'</td>';
-      a += '<td>'+data[i]["MsgType"]+'</td>';
-      a += '<td class="center"><i class="fa fa-edit fa-lg"></i></td>';
-      a += '<td class="center"><i class="fa fa-trash-o fa-lg"></i></td>';
-      a += '</tr>';
-    }
-    return a;
-  },
-  ajaxlist: function(){
-    popup.openloading();
-    $.ajax({
-      url:"/adminapi/getkeywordlist/",
-      type:"post",
-      dataType:'json',
-      success: function(data){
-        popup.closeloading();
-        if(data.code == '10'){
-          keyword.buildlist(data["list"]);
-          return true;
-        }
-        popup.openwarning(data.msg);
-      },
-      error:function(){
-        popup.closeloading();
-        popup.openwarning('unknow errors');
-      }
-    });
-  },
-  ajaxdel:function(menuId){
-    popup.openloading();
-    $.ajax({
-      url:"/adminapi/keyworddel/",
-      type:"post",
-      dataType:'json',
-      data:{
-        "keyworddel[menuId]": menuId,
-      },
-      success:function(){
-        popup.closeloading();
-        if(data.code == '10'){
-          popup.openwarning(data.msg);
-          keyword.ajaxlist();
-          return true;
-        }
-        popup.openwarning(data.msg);
-      },
-      error: function(){
-        popup.closeloading();
-        popup.openwarning('unknow errors');
-      }
-    });
-  },
-  ajaxeventinfo(menuId){
-    popup.openloading();
-    $.ajax({
-      url:"/adminapi/getkeywordinfo/",
-      type:"post",
-      dataType:'json',
-      data:{
-        "keywordinfo[menuId]": menuId,
-      },
-      success: function(data){
-        popup.closeloading();
-        if(data.code == '10'){
-          keyword.editevents(data.info);
-          $("#editkeyword").modal('show');
-          return true;
-        }
-        popup.openwarning(data.msg);
-      },
-      error: function(){
-        popup.closeloading();
-        popup.openwarning('unknow errors');
-      }
-    });
-  },
-  editevents:function(data){
-    var self = this;
-    self.editinfo = data;
-    $("#editkeyword .buttontype .active").removeClass("active");
-    $('#editkeyword .inputkeyword').val(data['getContent']);
-    $("#editkeyword .menushow").removeClass("menushow");
-    if(data.hasOwnProperty('newslist')){
-      $("#editkeyword .pushmessage").addClass("menushow");
-      $("#editkeyword .buttontype .btn").eq(1).addClass("active");
-      $("#editkeyword .pushmessage").html(htmlconetnt.apushmessage(data['newslist']));
-      self.editfun = "editpushmessage"
-      return true;
-    }
-    if(data['buttonevent']['MsgType'] == 'text'){
-      $("#editmenu .textmessage").addClass("menushow");
-      $("#editmenu .buttontype .btn").eq(0).addClass("active");
-      $("#editmenu .textmessage").html(htmlconetnt.atextmessage(data['getContent']));
-      self.editfun = "edittextmessage";
-      return true;
-    }
-
-  },
-  apushmessage:function(){
-    var self = this;
-    var a = {
-      "keywordadd[getMsgType]": 'text',
-      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
-      "keywordadd[MsgType]": 'news',
-      "keywordadd[newslist]": menu.getnewslist($("#addkeyword .pushmessage .newslist")),
-    };
-    return a;
-  },
-  atextmessage:function(){
-    var self = this;
-    var a={
-      "keywordadd[getMsgType]": 'text',
-      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
-      "keywordadd[MsgType]": 'text',
-      "keywordadd[Content]": $("#addkeyword .textmessage .textcontent").val(),
-    };
-    return a;
-  },
-  editpushmessage:function(){
-    var self = this;
-    var a = {
-      "keywordadd[getMsgType]": 'text',
-      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
-      "keywordadd[MsgType]": 'news',
-      "keywordadd[newslist]": menu.getnewslist($("#addkeyword .pushmessage .newslist")),
-    };
-    return a;
-  },
-  edittextmessage:function(){
-    var self = this;
-    var a={
-      "keywordadd[getMsgType]": 'text',
-      "keywordadd[getContent]": $("#addkeyword .inputkeyword").val(),
-      "keywordadd[MsgType]": 'text',
-      "keywordadd[Content]": $("#addkeyword .textmessage .textcontent").val(),
-    };
-    return a;
-  },
-  // add
   showaddedit: function(obj){
     var self = this;
     var action = obj.attr('action');
@@ -1009,69 +847,194 @@ var keyword = {
     $("#addtagdiv ."+action).addClass("menushow");
     self.addfun = "a"+action;
   },
+  showaddedit2: function(obj){
+    var self = this;
+    var action = obj.attr('action');
+    if($("#tagkeyslist ."+action+" div").length == 0)
+      $("#tagkeyslist ."+action).html(htmlconetnt[action]());
+    $("#tagkeyslist .menushow").removeClass("menushow");
+    $("#tagkeyslist ."+action).addClass("menushow");
+    self.editfun = "e"+action;
+  },
+  apushmessage:function(){
+    var self = this;
+    var a = {
+      "keywordadd[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordadd[keywords]": self.getkeywords($("#addtagdiv .taglist .inputkeyword")),
+      "keywordadd[MsgType]": 'news',
+      "keywordadd[newslist]": menu.getnewslist($("#addtagdiv .pushmessage .newslist")),
+    };
+    return a;
+  },
+  atextmessage:function(){
+    var self = this;
+    var a={
+      "keywordadd[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordadd[keywords]": self.getkeywords($("#addtagdiv .taglist .inputkeyword")),
+      "keywordadd[MsgType]": 'text',
+      "keywordadd[Content]": $("#addtagdiv .textcontent").val(),
+    };
+    return a;
+  },
+  epushmessage:function(){
+    var self = this;
+    var a = {
+      "keywordupdate[menuId]": self.editinfo['menuId'],
+      "keywordupdate[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordupdate[keywords]": self.getkeywords($("#tagkeyslist .taglist .inputkeyword")),
+      "keywordupdate[MsgType]": 'news',
+      "keywordupdate[newslist]": menu.getnewslist($("#tagkeyslist .pushmessage .newslist")),
+    };
+    return a;
+  },
+  etextmessage:function(){
+    var self = this;
+    var a={
+      "keywordupdate[menuId]": self.editinfo['menuId'],
+      "keywordupdate[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordupdate[keywords]": self.getkeywords($("#tagkeyslist .taglist .inputkeyword")),
+      "keywordupdate[MsgType]": 'text',
+      "keywordupdate[Content]": $("#tagkeyslist .textcontent").val(),
+    };
+    return a;
+  },
+  getkeywords: function(obj){
+    var keys = [];
+    obj.each(function(){
+      keys.push($(this).val());
+    });
+    return JSON.stringify(keys);
+  },
+  ajaxtaglist:function(){
+    var self = this;
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getkeywordlist/",
+      type:"post",
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $("#taglisttable tbody").html(keyword.buildtbody(data["list"]));
+        }
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxdeltag: function(menuId){
+    var self = this;
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/keyworddel/",
+      type:"post",
+      dataType:'json',
+      data:{
+        'keyworddel[menuId]':menuId,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          keyword.ajaxtaglist();
+          return true
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildtbody: function(data){
+    var la = data.length;
+    var a = "";
+    for(var i=0; i<la ;i++){
+      a += '<tr class="odd gradeX" menuid="'+data[i]['menuId']+'">';
+      a += '<td>'+data[i]['Tagname']+'</td>';
+      a += '<td class="center"><i class="fa fa-edit fa-lg"></i></td>';
+      a += '<td class="center"><i class="fa fa-trash-o fa-lg"></i></td>';
+      a += '</tr>';
+    }
+    return a;
+  },
+  ajaxaddtag: function(){
+    var self = this;
+    popup.openloading();
+    var up = keyword[self.addfun]();
+    $.ajax({
+      url:"/adminapi/keywordadd/",
+      type:"post",
+      dataType:'json',
+      data: up,
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          keyword.ajaxtaglist();
+          keyword.cleanadd();
+          keyword.gotolist();
+        }
+        popup.openwarning(data.msg);
+        return true;
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxtaginfo:function(menuId){
+    var self = this;
+    popup.openloading();
+    $.ajax({
+      url:"/adminapi/getkeywordinfo/",
+      type:"post",
+      dataType:'json',
+      data:{
+        'keywordinfo[menuId]':menuId,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          keyword.buildtaginfo(data.info);
+          $("#tagmanagepanel .navshow").removeClass("navshow");
+          $("#tagkeyslist").addClass("navshow");
+          return true
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildtaginfo: function(data){
+    var self = this;
+    self.editinfo = data;
+    $("#tagkeyslist .taglist").html(htmlconetnt.showtagkeyword(data.getContent));
+    $("#tagkeyslist .inputtagname").val(data.Tagname);
+    $("#tagkeyslist .buttontype .active").removeClass("active");
+    $("#tagkeyslist .menushow").removeClass("menushow");
+    if(data.MsgType == "text"){
+      $("#tagkeyslist .buttontype .btn").eq(0).addClass("active");
+      $("#tagkeyslist .textmessage").addClass("menushow");
+      self.editfun = "etextmessage";
+      $("#tagkeyslist .textmessage").html(htmlconetnt.atextmessage(data.Content));
+      return true;
+    }
+    if(data.MsgType == "news"){
+      $("#tagkeyslist .buttontype .btn").eq(1).addClass("active");
+      $("#tagkeyslist .pushmessage").addClass("menushow");
+      self.editfun = "epushmessage";
+      $("#tagkeyslist .pushmessage").html(htmlconetnt.apushmessage(data.newslist));
+      return true;
+    }
+  },
   onload: function(){
     var self = this;
-    $("#menufun>.addkeyword").click(function(){
-      if(!self.addfun)
-        self.addfun = "atextmessage";
-      $("#addkeyword").modal('show');
-    });
-    $("#addkeyword .buttontype .btn").click(function(){//add event 's submenu
-      $("#addkeyword .buttontype .active").removeClass("active");
-      $(this).addClass("active");
-      self.showaddedit($(this));
-    });
-    $("#editkeyword .buttontype .btn").click(function(){//edit event 's submenu
-      $("#addkeyword .buttontype .active").removeClass("active");
-      $(this).addClass("active");
-      self.showaddedit2($(this));
-    });
-    $("#addkeyword .addkeywordsubmit").click(function(){
-      self.ajaxaddkeyword();
-    });
-    //model addevent
-    // $("#addkeyword").on("click",".fa-minus-square", function(){
-    //   $(this).parent().remove();
-    // });
-    // $("#addkeyword").on("click",".fa-plus-square", function(){
-    //   var a = htmlconetnt.addnewshtml();
-    //   $(this).after(a);
-    //   $(this).remove();
-    //   if($("#addkeyword .pushmessage .fa-minus-square").length >= 10)
-    //     $("#addkeyword .pushmessage .fa-plus-square").remove();
-    // });
-    // $("#addkeyword").on("change", ".newsfile", function(){
-    //   fileupload.sendfiles($(this)[0].files[0], $(this));
-    // });
-    // $("#addkeyword").on("click",".fa-times",function(){
-    //   fileupload.replaceimage($(this));
-    // });
-    // edit event
-    $("#editkeyword").on("click",".fa-minus-square", function(){
-      $(this).parent().remove();
-    });
-    $("#editkeyword").on("click",".fa-plus-square", function(){
-      var a = htmlconetnt.addnewshtml();
-      $(this).after(a);
-      $(this).remove();
-      if($("#editkeyword .pushmessage .fa-minus-square").length >= 10)
-        $("#editkeyword .pushmessage .fa-plus-square").remove();
-    });
-    $("#editkeyword").on("change", ".newsfile", function(){
-      fileupload.sendfiles($(this)[0].files[0], $(this));
-    });
-    $("#editkeyword").on("click",".fa-times",function(){
-      fileupload.replaceimage($(this));
-    });
-    $("#keybodylist").on("click", "tbody .fa-trash-o", function(){//del event
-      var menuId = $(this).parent().parent().attr("menuid");
-      self.ajaxdel(menuId);
-    });
-    $("#keybodylist").on("click","tbody .fa-edit", function(){//edit event
-      var menuId = $(this).parent().parent().attr("menuid");
-      self.ajaxeventinfo(menuId);
-    });
-// addaddaddadd
     $("#addtagdiv .buttontype .btn").click(function(){//add event 's submenu
       $("#addtagdiv .buttontype .active").removeClass("active");
       $(this).addClass("active");
@@ -1108,6 +1071,50 @@ var keyword = {
       fileupload.replaceimage($(this));
     });
 //add tag message end
+// edit tag
+    $("#tagkeyslist").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#tagkeyslist").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#tagkeyslist .pushmessage .fa-minus-square").length >= 10)
+        $("#tagkeyslist .pushmessage .fa-plus-square").remove();
+    });
+    $("#tagkeyslist").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#tagkeyslist").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
+    $("#tagkeyslist .taglist").on("click",".fa-plus-circle", function(){
+      $(this).before(htmlconetnt.tagkeyword);
+    });
+    $("#tagkeyslist .taglist").on("click",".fa-minus-circle", function(){
+      $(this).parent().remove();
+    });
+    $("#tagkeyslist .buttontype .btn").click(function(){//add event 's submenu
+      $("#tagkeyslist .buttontype .active").removeClass("active");
+      $(this).addClass("active");
+      self.showaddedit2($(this));
+    });
+// edit tag end
+    $("#addtagsubmit").click(function(){
+      self.ajaxaddtag();
+    });
+    $("#taglisttable").on("click", "tbody .fa-trash-o", function(){
+      var menuId = $(this).parent().parent().attr("menuid");
+      self.ajaxdeltag(menuId);
+    });
+    $("#tagkeyslist .panel-heading .fa-mail-reply").click(function(){
+      $("#tagmanagepanel .navshow").removeClass("navshow");
+      $("#taglist").addClass("navshow");
+    });
+    $("#taglist").on("click", "tbody .fa-edit", function(){
+      var menuId = $(this).parent().parent().attr("menuid");
+      self.ajaxtaginfo(menuId);
+    });
   }
 }
 
