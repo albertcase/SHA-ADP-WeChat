@@ -176,7 +176,8 @@ class AdminapiController extends Controller
       return new Response(json_encode(array('code' => '9', 'msg' => 'this is not a image file'), JSON_UNESCAPED_UNICODE));
     $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
     $fs->rename($photo, $image, true);
-    return new Response(json_encode(array('code' => '10', 'path'=> '/'.$image)));
+    $host = $this->getRequest()->getSchemeAndHttpHost();
+    return new Response(json_encode(array('code' => '10', 'path'=> $host.'/'.$image)));
   }
 
 }

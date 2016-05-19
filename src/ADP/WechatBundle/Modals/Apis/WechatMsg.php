@@ -32,7 +32,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -42,7 +42,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -52,7 +52,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -62,7 +62,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -72,7 +72,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -82,7 +82,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => $rs[0]
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 
@@ -92,9 +92,7 @@ class WechatMsg
       'ToUserName' => $this->fromUsername,
       'FromUserName' => $this->toUsername,
       'CreateTime' => time(),
-      'MsgData' => array(
-        'Articles' => $rs;
-      )
+      'MsgData' => json_decode($rs[0]['MsgData'], true),
     );
   }
 //xmlarray end

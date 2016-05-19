@@ -23,13 +23,19 @@ class WechatResponse{
     $this->dataSql = $container->get('my.dataSql');
   }
 
+  public function RequestFeedback(){
+    if(method_exists($this, $this->msgType.'Request')){
+      return call_user_func_array(array($this, $this->msgType.'Request'), array());
+    }
+    return "";
+  }
+
   public function msgResponse($rs){
     if(!isset($rs[0]['MsgType']))
       return false;
     $WechatMsg = new WechatMsg($this->fromUsername, $this->toUsername);
-    return $WechatMsg->sendMsgxml($data);
+    return $WechatMsg->sendMsgxml($rs);
   }
-
 //request functions start
   public function textRequest(){
     $rs = $this->dataSql->textField($this->postObj->Content);
@@ -91,7 +97,7 @@ public function locationEvent(){
 
 public function clickEvent(){
   $eventKey = $this->postObj->EventKey;
-  $rs = $this->dataSql->clickField($EventKey);
+  $rs = $this->dataSql->clickField($eventKey);
   if(is_array($rs) && count($rs)> 0 ){
     return $this->msgResponse($rs);
   }

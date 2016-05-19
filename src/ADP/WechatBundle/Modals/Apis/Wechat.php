@@ -47,7 +47,7 @@ class Wechat{
   public function responseMsg($postStr){
     if (!empty($postStr)){
       $WechatResponse = new WechatResponse($postStr, $this->_container);
-      return $WechatResponse->msgResponse();
+      return $WechatResponse->RequestFeedback();
     }
     return "";
   }

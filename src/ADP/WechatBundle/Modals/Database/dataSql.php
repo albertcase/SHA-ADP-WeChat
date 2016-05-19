@@ -26,7 +26,11 @@ class dataSql{
   }
 
   public function textField($Content){
-    return $this->searchData(array('getMsgType' => 'text','getContent' => $Content) ,array(), 'wechat_menu_event');
+    $db = $this->rebuilddb();
+    $db->join("wechat_events b", "a.menuId=b.menuId", "LEFT");
+    $db->where("b.getMsgType", 'text');
+    $db->where("b.getContent", trim($Content));
+    return $db->get("wechat_feedbacks a", null, "a.MsgData, a.MsgType");
   }
 
   public function subscribeField(){
@@ -34,7 +38,12 @@ class dataSql{
   }
 
   public function clickField($EventKey){
-    return $this->searchData(array('getEvent' => 'click', 'getMsgType' => 'event', 'getEventKey' => $EventKey) ,array(), 'wechat_menu_event');
+    $db = $this->rebuilddb();
+    $db->join("wechat_events b", "a.menuId=b.menuId", "LEFT");
+    $db->where("b.getMsgType", 'event');
+    $db->where("b.getEvent", 'click');
+    $db->where("b.getEventKey", trim($EventKey));
+    return $db->get("wechat_feedbacks a", null, "a.MsgData, a.MsgType");
   }
 
   public function getmenus(){
