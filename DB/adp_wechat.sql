@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `wechat_menu`;
 DROP TABLE IF EXISTS `wechat_menu_event`;
 DROP TABLE IF EXISTS `wechat_getmsglog`;
-DROP TABLE IF EXISTS `wechat_admin`;
+-- DROP TABLE IF EXISTS `wechat_admin`;
 DROP TABLE IF EXISTS `adp_article`;
 
 
@@ -71,16 +71,16 @@ CREATE TABLE `wechat_getmsglog` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `wechat_admin`;
-CREATE TABLE `wechat_admin` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `latestTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+-- DROP TABLE IF EXISTS `wechat_admin`;
+-- CREATE TABLE `wechat_admin` (
+--   `id` int(11) NOT NULL AUTO_INCREMENT,
+--   `username` varchar(50) NOT NULL,
+--   `password` varchar(50) NOT NULL,
+--   `latestTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--   PRIMARY KEY (`id`),
+--   UNIQUE KEY `username` (`username`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `adp_article`;
 CREATE TABLE `adp_article` (
