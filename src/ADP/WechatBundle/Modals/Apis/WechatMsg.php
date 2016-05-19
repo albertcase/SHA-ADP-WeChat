@@ -9,10 +9,8 @@ class WechatMsg
   private $toUsername;
 
   public function __construct($fromUsername, $toUsername){
-    // $this->fromUsername = $fromUsername;
-    // $this->toUsername = $toUsername;
-    $this->fromUsername = $toUsername;
-    $this->toUsername = $fromUsername;
+    $this->fromUsername = $fromUsername;
+    $this->toUsername = $toUsername;
   }
 
 
