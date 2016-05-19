@@ -38,11 +38,19 @@ class WechatResponse{
   }
 //request functions start
   public function textRequest(){
-    $rs = $this->dataSql->textField($this->postObj->Content);
-    if(is_array($rs) && count($rs)> 0 ){
-      return $this->msgResponse($rs);
-    }
-    return "";
+    // $rs = $this->dataSql->textField($this->postObj->Content);
+    // if(is_array($rs) && count($rs)> 0 ){
+    //   return $this->msgResponse($rs);
+    // }
+    // return "";
+    $time = time();
+    return "<xml>
+    <ToUserName><![CDATA[{$this->fromUsername}]]></ToUserName>
+    <FromUserName><![CDATA[{$this->toUsername}]]></FromUserName>
+    <CreateTime>{$time}</CreateTime>
+    <MsgType><![CDATA[text]]></MsgType>
+    <Content><![CDATA[{$this->fromUsername}]]></Content>
+    </xml>";
   }
 
   public function imageRequest(){
