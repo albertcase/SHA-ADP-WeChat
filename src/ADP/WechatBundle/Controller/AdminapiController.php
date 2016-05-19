@@ -155,6 +155,12 @@ class AdminapiController extends Controller
     $data = $sql->DoData();
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
+
+  public function keywordupdateAction(){
+    $sql = $this->container->get('form.keywordupdate');
+    $data = $sql->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
 // keyword end
   public function uploadimageAction(Request $request){ //upload image
     $fs = new \Symfony\Component\Filesystem\Filesystem();

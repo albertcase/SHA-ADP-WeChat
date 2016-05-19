@@ -107,3 +107,8 @@ services:
           class: ADP\WechatBundle\Forms\keywordinfo
           scope: request
           arguments: [@request, @service_container]
+
+        form.keywordupdate:
+          class: ADP\WechatBundle\Forms\keywordupdate
+          scope: request
+          arguments: [@request, @service_container]

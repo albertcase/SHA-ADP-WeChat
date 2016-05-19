@@ -12,7 +12,7 @@ class OutapiController extends Controller
   public function logoutAction(){
     $Session = new Session();
     $Session->clear();
-    return new Response(json_encode(array('code' => '10', 'msg' => 'logout success'), JSON_UNESCAPED_UNICODE));
+    return $this->redirectToRoute('adp_manage_index');
   }
 
   public function loginAction(){

@@ -163,13 +163,13 @@ class dataSql{
   }
 
   public function checktagnewname($menuId,$Tagname){
-    $sql = 'SELECT count(*) from wechat_keyword_tag where Tagname = ? and menuId != ?';
+    $sql = 'SELECT * from wechat_keyword_tag where Tagname = ? and menuId != ?';
     $param = array($Tagname, $menuId);
     return $this->querysqlp($sql,$param);
   }
 
   public function checktagnewkey($menuId,$getContent){
-    $sql = 'SELECT count(*) from wechat_events where getContent = ? and menuId != ?';
+    $sql = 'SELECT * from wechat_events where getContent = ? and menuId != ?';
     $param = array($getContent, $menuId);
     return $this->querysqlp($sql,$param);
   }

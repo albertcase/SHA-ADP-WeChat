@@ -880,7 +880,7 @@ var keyword = {
     var self = this;
     var a = {
       "keywordupdate[menuId]": self.editinfo['menuId'],
-      "keywordupdate[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordupdate[Tagname]": $("#tagkeyslist .inputtagname").val(),
       "keywordupdate[keywords]": self.getkeywords($("#tagkeyslist .taglist .inputkeyword")),
       "keywordupdate[MsgType]": 'news',
       "keywordupdate[newslist]": menu.getnewslist($("#tagkeyslist .pushmessage .newslist")),
@@ -891,7 +891,7 @@ var keyword = {
     var self = this;
     var a={
       "keywordupdate[menuId]": self.editinfo['menuId'],
-      "keywordupdate[Tagname]": $("#addtagdiv .inputtagname").val(),
+      "keywordupdate[Tagname]": $("#tagkeyslist .inputtagname").val(),
       "keywordupdate[keywords]": self.getkeywords($("#tagkeyslist .taglist .inputkeyword")),
       "keywordupdate[MsgType]": 'text',
       "keywordupdate[Content]": $("#tagkeyslist .textcontent").val(),
@@ -1033,6 +1033,31 @@ var keyword = {
       return true;
     }
   },
+  keywordupdate:function(){
+    var self = this;
+    popup.openloading();
+    var up = keyword[self.editfun]();
+    $.ajax({
+      url:"/adminapi/keywordupdate/",
+      type:"post",
+      dataType:'json',
+      data: up,
+      success:function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          keyword.ajaxtaglist();
+          keyword.gotolist();
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
   onload: function(){
     var self = this;
     $("#addtagdiv .buttontype .btn").click(function(){//add event 's submenu
@@ -1114,6 +1139,9 @@ var keyword = {
     $("#taglist").on("click", "tbody .fa-edit", function(){
       var menuId = $(this).parent().parent().attr("menuid");
       self.ajaxtaginfo(menuId);
+    });
+    $("#tagchangesubmit").click(function(){
+      self.keywordupdate();
     });
   }
 }

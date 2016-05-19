@@ -6,6 +6,10 @@ adp_wechat_wechat:
     path:     /wechat/
     defaults: { _controller: ADPWechatBundle:Default:wechat }
 
+adp_wechat_wechattest:
+    path:     /wechattest/
+    defaults: { _controller: ADPWechatBundle:Default:wechattest }
+
 adp_wechat_api:
     path:     /api/
     defaults: { _controller: ADPWechatBundle:Default:api }
@@ -101,6 +105,10 @@ adp_admin_keyworddel:
 adp_admin_getkeywordinfo:
     path:     /adminapi/getkeywordinfo/
     defaults: { _controller: ADPWechatBundle:Adminapi:getkeywordinfo }
+
+adp_admin_keywordupdate:
+    path:     /adminapi/keywordupdate/
+    defaults: { _controller: ADPWechatBundle:Adminapi:keywordupdate }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

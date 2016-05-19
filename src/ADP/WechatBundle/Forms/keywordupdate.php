@@ -8,7 +8,7 @@ class keywordupdate extends FormRequest{
 
   public function rule(){
     return array(
-      'menuId' => new Assert\NotBlank(),
+      // 'menuId' => new Assert\NotBlank(),
       // 'getMsgType' => new Assert\NotBlank(),
       // 'getContent' => new Assert\NotBlank(),
       // 'MsgType' =>  '',
@@ -32,11 +32,11 @@ class keywordupdate extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
-    if($dataSql->checktagnewname($this->getdata['menuId'],$this->getdata['Tagname']))
+    if($t = $dataSql->checktagnewname($this->getdata['menuId'],$this->getdata['Tagname']))
       return array('code' => '8', 'msg' => 'this Tagname already exists');
     $keywords = json_decode($this->getdata['keywords'], true);
     if(!$keywords || !is_array($keywords))
-      return array('code' => '6', 'msg' => 'less than include one keyword');
+      return array('code' => '6', 'msg' => $keywords);
     foreach($keywords as $x){
       if($dataSql->checktagnewkey($this->getdata['menuId'],$x)) //check keywords exists
         return array('code' => '5', 'msg' => 'this keyword <<'.$x.'>> already exists in the other TAG');

@@ -22,6 +22,12 @@ class DefaultController extends Controller
       return new Response($wechatObj->responseMsg($postStr));
     }
 
+    public function wechattestAction(){
+      $wechatObj = $this->container->get('my.Wechat');
+      $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+      return new Response($wechatObj->responseMsg($postStr));
+    }
+
     public function articleAction($pageid = ''){
       $sql = $this->container->get('my.dataSql');
       if($w = $sql->getArticle(array('pageid' => $pageid))){
