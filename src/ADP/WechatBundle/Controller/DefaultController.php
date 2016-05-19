@@ -19,7 +19,8 @@ class DefaultController extends Controller
         return new Response($wechatObj->valid($_GET["echostr"]));
       }
       $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
-      return new Response($wechatObj->responseMsg($postStr));
+      $respose = new Response($wechatObj->responseMsg($postStr));
+      return $respose->send();
     }
 
     public function wechattestAction(){
