@@ -44,13 +44,20 @@ class WechatResponse{
     // }
     // return "";
     $time = time();
-    return "<xml>
-    <ToUserName><![CDATA[{$this->fromUsername}]]></ToUserName>
-    <FromUserName><![CDATA[{$this->toUsername}]]></FromUserName>
-    <CreateTime>{$time}</CreateTime>
-    <MsgType><![CDATA[text]]></MsgType>
-    <Content><![CDATA[{$this->fromUsername}]]></Content>
-    </xml>";
+    return $this->sendMsgForText($this->fromUsername, $this->toUsername, $time,'text', '@'.$this->fromUsername);
+  }
+
+  private function sendMsgForText($fromUsername, $toUsername, $time, $msgType, $contentStr)
+  {
+    $textTpl = "<xml>
+          <ToUserName><![CDATA[%s]]></ToUserName>
+          <FromUserName><![CDATA[%s]]></FromUserName>
+          <CreateTime>%s</CreateTime>
+          <MsgType><![CDATA[%s]]></MsgType>
+          <Content><![CDATA[%s]]></Content>
+          <FuncFlag>0</FuncFlag>
+          </xml>";
+    return sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
   }
 
   public function imageRequest(){
