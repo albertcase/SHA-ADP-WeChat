@@ -38,14 +38,11 @@ class WechatResponse{
   }
 //request functions start
   public function textRequest(){
-    // $rs = $this->dataSql->textField($this->postObj->Content);
-    // if(is_array($rs) && count($rs)> 0 ){
-    //   return $this->msgResponse($rs);
-    // }
-    // return "";
-    $time = time();
-    $this->systemLog();
-    return $this->sendMsgForText($this->fromUsername, $this->toUsername, $time,'text', '@'.$this->fromUsername);
+    $rs = $this->dataSql->textField($this->postObj->Content);
+    if(is_array($rs) && count($rs)> 0 ){
+      return $this->msgResponse($rs);
+    }
+    return "";
   }
 
   private function sendMsgForText($fromUsername, $toUsername, $time, $msgType, $contentStr)
