@@ -112,3 +112,18 @@ services:
           class: ADP\WechatBundle\Forms\keywordupdate
           scope: request
           arguments: [@request, @service_container]
+
+        form.autoreply:
+          class: ADP\WechatBundle\Forms\autoreply
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.autoreplyload:
+          class: ADP\WechatBundle\Forms\autoreplyload
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.autoreplydel:
+          class: ADP\WechatBundle\Forms\autoreplydel
+          scope: request
+          arguments: [@request, @service_container]

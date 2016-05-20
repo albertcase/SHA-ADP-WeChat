@@ -109,6 +109,18 @@ adp_admin_getkeywordinfo:
 adp_admin_keywordupdate:
     path:     /adminapi/keywordupdate/
     defaults: { _controller: ADPWechatBundle:Adminapi:keywordupdate }
+
+adp_admin_autoreply:
+    path:     /adminapi/autoreply/
+    defaults: { _controller: ADPWechatBundle:Adminapi:autoreply }
+
+adp_admin_autoreplyinfo:
+    path:     /adminapi/autoreplyinfo/
+    defaults: { _controller: ADPWechatBundle:Adminapi:autoreplyinfo }
+
+adp_admin_autoreplydel:
+    path:     /adminapi/autoreplydel/
+    defaults: { _controller: ADPWechatBundle:Adminapi:autoreplydel }
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

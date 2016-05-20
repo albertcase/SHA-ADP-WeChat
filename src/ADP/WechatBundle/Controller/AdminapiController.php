@@ -162,6 +162,25 @@ class AdminapiController extends Controller
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 // keyword end
+// autoreply
+  public function autoreplyAction(){
+    $sql = $this->container->get('form.autoreply');
+    $data = $sql->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function autoreplyinfoAction(){
+    $sql = $this->container->get('form.autoreplyload');
+    $data = $sql->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function autoreplydelAction(){
+    $sql = $this->container->get('form.autoreplydel');
+    $data = $sql->DoData();
+    return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+// autoreply end
   public function uploadimageAction(Request $request){ //upload image
     $fs = new \Symfony\Component\Filesystem\Filesystem();
     $dir = date('Ym' ,strtotime("now"));

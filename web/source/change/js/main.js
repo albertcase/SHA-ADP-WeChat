@@ -1147,19 +1147,183 @@ var keyword = {
 }
 
 var autoreplay = {
+  welcomefun:null,
+  defaultfun:null,
+  navactive:null,
+  getEvent:null,
   showwelcome: function(obj){
+    var self = this;
     var action = obj.attr('action');
     if($("#welcomemessage ."+action+" div").length == 0)
       $("#welcomemessage ."+action).html(htmlconetnt[action]());
     $("#welcomemessage .menushow").removeClass("menushow");
     $("#welcomemessage ."+action).addClass("menushow");
+    self.welcomefun = "w"+action;
   },
   showdefault:function(obj){
+    var self = this;
     var action = obj.attr('action');
     if($("#defaultmessage ."+action+" div").length == 0)
       $("#defaultmessage ."+action).html(htmlconetnt[action]());
     $("#defaultmessage .menushow").removeClass("menushow");
     $("#defaultmessage ."+action).addClass("menushow");
+    self.defaultfun = "d"+action;
+  },
+  wpushmessage:function(){
+    var self = this;
+    var a = {
+      "autoreply[getMsgType]": "event",
+      "autoreply[getEvent]": "subscribe",
+      "autoreply[MsgType]": 'news',
+      "autoreply[newslist]": menu.getnewslist($("#welcomemessage .pushmessage .newslist")),
+    };
+    return a;
+  },
+  wtextmessage:function(){
+    var self = this;
+    var a={
+      "autoreply[getMsgType]": "event",
+      "autoreply[getEvent]": "subscribe",
+      "autoreply[MsgType]": 'text',
+      "autoreply[Content]": $("#welcomemessage .textcontent").val(),
+    };
+    return a;
+  },
+  dpushmessage:function(){
+    var self = this;
+    var a = {
+      "autoreply[getMsgType]": "event",
+      "autoreply[getEvent]": "defaultback",
+      "keywordadd[MsgType]": 'news',
+      "keywordadd[newslist]": menu.getnewslist($("#defaultmessage .pushmessage .newslist")),
+    };
+    return a;
+  },
+  dtextmessage:function(){
+    var self = this;
+    var a={
+      "autoreply[getMsgType]": "event",
+      "autoreply[getEvent]": "defaultback",
+      "autoreply[MsgType]": 'text',
+      "keywordadd[Content]": $("#defaultmessage .textcontent").val(),
+    };
+    return a;
+  },
+  ajaxwecomeup:function(){
+    popup.openloading();
+    var self = this;
+    var up = autoreplay[self.welcomefun]();
+    $.ajax({
+      url: "/adminapi/autoreply/",
+      type:"post",
+      dataType:'json',
+      data: up,
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxdefaultup:function(){
+    popup.openloading();
+    var self = this;
+    var up = autoreplay[self.defaultfun]();
+    $.ajax({
+      url: "/adminapi/autoreply/",
+      type:"post",
+      dataType:'json',
+      data: up,
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          popup.openwarning(data.msg);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxautoreply:function(getEvent){
+    popup.openloading();
+    var self = this;
+    $.ajax({
+      url: "/adminapi/autoreplyinfo/",
+      type:"post",
+      dataType:'json',
+      data: {
+        "autoreplyload[getEvent]": getEvent,
+      },
+      success: function(data){
+        $("#"+autoreplay.navactive).addClass("navshow");
+        popup.closeloading();
+        if(data.code == '10'){
+          autoreplay.buildMsg(data.info);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildMsg: function(data){
+    var self = this;
+    if(data.MsgType == "text"){
+      $("#"+self.navactive+" .buttontype .btn").eq(0).addClass("active");
+      $("#"+self.navactive+" .textmessage").addClass("menushow");
+      $("#"+self.navactive+" .textmessage").html(htmlconetnt.atextmessage(data.MsgData.Content));
+      return true;
+    }
+    if(data.MsgType == "news"){
+      $("#"+self.navactive+" .buttontype .btn").eq(1).addClass("active");
+      $("#"+self.navactive+" .pushmessage").addClass("menushow");
+      $("#"+self.navactive+" .pushmessage").html(htmlconetnt.apushmessage(data.MsgData.Articles));
+      return true;
+    }
+  },
+  ajaxreplydel:function(getEvent){
+    popup.openloading();
+    var self = this;
+    $.ajax({
+      url: "/adminapi/autoreplydel/",
+      type:"post",
+      dataType:'json',
+      data: {
+        "autoreplydel[getEvent]": 'event',
+        "autoreplydel[getMsgType]": getEvent,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == '10'){
+          autoreplay.cleanMsg($("#"+autoreplay.navactive));
+          autoreplay.ajaxautoreply(autoreplay.getEvent);
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  cleanMsg: function(obj){
+    obj.find(".pushmessage").html('');
+    obj.find(".textmessage").html('');
   },
   onload: function(){
     var self = this;
@@ -1168,7 +1332,10 @@ var autoreplay = {
       $(this).parent().addClass("active");
       $("#autoreload .navshow").removeClass("navshow");
       var active = $(this).attr("active");
-      $("#"+active).addClass("navshow");
+      self.getEvent = $(this).attr("getEvent");
+      self.navactive = active;
+      self.cleanMsg($("#"+active));
+      self.ajaxautoreply(self.getEvent);
     });
     $("#welcomemessage .buttontype>.btn").click(function(){
       $("#welcomemessage .buttontype .active").removeClass("active");
@@ -1180,6 +1347,54 @@ var autoreplay = {
       $(this).addClass("active");
       self.showdefault($(this));
     });
+    $("#welcomemessage .savebutton").click(function(){
+      self.ajaxwecomeup();
+    });
+    $("#defaultmessage .savebutton").click(function(){
+      self.ajaxdefaultup();
+    });
+    $("#welcomemessage .welcomedel").click(function(){
+      self.ajaxreplydel('subscribe');
+    });
+    $("#defaultmessage .defaultdel").click(function(){
+      self.ajaxreplydel('defaultback');
+    });
+// welcome msg
+    $("#welcomemessage").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#welcomemessage").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#welcomemessage .pushmessage .fa-minus-square").length >= 10)
+        $("#welcomemessage .pushmessage .fa-plus-square").remove();
+    });
+    $("#welcomemessage").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#welcomemessage").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
+// welcome msg end
+// default msg
+    $("#defaultmessage").on("click",".fa-minus-square", function(){
+      $(this).parent().remove();
+    });
+    $("#defaultmessage").on("click",".fa-plus-square", function(){
+      var a = htmlconetnt.addnewshtml();
+      $(this).after(a);
+      $(this).remove();
+      if($("#defaultmessage .pushmessage .fa-minus-square").length >= 10)
+        $("#defaultmessage .pushmessage .fa-plus-square").remove();
+    });
+    $("#defaultmessage").on("change", ".newsfile", function(){
+      fileupload.sendfiles($(this)[0].files[0], $(this));
+    });
+    $("#defaultmessage").on("click",".fa-times",function(){
+      fileupload.replaceimage($(this));
+    });
+// default msg end
   }
 }
 
@@ -1242,7 +1457,7 @@ var webpage = {
       },
       success: function(data){
         popup.closeloading();
-        if(data.code == 'id'){
+        if(data.code == '10'){
           popup.openwarning(data.msg);
           webpage.ajaxpagelist();
           return true;

@@ -189,6 +189,14 @@ class dataSql{
     return true;
   }
 
+  public function getreplyEvent($menuId){
+    if($back = $this->searchData(array('menuId' => $menuId), array('menuId', 'MsgType', 'MsgData'), 'wechat_feedbacks')){
+      $back[0]['MsgData'] = json_decode($back[0]['MsgData'], true);
+      return $back[0];
+    }
+    return false;
+  }
+
   public function getTagEvents($menuId){
     $result = array();
     $tag = $this->searchData(array('menuId' => $menuId), array(), 'wechat_keyword_tag');
