@@ -44,6 +44,7 @@ class WechatResponse{
     // }
     // return "";
     $time = time();
+    $this->systemLog();
     return $this->sendMsgForText($this->fromUsername, $this->toUsername, $time,'text', '@'.$this->fromUsername);
   }
 
