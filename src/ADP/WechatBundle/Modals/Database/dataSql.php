@@ -345,6 +345,11 @@ class dataSql{
     }
     return false;
   }
+
+  public function getAdmins(){
+    $sql = 'SELECT * from wechat_admin where username != "admin"';
+    return $this->querysql($sql);
+  }
 //admin end
 // adp_article
   public function createArticle($data){

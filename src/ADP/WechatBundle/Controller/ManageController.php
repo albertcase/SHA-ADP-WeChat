@@ -40,10 +40,16 @@ class ManageController extends Controller
 
   public function preferenceAction(){
     $Session = new Session();
-    // $admin = false;
-    // if($Session->get($this->container->getParameter('session_login')) == 'admin')
+    $admin = false;
+    if($Session->get($this->container->getParameter('session_login')) == 'admin'){
       $admin = true;
-    return $this->render('ADPWechatBundle:Manage:preference.html.twig', array('admin' => $admin));
+      $dataSql = $this->container->get('my.dataSql');
+      $list = $dataSql->getAdmins();
+    }else{
+      $admin = false;
+      $list = array();
+    }
+    return $this->render('ADPWechatBundle:Manage:preference.html.twig', array('admin' => $admin, 'list' => $list));
   }
 
 }

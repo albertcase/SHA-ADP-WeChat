@@ -66,6 +66,10 @@ adp_admin_articleadd:
     path:     /adminapi/articleadd/
     defaults: { _controller: ADPWechatBundle:Adminapi:articleadd }
 
+adp_admin_getadmins:
+    path:     /adminapi/getadmins/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getadmins }
+
 adp_admin_editarticle:
     path:     /adminapi/editarticle/
     defaults: { _controller: ADPWechatBundle:Adminapi:editarticle }
@@ -121,6 +125,7 @@ adp_admin_autoreplyinfo:
 adp_admin_autoreplydel:
     path:     /adminapi/autoreplydel/
     defaults: { _controller: ADPWechatBundle:Adminapi:autoreplydel }
+
 # outapi
 adp_out_myjob:
     path:     /outapi/myjob/

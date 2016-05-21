@@ -27,6 +27,8 @@ class adminadd extends FormRequest{
 
   public function dealData(){
     $dataSql = $this->container->get('my.dataSql');
+    if($dataSql->getCount(array('username' => $this->getdata['username']), 'wechat_admin'))
+      return array('code' => '8', 'msg' => 'this user already exists');
     if($dataSql->createwechatAdmin($this->getdata)){
       return array('code' => '10', 'msg' => 'new admin added success');
     }

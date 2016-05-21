@@ -45,7 +45,7 @@ var formstr = {//comfirm string
       return false;
   },
   tnonull2:function(str){
-    var tname = new RegExp("^.{1,300}$");
+    var tname = new RegExp("^.{1,1000}$");
     if(tname.test(str)){
 	return true;
       }
@@ -72,8 +72,23 @@ var formstr = {//comfirm string
       }
       return false;
   },
-
+  tipstrobj:function(str,chk,tip){
+    var t = formstr[chk](str);
+    if(!t)
+      popup.openwarning(tip);
+    return t;
+  },
+  tall:function(data){
+    var la = data.length;
+    var self = this;
+    var a = true;
+    for(var i='0'; i<la; i++){
+      a = a && self.tipstrobj(data[i]["0"],data[i]["1"],data[i]["2"]);
+    }
+    return a;
+  }
 }
+
 
 var fileupload = {
   sendfiles:function(data, obj){
@@ -122,6 +137,25 @@ var fileupload = {
 }
 
 var popup = {
+  warningshow : function(selector,text) {
+    var self = this;
+    var warning = $(document.createElement('div'));
+    warning.addClass('warningbox').append(text);
+    warning.prependTo($(selector)).hide().slideDown();
+    warning.one('click', function() {
+      self.warningautomove($(this));
+    });
+    self.warningclear(warning);
+    return true;
+  },
+  warningautomove: function(obj) {
+    obj.fadeOut(function(){
+      this.remove();
+    });
+  },
+  warningclear : function(element) {
+    setTimeout(this.warningautomove, '3000', element);
+  },
   openprogress:function(){
     $("#myprogress").show();
   },
@@ -134,14 +168,7 @@ var popup = {
     $("#myprogress .sr-only").text(t+"%");
   },
   openwarning:function(text){
-    var a = '<div>'+text+'</div>';
-    a += '<div><button type="button" onclick="popup.closewarning()" class="btn btn-default btn-sm">TRUE</button></div>';
-    $("#warningpopup>.warningpopup").append(a);
-    $("#warningpopup").show();
-  },
-  closewarning:function(){
-    $("#warningpopup>.warningpopup").empty();
-    $("#warningpopup").hide();
+    this.warningshow('#warningpopup',text);
   },
   opencomfirm:function(text,fun){
     var a = '<div>'+text+'</div>';
@@ -1399,6 +1426,121 @@ var autoreplay = {
 }
 
 var preference = {
+  ajaxchangpwd:function(){
+    var test = [
+      [$("#changepwd .oldpassword").val(), "tnonull", "the oldpassword is empty"],
+      [$("#changepwd .newpassword").val(), "tnonull", "the newpassword is empty"],
+      [$("#changepwd .newpassword2").val(), "tnonull", "the repeat password is empty"],
+    ];
+    if(!formstr.tall(test))
+      return false;
+    if($("#changepwd .newpassword").val() !== $("#changepwd .newpassword2").val()){
+      popup.openwarning('the repeat password error');
+      return false;
+    }
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/changepwd/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "changepwd[oldpassword]": $("#changepwd .oldpassword").val(),
+        "changepwd[newpassword]": $("#changepwd .newpassword2").val(),
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          preference.cleanpsw();
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxadduser: function(){
+    var test = [
+      [$("#adduserbox .username").val(), "tnonull", "the username is empty"],
+      [$("#adduserbox .newpassword").val(), "tnonull", "the password is empty"],
+      [$("#adduserbox .newpassword2").val(), "tnonull", "the repeat password is empty"],
+    ];
+    if(!formstr.tall(test))
+      return false;
+    if($("#adduserbox .newpassword").val() !== $("#adduserbox .newpassword2").val()){
+      popup.openwarning('the repeat password error');
+      return false;
+    }
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/creatadmin/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "adminadd[username]": $("#adduserbox .username").val(),
+        "adminadd[password]": $("#adduserbox .newpassword2").val(),
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $("#adduserbox").modal('hide');
+          preference.ajaxgetadmins();
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  ajaxdeluser: function(){
+
+  }
+  ajaxgetadmins:function(){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/getadmins/",
+      type:"post",
+      dataType:'json',
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $("#usertables tbody").html(preference.buildtbody(data.list));
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildtbody:function(data){
+    var la = data.length;
+    var a="";
+    for(var i="0"; i<la; i++){
+      a += '<tr class="odd gradeX" userid="'+data[i]['id']+'">';
+      a += '<td>'+data[i]['username']+'</td>';
+      a += '<td>'+data[i]['latestTime']+'</td>';
+      a += '<td class="center"><i class="fa fa-edit fa-lg"></i></td>';
+      a += '<td class="center"><i class="fa fa-trash-o fa-lg"></i></td>';
+      a += '</tr>';
+    }
+    return a;
+  },
+  cleanpsw:function(){
+    $("#changepwd .oldpassword").val('');
+    $("#changepwd .newpassword2").val('');
+    $("#changepwd .newpassword").val('');
+  },
+  cleanadduser: function(){
+    $("#adduserbox .username").val('');
+    $("#adduserbox .newpassword2").val('');
+    $("#adduserbox .newpassword").val('');
+  },
   onload: function(){
     var self = this;
     $("#preferencenav .message").click(function(){
@@ -1407,6 +1549,16 @@ var preference = {
       $("#preference .navshow").removeClass("navshow");
       var active = $(this).attr("active");
       $("#"+active).addClass("navshow");
+    });
+    $("#changepwd .save").click(function(){
+      self.ajaxchangpwd();
+    });
+    $("#menufun .adduser").click(function(){
+      self.cleanadduser();
+      $("#adduserbox").modal('show');
+    });
+    $("#adduserbox .addusersubmit").click(function(){
+      self.ajaxadduser();
     });
   }
 }
