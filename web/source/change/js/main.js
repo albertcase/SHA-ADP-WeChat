@@ -1194,8 +1194,8 @@ var autoreplay = {
     var a = {
       "autoreply[getMsgType]": "event",
       "autoreply[getEvent]": "defaultback",
-      "keywordadd[MsgType]": 'news',
-      "keywordadd[newslist]": menu.getnewslist($("#defaultmessage .pushmessage .newslist")),
+      "autoreply[MsgType]": 'news',
+      "autoreply[newslist]": menu.getnewslist($("#defaultmessage .pushmessage .newslist")),
     };
     return a;
   },
@@ -1205,7 +1205,7 @@ var autoreplay = {
       "autoreply[getMsgType]": "event",
       "autoreply[getEvent]": "defaultback",
       "autoreply[MsgType]": 'text',
-      "keywordadd[Content]": $("#defaultmessage .textcontent").val(),
+      "autoreply[Content]": $("#defaultmessage .textcontent").val(),
     };
     return a;
   },
@@ -1303,8 +1303,8 @@ var autoreplay = {
       type:"post",
       dataType:'json',
       data: {
-        "autoreplydel[getEvent]": 'event',
-        "autoreplydel[getMsgType]": getEvent,
+        "autoreplydel[getEvent]": getEvent,
+        "autoreplydel[getMsgType]": 'event',
       },
       success: function(data){
         popup.closeloading();

@@ -25,9 +25,11 @@ class WechatResponse{
 
   public function RequestFeedback(){
     if(method_exists($this, $this->msgType.'Request')){
-      return call_user_func_array(array($this, $this->msgType.'Request'), array());
+      $backxml =  call_user_func_array(array($this, $this->msgType.'Request'), array());
     }
-    return "";
+    if($backxml)
+      return $backxml;
+    return $this->defaultfeedback();
   }
 
   public function msgResponse($rs){
@@ -128,6 +130,14 @@ public function viewEvent(){
 
   public function comfirmkeycode($msgType){
 
+  }
+
+  public function defaultfeedback(){
+    $rs = $this->dataSql->defaultField();
+    if(is_array($rs) && count($rs)> 0 ){
+      return $this->msgResponse($rs);
+    }
+    return "";
   }
 
 
