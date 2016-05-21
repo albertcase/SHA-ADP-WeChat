@@ -1426,6 +1426,7 @@ var autoreplay = {
 }
 
 var preference = {
+  editinfo:null,
   ajaxchangpwd:function(){
     var test = [
       [$("#changepwd .oldpassword").val(), "tnonull", "the oldpassword is empty"],
@@ -1495,9 +1496,28 @@ var preference = {
       }
     });
   },
-  ajaxdeluser: function(){
-
-  }
+  ajaxdeluser: function(userid){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/userdel/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "admindel[id]": userid,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          preference.ajaxgetadmins();
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
   ajaxgetadmins:function(){
     popup.openloading();
     $.ajax({
@@ -1518,7 +1538,65 @@ var preference = {
       }
     });
   },
-  buildtbody:function(data){
+  getadmininfo:function(userid){
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/getadminerinfo/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "admininfo[id]": userid,
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          preference.editinfo = data.info;
+          $("#edituserbox .adminname").text(data.info.username);
+          $("#edituserbox").modal('show');
+          return true;
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  adminchangepwd: function(){
+    var test = [
+      [$("#edituserbox .newpassword").val(), "tnonull", "the password is empty"],
+      [$("#edituserbox .newpassword2").val(), "tnonull", "the repeat password is empty"],
+    ];
+    if(!formstr.tall(test))
+      return false;
+    if($("#edituserbox .newpassword").val() !== $("#edituserbox .newpassword2").val()){
+      popup.openwarning('the repeat password error');
+      return false;
+    }
+    popup.openloading();
+    $.ajax({
+      url: "/adminapi/admincpw/",
+      type:"post",
+      dataType:'json',
+      data:{
+        "admincpw[id]": preference.editinfo["id"],
+        "admincpw[newpassword]": $("#edituserbox .newpassword2").val(),
+      },
+      success: function(data){
+        popup.closeloading();
+        if(data.code == "10"){
+          $("#edituserbox").modal('hide');
+        }
+        popup.openwarning(data.msg);
+      },
+      error: function(){
+        popup.closeloading();
+        popup.openwarning("unknow error");
+      }
+    });
+  },
+  buildtbody: function(data){
     var la = data.length;
     var a="";
     for(var i="0"; i<la; i++){
@@ -1541,6 +1619,10 @@ var preference = {
     $("#adduserbox .newpassword2").val('');
     $("#adduserbox .newpassword").val('');
   },
+  cleanadmincpw: function(){
+    $("#edituserbox .newpassword2").val('');
+    $("#edituserbox .newpassword").val('');
+  },
   onload: function(){
     var self = this;
     $("#preferencenav .message").click(function(){
@@ -1559,6 +1641,18 @@ var preference = {
     });
     $("#adduserbox .addusersubmit").click(function(){
       self.ajaxadduser();
+    });
+    $("#usermanage").on("click", "tbody .fa-trash-o", function(){ //delete user
+      var userid = $(this).parent().parent().attr("userid");
+      self.ajaxdeluser(userid);
+    });
+    $("#usermanage").on("click", "tbody .fa-edit", function(){ //edit user
+      var userid = $(this).parent().parent().attr("userid");
+      self.cleanadmincpw();
+      self.getadmininfo(userid);
+    });
+    $("#edituserbox .changepwdsubmit").click(function(){
+      self.adminchangepwd();
     });
   }
 }

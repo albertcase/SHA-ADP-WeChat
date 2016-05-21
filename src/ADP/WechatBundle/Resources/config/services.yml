@@ -28,6 +28,12 @@ services:
           class: ADP\WechatBundle\Modals\Apis\functions
           arguments: [@service_container]
 # form list
+
+        form.admincpw:
+          class: ADP\WechatBundle\Forms\admincpw
+          scope: request
+          arguments: [@request, @service_container]
+
         form.adminadd:
           class: ADP\WechatBundle\Forms\adminadd
           scope: request
@@ -35,6 +41,16 @@ services:
 
         form.adminlogin:
           class: ADP\WechatBundle\Forms\adminlogin
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.admindel:
+          class: ADP\WechatBundle\Forms\admindel
+          scope: request
+          arguments: [@request, @service_container]
+
+        form.admininfo:
+          class: ADP\WechatBundle\Forms\admininfo
           scope: request
           arguments: [@request, @service_container]
 

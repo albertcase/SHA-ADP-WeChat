@@ -58,9 +58,17 @@ adp_admin_creatadmin:
     path:     /adminapi/creatadmin/
     defaults: { _controller: ADPWechatBundle:Adminapi:creatadmin }
 
+adp_admin_userdel:
+    path:     /adminapi/userdel/
+    defaults: { _controller: ADPWechatBundle:Adminapi:userdel }
+
 adp_admin_changepwd:
     path:     /adminapi/changepwd/
     defaults: { _controller: ADPWechatBundle:Adminapi:changepwd }
+
+adp_admin_admincpw:
+    path:     /adminapi/admincpw/
+    defaults: { _controller: ADPWechatBundle:Adminapi:admincpw }
 
 adp_admin_articleadd:
     path:     /adminapi/articleadd/
@@ -69,6 +77,10 @@ adp_admin_articleadd:
 adp_admin_getadmins:
     path:     /adminapi/getadmins/
     defaults: { _controller: ADPWechatBundle:Adminapi:getadmins }
+
+adp_admin_getadminerinfo:
+    path:     /adminapi/getadminerinfo/
+    defaults: { _controller: ADPWechatBundle:Adminapi:getadminerinfo }
 
 adp_admin_editarticle:
     path:     /adminapi/editarticle/

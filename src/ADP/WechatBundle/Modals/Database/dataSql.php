@@ -337,6 +337,11 @@ class dataSql{
     return false;
   }
 
+  public function admincpw($data,$change){
+    $change['password'] = md5($change['password'].'185');
+    return $this->updateData($data, $change, 'wechat_admin');
+  }
+
   public function comfirmAdmin($data){
     $data['password'] = md5($data['password'].'185');
     if($this->getCount($data, 'wechat_admin')){
@@ -347,8 +352,18 @@ class dataSql{
   }
 
   public function getAdmins(){
-    $sql = 'SELECT * from wechat_admin where username != "admin"';
+    $sql = 'SELECT id,username,latestTime from wechat_admin where username != "admin"';
     return $this->querysql($sql);
+  }
+
+  public function getAdmininfo($id){
+    $sql = 'SELECT id,username from wechat_admin where id = ?';
+    $param = array($id);
+    return $this->querysqlp($sql,$param);
+  }
+
+  public function delAdminuser($id){
+    return $this->deleteData(array('id' => $id), 'wechat_admin');
   }
 //admin end
 // adp_article

@@ -37,6 +37,7 @@
     </div>
      <!-- changepwd end-->
      <!-- usermanage -->
+{% if admin %}
     <div id="usermanage">
       <div class="row">
           <div class="col-lg-12">
@@ -80,6 +81,7 @@
         <button type="button" class="btn btn-primary adduser">Add User</button>
       </div>
     </div>
+{% endif %}
      <!-- usermanage end-->
   </div>
 </div>
@@ -117,6 +119,46 @@
             </button>
             <button type="button" class="btn btn-primary addusersubmit">
                Add User
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- popup end -->
+<!-- popup -->
+<div class="modal fade" id="edituserbox" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+               aria-hidden="true">
+            </button>
+            <h4 class="modal-title" id="editusertitle">
+               Change User Password
+            </h4>
+         </div>
+         <div class="modal-body">
+           <div class="form-group">
+               <strong>User Name: </strong><span class="adminname" style="color:blue"></span>
+           </div>
+           <hr>
+           <div class="form-group">
+               <label>Password</label>
+               <input class="form-control newpassword" type="password" placeholder="Enter New Password" style="width:70%">
+           </div>
+           <div class="form-group">
+               <label>Repeat Password</label>
+               <input class="form-control newpassword2" type="password" placeholder="Enter Repeat Password" style="width:70%">
+           </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default"
+               data-dismiss="modal">Close
+            </button>
+            <button type="button" class="btn btn-primary changepwdsubmit">
+               Change
             </button>
          </div>
       </div>
