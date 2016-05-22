@@ -72,10 +72,19 @@ var formstr = {//comfirm string
       }
       return false;
   },
-  tipstrobj:function(str,chk,tip){
+  tipstr:function(str,chk,tip){
     var t = formstr[chk](str);
     if(!t)
       popup.openwarning(tip);
+    return t;
+  },
+  tipstrobj:function(obj,chk,tip){
+    var str = obj.val();
+    var t = formstr[chk](str);
+    if(!t){
+      popup.openwarning(tip);
+      obj.parent().addClass("has-error");
+    }
     return t;
   },
   tall:function(data){
@@ -83,7 +92,19 @@ var formstr = {//comfirm string
     var self = this;
     var a = true;
     for(var i='0'; i<la; i++){
-      a = a && self.tipstrobj(data[i]["0"],data[i]["1"],data[i]["2"]);
+      a = a && self.tipstr(data[i]["0"],data[i]["1"],data[i]["2"]);
+    }
+    return a;
+  },
+  tallobj:function(data){
+    $(".has-error").each(function(){
+      $(this).removeClass("has-error");
+    });
+    var la = data.length;
+    var self = this;
+    var a = true;
+    for(var i='0'; i<la; i++){
+      a = self.tipstrobj(data[i]["0"], data[i]["1"], data[i]["2"]) && a;
     }
     return a;
   }
@@ -1429,11 +1450,11 @@ var preference = {
   editinfo:null,
   ajaxchangpwd:function(){
     var test = [
-      [$("#changepwd .oldpassword").val(), "tnonull", "the oldpassword is empty"],
-      [$("#changepwd .newpassword").val(), "tnonull", "the newpassword is empty"],
-      [$("#changepwd .newpassword2").val(), "tnonull", "the repeat password is empty"],
+      [$("#changepwd .oldpassword"), "tnonull", "the oldpassword is empty"],
+      [$("#changepwd .newpassword"), "tnonull", "the newpassword is empty"],
+      [$("#changepwd .newpassword2"), "tnonull", "the repeat password is empty"],
     ];
-    if(!formstr.tall(test))
+    if(!formstr.tallobj(test))
       return false;
     if($("#changepwd .newpassword").val() !== $("#changepwd .newpassword2").val()){
       popup.openwarning('the repeat password error');
@@ -1463,11 +1484,11 @@ var preference = {
   },
   ajaxadduser: function(){
     var test = [
-      [$("#adduserbox .username").val(), "tnonull", "the username is empty"],
-      [$("#adduserbox .newpassword").val(), "tnonull", "the password is empty"],
-      [$("#adduserbox .newpassword2").val(), "tnonull", "the repeat password is empty"],
+      [$("#adduserbox .username"), "tnonull", "the username is empty"],
+      [$("#adduserbox .newpassword"), "tnonull", "the password is empty"],
+      [$("#adduserbox .newpassword2"), "tnonull", "the repeat password is empty"],
     ];
-    if(!formstr.tall(test))
+    if(!formstr.tallobj(test))
       return false;
     if($("#adduserbox .newpassword").val() !== $("#adduserbox .newpassword2").val()){
       popup.openwarning('the repeat password error');
@@ -1565,10 +1586,10 @@ var preference = {
   },
   adminchangepwd: function(){
     var test = [
-      [$("#edituserbox .newpassword").val(), "tnonull", "the password is empty"],
-      [$("#edituserbox .newpassword2").val(), "tnonull", "the repeat password is empty"],
+      [$("#edituserbox .newpassword"), "tnonull", "the password is empty"],
+      [$("#edituserbox .newpassword2"), "tnonull", "the repeat password is empty"],
     ];
-    if(!formstr.tall(test))
+    if(!formstr.tallobj(test))
       return false;
     if($("#edituserbox .newpassword").val() !== $("#edituserbox .newpassword2").val()){
       popup.openwarning('the repeat password error');
