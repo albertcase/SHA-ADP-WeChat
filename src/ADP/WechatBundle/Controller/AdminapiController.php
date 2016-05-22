@@ -82,14 +82,6 @@ class AdminapiController extends Controller
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
-  public function testAction(){
-    return new Response(json_encode(array('code' => '23' ,'msg' => 'you arelogin'), JSON_UNESCAPED_UNICODE));
-  }
-
-  public function notpassedeAction(){
-    return new Response(json_encode(array('code' => '2' ,'msg' => 'you are not login'), JSON_UNESCAPED_UNICODE));
-  }
-
 // admin manage start
   public function creatadminAction(){
     $Session = new Session();
@@ -249,4 +241,11 @@ class AdminapiController extends Controller
     return new Response(json_encode(array('code' => '10', 'path'=> $host.'/'.$image)));
   }
 
+  public function testAction(){
+    return new Response(json_encode(array('code' => '23' ,'msg' => 'you arelogin'), JSON_UNESCAPED_UNICODE));
+  }
+
+  public function notpassedeAction(){
+    return new Response(json_encode(array('code' => '2' ,'msg' => 'you are not login'), JSON_UNESCAPED_UNICODE));
+  }
 }

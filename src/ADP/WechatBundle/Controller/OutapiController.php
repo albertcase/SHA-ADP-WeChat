@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use ADP\WechatBundle\Modals\FlightSoap\FlightSoap;
 
 class OutapiController extends Controller
 {
@@ -52,6 +53,19 @@ class OutapiController extends Controller
     $adminadd = $this->container->get('form.articleinfo');
     $data = $adminadd->DoData();
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
+  }
+
+  public function soapAction(){
+    $FlightSoap = new FlightSoap();
+    // print_r($FlightSoap->getallfunctions());
+    $data = array(
+      'soapfunction' => 'AirlineFlightInfo',
+      'AirlineFlightInfo' => array(
+        'faFlightID' => 'CUA5978-1463890800-schedule-0000',
+      ),
+    );
+    print_r($FlightSoap->SoapApi($data));
+    return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
   public function myjobAction(Request $request){
