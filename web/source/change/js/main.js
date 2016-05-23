@@ -331,9 +331,9 @@ var htmlconetnt = {
   },
   tagkeyword:function(){
     var a = '<div class="form-group">';
-        a += '<label>Key Word:</label>';
+        a += '<label>Keyword:</label>';
         a += '<i class="fa fa-minus-circle"></i>';
-        a += '<input class="form-control inputkeyword" placeholder="Enter Key Word" style="width:80%">';
+        a += '<input class="form-control inputkeyword" placeholder="Enter Keyword" style="width:80%">';
         a += '</div>';
     return a;
   },
@@ -342,9 +342,9 @@ var htmlconetnt = {
     var a = "";
     for(var i=0;i<la; i++){
       a += '<div class="form-group">';
-      a += '<label>Key Word:</label>';
+      a += '<label>Keyword:</label>';
       a += '<i class="fa fa-minus-circle"></i>';
-      a += '<input class="form-control inputkeyword" placeholder="Enter Key Word" style="width:80%" value="'+data[i]+'">';
+      a += '<input class="form-control inputkeyword" placeholder="Enter Keyword" style="width:80%" value="'+data[i]+'">';
       a += '</div>';
     }
     a +='<i class="fa fa-plus-circle"></i>';
