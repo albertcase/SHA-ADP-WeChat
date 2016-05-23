@@ -5,4 +5,4 @@ then
 	echo 'this service already runing';
 	exit;
 fi
-php ~+/customsMsgSend.php &
+php /data/webown/sites/sha-adp-wechat/src/ADP/WechatBundle/Modals/CustomMsg/customsMsgSend.php &
