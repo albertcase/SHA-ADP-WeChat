@@ -27,6 +27,10 @@ services:
         my.functions:
           class: ADP\WechatBundle\Modals\Apis\functions
           arguments: [@service_container]
+
+        my.customsResponse:
+          class: ADP\WechatBundle\Modals\Apis\customsResponse
+          arguments: [@service_container]
 # form list
 
         form.admincpw:

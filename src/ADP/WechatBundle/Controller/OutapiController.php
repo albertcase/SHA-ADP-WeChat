@@ -69,18 +69,19 @@ class OutapiController extends Controller
   }
 
   public function pushdataAction(){
-    $redis = $this->container->get('my.RedisLogic');
-    $redis->setRList('aaaaaa' ,'bbbbbb3');
+    $customsResponse = $this->container->get('my.customsResponse');
+    $msg = array(
+      'msgtype' => 'text',
+      'touser' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
+      'content' => 'test@o8v3vssqk_UkjAsBYrd4Teb-m54A',
+    );
+    $customsResponse->addCustomMsg($msg);
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
   public function popdataAction(){
-    $redis = $this->container->get('my.RedisLogic');
-    // print_r($redis->popLList('aaaaaa'));
-    $redis = new \Redis();
-    $redis->connect('127.0.0.1', '6379');
-    $redis->set('cccccc','aaaaaaaaa');
-    print_r($redis->get('cccccc'));
+    $customsResponse = $this->container->get('my.customsResponse');
+    $customsResponse->testsendMsg();
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
