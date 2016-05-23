@@ -166,6 +166,14 @@ adp_out_getarticle:
 adp_out_soap:
     path:     /outapi/soap/
     defaults: { _controller: ADPWechatBundle:Outapi:soap }
+
+adp_out_pushdata:
+    path:     /outapi/pushdata/
+    defaults: { _controller: ADPWechatBundle:Outapi:pushdata }
+
+adp_out_popdata:
+    path:     /outapi/popdata/
+    defaults: { _controller: ADPWechatBundle:Outapi:popdata }
 # system
 adp_manage_index:
     path:     /manage/

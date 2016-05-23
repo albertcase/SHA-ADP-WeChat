@@ -60,11 +60,11 @@ class RedisLogic
     	return true;
     }
 
-    public function popLList(){
+    public function popLList($key){
 	     return $this->redis->lPop($this->prostr.$key);
     }
 
-    public function popRList(){
+    public function popRList($key){
 	     return $this->redis->rPop($this->prostr.$key);
     }
 

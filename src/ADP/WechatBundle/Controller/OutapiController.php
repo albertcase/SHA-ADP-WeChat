@@ -68,6 +68,23 @@ class OutapiController extends Controller
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
+  public function pushdataAction(){
+    $redis = $this->container->get('my.RedisLogic');
+    $redis->setRList('aaaaaa' ,'bbbbbb3');
+    return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
+  }
+
+  public function popdataAction(){
+    $redis = $this->container->get('my.RedisLogic');
+    // print_r($redis->popLList('aaaaaa'));
+    $redis = new \Redis();
+    $redis->connect('127.0.0.1', '6379');
+    $redis->set('cccccc','aaaaaaaaa');
+    print_r($redis->get('cccccc'));
+    return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
+  }
+
+
   public function myjobAction(Request $request){
     $data = $request->request->get('dologin');
     // $Validation = new Validation();

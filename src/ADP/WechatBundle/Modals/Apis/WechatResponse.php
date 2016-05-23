@@ -77,7 +77,8 @@ class WechatResponse{
   }
 
   public function locationRequest(){
-    return "";
+    // return "";
+    return sendMsgForText($this->fromUsername, $this->toUsername, time(), 'text', $this->fromUsername);
   }
 
   public function linkRequest(){
