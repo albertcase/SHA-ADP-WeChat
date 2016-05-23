@@ -86,6 +86,11 @@ class OutapiController extends Controller
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
+  public function testbuttonAction(){
+    $wehcat = $this->container->get('my.Wechat');
+    print_r($wehcat->create_menu_array());
+  }
+
 
   public function myjobAction(Request $request){
     $data = $request->request->get('dologin');
