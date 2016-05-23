@@ -12,9 +12,9 @@ class customsResponse
   private $changT = 'changT';
 
   public function __construct(){
-    $this->_redis = new Redis();
+    $this->_redis = new \Redis();
     $this->_redis->connect('127.0.0.1', '6379');
-    if($changT = $this->_redis->get($this->$prostr.$this->changT)){
+    if($changT = $this->_redis->get($this->prostr.$this->changT)){
 
     }
   }
@@ -23,7 +23,7 @@ class customsResponse
   public function addCustomMsg($data){
     if(isset($data['msgtype']) && method_exists($this, $data['msgtype'].'CustomMsg')){
       $msg = call_user_func_array(array($this, $data['msgtype'].'CustomMsg'), array($data));
-      $this->_redis->rPush($this->$prostr.$this->list, json_encode($msg ,JSON_UNESCAPED_UNICODE));
+      $this->_redis->rPush($this->prostr.$this->list, json_encode($msg ,JSON_UNESCAPED_UNICODE));
     }
   }
 
@@ -221,7 +221,7 @@ public function wxcardCustomMsg($data){
 //Custom type end
 //check list
   public function ststus(){
-    if($this->_redis->lSize($this->$prostr.$this->list) > 0){
+    if($this->_redis->lSize($this->prostr.$this->list) > 0){
       return true;
     }else{
       return false;
@@ -230,7 +230,7 @@ public function wxcardCustomMsg($data){
 
   public function pushMsg(){
     $this->_redis->set($this->prostr.$this->changT, time());
-    $key = $this->_redis->lPop($this->$prostr.$this->list);
+    $key = $this->_redis->lPop($this->prostr.$this->list);
     $this->custom_msend($key);
     $this->_redis->delete($this->prostr.$this->changT);
   }

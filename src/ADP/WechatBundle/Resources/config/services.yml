@@ -29,7 +29,7 @@ services:
           arguments: [@service_container]
 
         my.customsResponse:
-          class: ADP\WechatBundle\Modals\Apis\customsResponse
+          class: ADP\WechatBundle\Modals\CustomMsg\customsResponse
           arguments: [@service_container]
 # form list
 
