@@ -154,11 +154,14 @@ class dataSql{
 
 // do event
   public function updateEvent($data, $change = array()){
-    $this->deleteData($data, 'wechat_feedbacks');
-    $this->deleteData($data, 'wechat_events');
-    if($change)
-    $this->insertData($change['feedbacks'], 'wechat_feedbacks');
-    $this->insertData($change['getevent'], 'wechat_events');
+    if($data){
+      $this->deleteData($data, 'wechat_feedbacks');
+      $this->deleteData($data, 'wechat_events');
+    }
+    if(isset($change['feedbacks']))
+      $this->insertData($change['feedbacks'], 'wechat_feedbacks');
+    if(isset($change['getevent']))
+      $this->insertData($change['getevent'], 'wechat_events');
     return true;
   }
 
@@ -384,7 +387,9 @@ class dataSql{
   }
 
   public function delArticle($data){
-    return $this->deleteData($data, 'adp_article');
+    if($data)
+      return $this->deleteData($data, 'adp_article');
+    return false;
   }
 
   public function getArticlelist($data){

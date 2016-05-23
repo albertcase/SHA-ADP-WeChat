@@ -10,13 +10,12 @@ class customsResponse
   private $prostr = 'adp:custom:';
   private $list = 'list';
   private $changT = 'changT';
+  private $outtime = '100';
 
   public function __construct(){
     $this->_redis = new \Redis();
     $this->_redis->connect('127.0.0.1', '6379');
-    if($changT = $this->_redis->get($this->prostr.$this->changT)){
-
-    }
+    $this->closeCustomMsg();
   }
 
 //system list
