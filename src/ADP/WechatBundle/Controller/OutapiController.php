@@ -89,15 +89,12 @@ class OutapiController extends Controller
   public function testbuttonAction(){
     $wehcat = $this->container->get('my.Wechat');
     print_r($wehcat->create_menu_array());
+    return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
 
   public function myjobAction(Request $request){
     $data = $request->request->get('dologin');
-    // $Validation = new Validation();
-    // $validator = Validation::createValidator();
-    // $data = $validator->validateValue('Bernhardsssssssss', new Length(array('min' => 10)));
-    // print_r($data);
     $validator = Validation::createValidator();
 
     $constraint = new Assert\Collection(array(

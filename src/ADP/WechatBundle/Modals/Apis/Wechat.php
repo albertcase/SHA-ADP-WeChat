@@ -193,13 +193,9 @@ class Wechat{
 
 //subfunction
   public function get_data($url, $return_array = true){
-    try{
       if($return_array)
         return json_decode( file_get_contents($url), true );
       return file_get_contents($url);
-    }catch(){
-      return false;
-    }
   }
 
   public function post_data($url, $param, $is_file = false, $return_array = true){
