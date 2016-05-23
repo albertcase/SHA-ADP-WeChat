@@ -76,6 +76,7 @@ class OutapiController extends Controller
       'content' => 'test@o8v3vssqk_UkjAsBYrd4Teb-m54A',
     );
     $customsResponse->addCustomMsg($msg);
+    $customsResponse->sendCustomMsg();
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
