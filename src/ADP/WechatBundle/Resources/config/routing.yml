@@ -177,7 +177,7 @@ adp_out_popdata:
 
 adp_out_testbutton:
     path:     /outapi/testbutton/
-    defaults: { _controller: ADPWechatBundle:Outapi:/testbutton }
+    defaults: { _controller: ADPWechatBundle:Outapi:testbutton }
 # system
 adp_manage_index:
     path:     /manage/
