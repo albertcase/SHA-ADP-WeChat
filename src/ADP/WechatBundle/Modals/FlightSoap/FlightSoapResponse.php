@@ -27,9 +27,13 @@ class FlightSoapResponse{
   public function runSoap($data){
     if(!isset($data['soapevent']))
       return false;
-    if(isset($data['soapevent']) && method_exists($this, $data['soapevent'])){
-      call_user_func_array(array($this, $data['soapevent']), array($data));
+    if(isset($data['soapevent']) && method_exists($this, $data['soapevent'].'Request')){
+      call_user_func_array(array($this, $data['soapevent'].'Request'), array($data));
     }
+  }
+
+  public function getlatestRequest($data){
+
   }
 
 
