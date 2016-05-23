@@ -61,7 +61,7 @@ class customsResponse
     $url = str_replace('ACCESS_TOKEN', $access_token ,$url);
     $ticketfile = $this->get_data($url);
     $this->_redis->set('adp:access_ticket', $ticketfile['ticket']);
-    $this->_redis->setTimeout('adp:access_ticket', '5000');
+    $this->_redis->setTimeout('adp:access_ticket', 5000);
   }
 
   public function getAccessToken()
@@ -82,8 +82,8 @@ class customsResponse
         $this->getTicket($access_token);
         $this->_redis->set('adp:token_time', time());
         $this->_redis->set('adp:access_token', $access_token);
-        $this->_redis->setTimeout('adp:token_time', '5000');
-        $this->_redis->setTimeout('adp:access_token', '5000');
+        $this->_redis->setTimeout('adp:token_time', 5000);
+        $this->_redis->setTimeout('adp:access_token', 5000);
         return $rs['access_token'];
       }else{
         return false;
