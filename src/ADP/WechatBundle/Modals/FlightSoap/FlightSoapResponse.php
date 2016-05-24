@@ -111,7 +111,8 @@ class FlightSoapResponse{
   }
 
   public function getlatestRequest($data){
-    $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
+    require_once dirname(__FILE__).'/../CustomMsg/customsResponse.php';
+    $customsResponse = new customsResponse();
     if($info = $this->getfightinfo($data)){
       $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_departuretime']);
       $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
