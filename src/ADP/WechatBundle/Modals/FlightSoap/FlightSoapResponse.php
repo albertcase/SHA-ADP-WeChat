@@ -40,6 +40,7 @@ class FlightSoapResponse{
   }
 
   public function runSoap($data){
+    print_r($data);
     if(!isset($data['soapevent']))
       return false;
     if(isset($data['soapevent']) && method_exists($this, $data['soapevent'].'Request')){
