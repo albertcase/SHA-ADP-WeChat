@@ -87,16 +87,24 @@ class OutapiController extends Controller
   }
 
   public function testbuttonAction(Request $request){
-    $wehcat = $this->container->get('my.Wechat');
-    $q = new \ADP\WechatBundle\Modals\FlightSoap\FlightSoapResponse();
+    // $wehcat = $this->container->get('my.Wechat');
+    // $q = new \ADP\WechatBundle\Modals\FlightSoap\FlightSoapResponse();
+    // $data = array(
+    //   'soapevent' => 'getlatest',
+    //   'OpenID' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
+    //   'ident' => 'CUA5978',
+    // );
+    // $q->addSoapJob($data);
+    // // $q->teststartFlight();
+    // $q->startFlightSoap();
+    $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
     $data = array(
       'soapevent' => 'getlatest',
-      'OpenID' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
-      'ident' => 'CUA5978',
+      'OpenID' => $this->fromUsername,
+      'ident' => trim($this->postObj->Content),
     );
-    $q->addSoapJob($data);
-    // $q->teststartFlight();
-    $q->startFlightSoap();
+    $FlightSoapResponse->addSoapJob($data);
+    $FlightSoapResponse->startFlightSoap();
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
