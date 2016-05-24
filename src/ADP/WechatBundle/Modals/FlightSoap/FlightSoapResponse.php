@@ -124,7 +124,7 @@ class FlightSoapResponse{
 计划离港时间：{$info['filed_departuretime']}
 计划到达时间：{$info['estimatedarrivaltime']}";
     }else{
-      $content = "对不起您查询的航班不存在。请检查您的航班号"；
+      $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
     $msg = array(
       'msgtype' => 'text',
