@@ -113,9 +113,9 @@ class FlightSoapResponse{
   public function getlatestRequest($data){
     $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
     if($info = $this->getfightinfo($data)){
-      $info['filed_departuretime'] = date('Y-m-d', $info['filed_departuretime']);
+      $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_departuretime']);
       $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
-      $info['estimatedarrivaltime'] = date('Y-m-d', $info['estimatedarrivaltime']);
+      $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['estimatedarrivaltime']);
       $info['estimatedarrivaltime_time'] = date('H:i:s', $info['estimatedarrivaltime']);
       $content =
 "航班信息
@@ -123,9 +123,9 @@ class FlightSoapResponse{
 目的地：{$info['destinationName']}
 候机楼：{$info['terminal_orig']}
 候机大门：{$info['gate_orig']}
-计划离港日期：{$info['filed_departuretime']}
+计划离港日期：{$info['filed_departuretime_date']}
 计划离港时间：{$info['filed_departuretime_time']}
-计划到达日期：{$info['estimatedarrivaltime']}
+计划到达日期：{$info['estimatedarrivaltime_date']}
 计划到达时间：{$info['estimatedarrivaltime_time']}";
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
