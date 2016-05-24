@@ -63,6 +63,7 @@ class FlightSoapResponse{
   }
 
   public function getfightinfo($data){
+    require_once dirname(__FILE__).'/FlightSoap.php';
     $FlightSoap = new FlightSoap();
     $Soap = array(
       'soapfunction' => 'FlightInfo',
