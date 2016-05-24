@@ -20,6 +20,7 @@ class WechatResponse{
     $this->msgType = strtolower($this->postObj->MsgType);
     $this->fromUsername = trim($this->postObj->FromUserName);
     $this->toUsername = $this->postObj->ToUserName;
+    $this->container = $container;
     $this->dataSql = $container->get('my.dataSql');
   }
 
@@ -48,6 +49,14 @@ class WechatResponse{
       return $this->msgResponse($rs);
     }
     if(preg_match("/^[A-Za-z]{1,4}[0-9]{1,8}$/" ,trim($this->postObj->Content))){//judgement airport line
+      $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
+      $data = array(
+        'soapevent' => 'getlatest',
+        'OpenID' => $this->fromUsername,
+        'ident' => trim($this->postObj->Content),
+      );
+      $FlightSoapResponse->addSoapJob($data);
+      $FlightSoapResponse->startFlightSoap();
       return "airport";
     }
     return "";
