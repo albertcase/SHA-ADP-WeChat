@@ -57,7 +57,7 @@ class WechatResponse{
       );
       $FlightSoapResponse->addSoapJob($data);
       $FlightSoapResponse->startFlightSoap();
-      return "airport";
+      return "airport";//flight number search keywords
     }
     return "";
   }
