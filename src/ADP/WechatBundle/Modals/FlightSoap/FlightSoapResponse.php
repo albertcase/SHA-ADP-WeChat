@@ -40,7 +40,6 @@ class FlightSoapResponse{
   }
 
   public function runSoap($data){
-    print_r($data);
     if(!isset($data['soapevent']))
       return false;
     if(isset($data['soapevent']) && method_exists($this, $data['soapevent'].'Request')){
@@ -51,7 +50,7 @@ class FlightSoapResponse{
   public function pushSoap(){
     $this->_redis->set($this->prostr.$this->changT, time());
     $key = $this->_redis->lPop($this->prostr.$this->list);
-    $this->runSoap(json_encode($key, true));
+    $this->runSoap(json_decode($key, true));
     $this->_redis->delete($this->prostr.$this->changT);
   }
 
