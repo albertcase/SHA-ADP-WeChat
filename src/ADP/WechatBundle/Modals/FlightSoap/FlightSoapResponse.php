@@ -82,6 +82,7 @@ class FlightSoapResponse{
           'ident' => $result->FlightInfoResult->flights->ident,
           'filed_departuretime' => $result->FlightInfoResult->flights->filed_departuretime,
           'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
+          'originName' => $result->FlightInfoResult->flights->originName,
           'destinationName' => $result->FlightInfoResult->flights->destinationName,
         );
       }
@@ -104,6 +105,7 @@ class FlightSoapResponse{
         'filed_departuretime' => $flight['filed_departuretime'],
         'estimatedarrivaltime' => $flight['estimatedarrivaltime'],
         'destinationName' => $flight['destinationName'],
+        'originName' => $flight['originName'],
         'gate_orig' => $result2->AirlineFlightInfoResult->gate_orig,
         'terminal_orig' => $result2->AirlineFlightInfoResult->terminal_orig,
       );
@@ -122,6 +124,7 @@ class FlightSoapResponse{
       $content =
 "航班信息
 航班号：{$info['ident']}
+始发地：{$info['originName']}
 目的地：{$info['destinationName']}
 候机楼：{$info['terminal_orig']}
 候机大门：{$info['gate_orig']}
