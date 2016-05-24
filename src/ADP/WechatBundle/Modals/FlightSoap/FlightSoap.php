@@ -5,9 +5,9 @@ class FlightSoap{
 
   public function FlightSoapService(){
    $part = array(
-      // 'soap_version' => SOAP_1_1,
-      // 'encoding' => 'utf-8',
-      // 'cache_wsdl' => WSDL_CACHE_NONE,
+      'soap_version' => SOAP_1_1,
+      'encoding' => 'utf-8',
+      'cache_wsdl' => WSDL_CACHE_NONE,
       'trace' => true,
       'exceptions' => 0,
       'login' => 'dirkwang',

@@ -24,6 +24,21 @@ class FlightSoapResponse{
     }
   }
 
+  public function startFlightSoap(){
+    exec("nohup ".dirname(__FILE__)."/startFlightSoap.sh >>".dirname(__FILE__)."/startFlightSoap.log 2>&1 &");
+  }
+
+  public function teststartFlight(){
+    while($this->ststus())
+    {
+      $this->pushSoap();
+    }
+  }
+
+  public function addSoapJob($data){
+    $this->_redis->rPush($this->prostr.$this->list, json_encode($data ,JSON_UNESCAPED_UNICODE));
+  }
+
   public function runSoap($data){
     if(!isset($data['soapevent']))
       return false;
@@ -32,7 +47,22 @@ class FlightSoapResponse{
     }
   }
 
-  public function getlatestRequest($data){
+  public function pushSoap(){
+    $this->_redis->set($this->prostr.$this->changT, time());
+    $key = $this->_redis->lPop($this->prostr.$this->list);
+    $this->runSoap(json_encode($key, true));
+    $this->_redis->delete($this->prostr.$this->changT);
+  }
+
+  public function ststus(){
+    if($this->_redis->lSize($this->prostr.$this->list) > 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  public function getfightinfo($data){
     $FlightSoap = new FlightSoap();
     $Soap = array(
       'soapfunction' => 'FlightInfo',
@@ -41,7 +71,68 @@ class FlightSoapResponse{
         'howMany' => '1',
       ),
     );
-    return $FlightSoap->SoapApi($Soap);
+    $result = $FlightSoap->SoapApi($Soap);
+    if($result instanceof \SoapFault)
+      return false;
+    $flight = array();
+    if(property_exists($result, 'FlightInfoResult')){
+      if(property_exists($result->FlightInfoResult, 'flights')){
+        $flight = array(
+          'ident' => $result->FlightInfoResult->flights->ident,
+          'filed_departuretime' => $result->FlightInfoResult->flights->filed_departuretime,
+          'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
+          'destinationName' => $result->FlightInfoResult->flights->destinationName,
+        );
+      }
+    }
+    if(!$flight)
+      return false;
+    $Soap = array(
+      'soapfunction' => 'AirlineFlightInfo',
+      'AirlineFlightInfo' => array(
+        'faFlightID' => $flight['ident'].'@'.$flight['filed_departuretime'],
+      ),
+    );
+    $result2 = $FlightSoap->SoapApi($Soap);
+    if($result2 instanceof \SoapFault)
+      return false;
+    $out = array();
+    if(property_exists($result2, 'AirlineFlightInfoResult')){
+      $out = array(
+        'ident' => $flight['ident'],
+        'filed_departuretime' => $flight['filed_departuretime'],
+        'estimatedarrivaltime' => $flight['estimatedarrivaltime'],
+        'destinationName' => $flight['destinationName'],
+        'gate_orig' => $result2->AirlineFlightInfoResult->gate_orig,
+        'terminal_orig' => $result2->AirlineFlightInfoResult->terminal_orig,
+      );
+    }
+    return $out;
+  }
+
+  public function getlatestRequest($data){
+    $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
+    if($info = $this->getfightinfo($data)){
+      $info['filed_departuretime'] = date('Y-m-d H:i:s', $info['filed_departuretime']);
+      $info['estimatedarrivaltime'] = date('Y-m-d H:i:s', $info['estimatedarrivaltime']);
+      $content =
+"航班信息
+航班号：{$info['ident']}
+目的地：{$info['destinationName']}
+候机楼：{$info['terminal_orig']}
+候机大门：{$info['gate_orig']}
+计划离港时间：{$info['filed_departuretime']}
+计划到达时间：{$info['estimatedarrivaltime']}";
+    }else{
+      $content = "对不起您查询的航班不存在。请检查您的航班号"；
+    }
+    $msg = array(
+      'msgtype' => 'text',
+      'touser' => $data['OpenID'],
+      'content' => $content
+    );
+    $customsResponse->addCustomMsg($msg);
+    $customsResponse->sendCustomMsg();
   }
 
 
