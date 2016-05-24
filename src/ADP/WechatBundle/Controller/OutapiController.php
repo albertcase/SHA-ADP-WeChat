@@ -100,8 +100,8 @@ class OutapiController extends Controller
     $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
     $data = array(
       'soapevent' => 'getlatest',
-      'OpenID' => $this->fromUsername,
-      'ident' => trim($this->postObj->Content),
+      'OpenID' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
+      'ident' => 'CUA5978',
     );
     $FlightSoapResponse->addSoapJob($data);
     $FlightSoapResponse->startFlightSoap();
