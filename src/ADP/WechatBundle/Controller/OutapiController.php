@@ -95,7 +95,8 @@ class OutapiController extends Controller
       'ident' => 'CUA5978',
     );
     $q->addSoapJob($data);
-    $q->teststartFlight();
+    // $q->teststartFlight();
+    $q->startFlightSoap();
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
