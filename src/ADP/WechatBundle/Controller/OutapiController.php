@@ -86,9 +86,10 @@ class OutapiController extends Controller
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
-  public function testbuttonAction(){
+  public function testbuttonAction(Request $request){
     $wehcat = $this->container->get('my.Wechat');
-    print_r($wehcat->create_menu_array());
+    $q = new \ADP\WechatBundle\Modals\FlightSoap\FlightSoapResponse();
+    print_r($q->getlatestRequest(array('ident' => 'CUA5978')));
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 

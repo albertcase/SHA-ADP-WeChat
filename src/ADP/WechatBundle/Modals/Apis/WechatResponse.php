@@ -27,8 +27,11 @@ class WechatResponse{
     if(method_exists($this, $this->msgType.'Request')){
       $backxml =  call_user_func_array(array($this, $this->msgType.'Request'), array());
     }
-    if($backxml)
-      return $backxml;
+    if($backxml){
+      if($backxml != 'airport')
+        return $backxml;
+      return '';
+    }
     return $this->defaultfeedback();
   }
 
@@ -43,6 +46,9 @@ class WechatResponse{
     $rs = $this->dataSql->textField($this->postObj->Content);
     if(is_array($rs) && count($rs)> 0 ){
       return $this->msgResponse($rs);
+    }
+    if(preg_match("/^[A-Za-z]{1,4}[0-9]{1,8}$/" ,trim($this->postObj->Content))){//judgement airport line
+      return "airport";
     }
     return "";
   }

@@ -33,7 +33,15 @@ class FlightSoapResponse{
   }
 
   public function getlatestRequest($data){
-
+    $FlightSoap = new FlightSoap();
+    $Soap = array(
+      'soapfunction' => 'FlightInfo',
+      'FlightInfo' => array(
+        'ident' => $data['ident'],
+        'howMany' => '1',
+      ),
+    );
+    return $FlightSoap->SoapApi($Soap);
   }
 
 
