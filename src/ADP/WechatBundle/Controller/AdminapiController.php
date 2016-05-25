@@ -32,9 +32,10 @@ class AdminapiController extends Controller
     $wehcat = $this->container->get('my.Wechat');
     $data = array('code' => '9', 'msg' => 'update wechat menus error');
     $check = $wehcat->checkmenuarray();
+    print_r($check);
     if(!is_array($check) && $check){
-      if($wehcat->buildmenu())
-        $data = array('code' => '10', 'msg' => 'update wechat menus success');
+      // if($wehcat->buildmenu())
+      //   $data = array('code' => '10', 'msg' => 'update wechat menus success');
     }else{
       $data = $check;
     }
