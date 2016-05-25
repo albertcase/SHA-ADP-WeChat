@@ -40,7 +40,7 @@ class DefaultController extends Controller
 
     public function testAction(){
       $wehcat = $this->container->get('my.Wechat');
-      $data = $wehcat->create_menu_array();
+      $data = $wehcat->checkmenuarray();
       print_r($data);
       $response = new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
       return $response;

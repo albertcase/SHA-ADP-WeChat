@@ -31,8 +31,13 @@ class AdminapiController extends Controller
   public function createmenuAction(){
     $wehcat = $this->container->get('my.Wechat');
     $data = array('code' => '9', 'msg' => 'update wechat menus error');
-    if($wehcat->buildmenu())
-      $data = array('code' => '10', 'msg' => 'update wechat menus success');
+    $check = $wehcat->checkmenuarray();
+    if(!is_array($check) && $check){
+      if($wehcat->buildmenu())
+        $data = array('code' => '10', 'msg' => 'update wechat menus success');
+    }else{
+      $data = $check;
+    }
     return  new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 
