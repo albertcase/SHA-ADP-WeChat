@@ -34,6 +34,8 @@ class buttonaddm extends FormRequest{
     $count = $dataSql->getCount(array('subOrder' => '0'), 'wechat_menu');
     if($count >= 3)
       return array('code' => '8', 'msg' => 'the total menus less than 3');
+    if(strlen($this->getdata['menuName']) > 8 )
+      return array('code' => '18', 'msg' => 'the length of button name not more than 8');
     $button = $this->getbutton();
     $button['mOrder'] = $count+1;
     $button['subOrder'] = '0';
