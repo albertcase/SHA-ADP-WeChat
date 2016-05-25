@@ -97,14 +97,16 @@ class OutapiController extends Controller
     // $q->addSoapJob($data);
     // // $q->teststartFlight();
     // $q->startFlightSoap();
-    $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
-    $data = array(
-      'soapevent' => 'getlatest',
-      'OpenID' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
-      'ident' => 'CUA5978',
-    );
-    $FlightSoapResponse->addSoapJob($data);
-    $FlightSoapResponse->startFlightSoap();
+    // $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
+    // $data = array(
+    //   'soapevent' => 'getlatest',
+    //   'OpenID' => 'o8v3vssqk_UkjAsBYrd4Teb-m54A',
+    //   'ident' => 'CUA5978',
+    // );
+    // $FlightSoapResponse->addSoapJob($data);
+    // $FlightSoapResponse->startFlightSoap();
+    $wehcat = $this->container->get('my.Wechat');
+    print_r($wehcat->create_menu_array());
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 
