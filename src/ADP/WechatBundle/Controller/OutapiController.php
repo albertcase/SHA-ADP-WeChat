@@ -81,8 +81,9 @@ class OutapiController extends Controller
   }
 
   public function popdataAction(){
-    $customsResponse = $this->container->get('my.customsResponse');
-    $customsResponse->testsendMsg();
+    // $customsResponse = $this->container->get('my.customsResponse');
+    // $customsResponse->testsendMsg();
+    print_r(mb_strlen('戴高乐机场'));
     return new Response(json_encode('success', JSON_UNESCAPED_UNICODE));
   }
 

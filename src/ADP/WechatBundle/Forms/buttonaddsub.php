@@ -38,8 +38,8 @@ class buttonaddsub extends FormRequest{
       return array('code' => '6', 'msg' => 'the main button which include this submenu not exists');
     if($count > '5')
       return array('code' => '17', 'msg' => 'the total of the subbutton not more than 5');
-    if(strlen($this->getdata['menuName']) > 14 )
-      return array('code' => '18', 'msg' => 'the length of subbutton name not more than 14');
+    if(strlen($this->getdata['menuName']) > 40 )
+      return array('code' => '18', 'msg' => 'the length of subbutton name not more than 40');
     $button = $this->getbutton();
     $button['mOrder'] = $this->getdata['mOrder'];
     $button['subOrder'] = $count+1;

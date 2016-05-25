@@ -35,7 +35,6 @@ class AdminapiController extends Controller
     if(!is_array($check) && $check){
       if($wehcat->buildmenu()){
         $data = array('code' => '10', 'msg' => 'update wechat menus success');
-        print_r('aaaaaaaaaaaaaaaaaaa');
       }
     }else{
       $data = $check;

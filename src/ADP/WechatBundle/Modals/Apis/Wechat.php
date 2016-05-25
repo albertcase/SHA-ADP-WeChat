@@ -123,15 +123,15 @@ class Wechat{
     $menus = $this->create_menu_array();
     $menus = $menus['button'];
     foreach($menus as $x){
-      if(strlen($x['name']) > 8)
-        return array('code' => '11', 'msg' => 'the length of submenu "'.$x['name'].'" name not more than 8');
+      if(strlen($x['name']) > 16)
+        return array('code' => '11', 'msg' => 'the length of menu "'.$x['name'].'" name not more than 16');
       if(!isset($x['sub_button']) && !isset($x['type'])){
         return array('code' => '11', 'msg' => 'the main menu "'.$x['name'].'" not have a feedback event');
       }
       if(isset($x['sub_button'])){
         foreach($x['sub_button'] as $xx){
-          if(strlen($xx['name']) > 14)
-            return array('code' => '11', 'msg' => 'the length of submenu "'.$xx['name'].'" name not more than 14');
+          if(strlen($xx['name']) > 40)
+            return array('code' => '11', 'msg' => 'the length of submenu "'.$xx['name'].'" name not more than 40');
           if(!isset($xx['type'])){
             return array('code' => '11', 'msg' => 'the submenu "'.$xx['name'].'" not have a feedback event');
           }
