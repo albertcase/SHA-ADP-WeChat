@@ -108,14 +108,14 @@ class Wechat{
 
 // creat_menu start
   public function buildmenu(){
-    print_r('aaaaaaaaaaaaaaaaaaa');
-    if(!$access_token = $this->getAccessToken()){
-      return false;}
+    if(!$access_token = $this->getAccessToken())
+      return false;
     $url = $this->_urls['create_menu'];
     $url = str_replace('ACCESS_TOKEN', $access_token ,$url);
     $result = $this->post_data($url, json_encode($this->create_menu_array(), JSON_UNESCAPED_UNICODE));
+    print_r('aaaaaaaaaaaaaaaaaaa');
+    print_r($result);
     if(!$result['errcode']){
-      print_r($result);
       return true;
     }
     return false;
