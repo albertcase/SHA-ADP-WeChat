@@ -533,9 +533,9 @@ var menu = {
     $(obj+" input").each(function(){
       $(this).val("");
     });
-    obj.find(".externalpage").html('');
-    obj.find(".pushmessage").html('');
-    obj.find(".textmessage").html('');
+    $(obj).find(".externalpage").html('');
+    $(obj).find(".pushmessage").html('');
+    $(obj).find(".textmessage").html('');
   },
   ajaxaddmbutton:function(){
     popup.openloading();
