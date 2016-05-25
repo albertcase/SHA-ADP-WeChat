@@ -124,7 +124,7 @@ class Wechat{
     $menus = $menus['button'];
     foreach($menus as $x){
       if(strlen($x['name']) > 8)
-        return array('code' => '11', 'msg' => 'the length of submenu "'.$xx['name'].'" name not more than 8');
+        return array('code' => '11', 'msg' => 'the length of submenu "'.$x['name'].'" name not more than 8');
       if(!isset($x['sub_button']) && !isset($x['type'])){
         return array('code' => '11', 'msg' => 'the main menu "'.$x['name'].'" not have a feedback event');
       }
