@@ -74,6 +74,30 @@
      </div>
    </div>
 <!-- pagelist end-->
+<!-- edit page -->
+<div id="editpage">
+  <div class="panel panel-default">
+     <div class="panel-heading">
+           Edit Page
+           <i class="fa fa-mail-reply pull-right"></i>
+     </div>
+     <div class="panel-body" id="editpagepanel">
+       <button type="button" class="btn btn-primary pull-right" id="editpagesubmit">
+          Save
+       </button>
+       <div class="form-group">
+         <label>PAGE NAME:</label>
+         <input class="form-control pagename" placeholder="Enter PAGE NAME" style="width:80%">
+       </div>
+       <div class="form-group">
+         <label>PAGE TITLE:</label>
+         <input class="form-control pagetitle" placeholder="Enter PAGE TITLE" style="width:80%">
+       </div>
+       <textarea name="editor2" id="editor2"></textarea>
+    </div>
+  </div>
+</div>
+<!-- edit page end-->
 <!-- addpage -->
 <div id="addpage">
   <button type="button" class="btn btn-primary pull-right" id="articlesubmit">
@@ -94,42 +118,7 @@
 </div>
 
 <!-- popup -->
-<div class="modal fade" id="editpage" tabindex="-1" role="dialog"
-   aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-               aria-hidden="true">
-            </button>
-            <h4 class="modal-title" id="myModalLabel">
-               Edit Article
-            </h4>
-         </div>
-         <div class="modal-body">
-<!-- add main menu form -->
-<div class="form-group">
-  <label>PAGE NAME:</label>
-  <input class="form-control pagename" placeholder="Enter PAGE NAME" style="width:80%">
-</div>
-<div class="form-group">
-  <label>PAGE TITLE:</label>
-  <input class="form-control pagetitle" placeholder="Enter PAGE TITLE" style="width:80%">
-</div>
-<textarea name="editor2" id="editor2"></textarea>
-<!-- add main menu form end  -->
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default"
-               data-dismiss="modal">Close
-            </button>
-            <button type="button" class="btn btn-primary savepagechange">
-               SAVE
-            </button>
-         </div>
-      </div><!-- /.modal-content -->
-   </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
 
 <!-- popup end -->
   <script>

@@ -1739,7 +1739,7 @@ var webpage = {
   },
   gotolist:function(){
     $("#pagmanagenav .active").removeClass("active");
-    $("#pagmanagenav").eq(0).addClass("active");
+    $("#pagmanagenav li").eq(0).addClass("active");
     $("#pagmanage .navshow").removeClass("navshow");
     $("#pagelist").addClass("navshow");
   },
@@ -1795,7 +1795,8 @@ var webpage = {
           $("#editpage .pagename").val(data.article.pagename);
           $("#editpage .pagetitle").val(data.article.pagetitle);
           CKEDITOR.instances.editor2.setData(data.article.content);
-          $('#editpage').modal('show');
+          $("#pagmanage .navshow").removeClass("navshow");
+          $("#editpage").addClass("navshow");
           return true;
         }
       },
@@ -1820,8 +1821,8 @@ var webpage = {
       success: function(data){
         popup.closeloading();
         if(data.code == "10"){
-          $('#editpage').modal('hide');
           webpage.ajaxpagelist();
+          webpage.gotolist();
           popup.openwarning(data.msg);
           return true;
         }
@@ -1853,8 +1854,11 @@ var webpage = {
       var pageid = $(this).parent().parent().attr("pageid");
       self.getarticle(pageid);
     });
-    $("#editpage .savepagechange").click(function(){
+    $("#editpagesubmit").click(function(){
       self.updatearticle();
+    });
+    $("#editpage .fa-mail-reply").click(function(){
+      webpage.gotolist();
     });
   }
 }

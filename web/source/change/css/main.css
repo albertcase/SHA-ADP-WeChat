@@ -18,11 +18,11 @@
   display: block !important;
 }
 
-.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#tagkeyslist,#addtagdiv,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist,#taglist{
+.externalpage,.pushmessage,.textmessage,.none,#welcomemessage,#tagkeyslist,#editpage,#addtagdiv,#defaultmessage,#changepwd,#usermanage,#addpage,#pagelist,#taglist{
   display: none;
 }
 
-#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#tagkeyslist,#addtagdiv,#pagelist,#taglist,#maincontent{
+#welcomemessage,#defaultmessage,#changepwd,#usermanage,#addpage,#tagkeyslist,#editpage,#addtagdiv,#pagelist,#taglist,#maincontent{
   background-color: #FFF;
   padding:20px;
   border-left: 1px solid #ddd;
