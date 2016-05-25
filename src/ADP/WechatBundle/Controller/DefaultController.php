@@ -38,6 +38,10 @@ class DefaultController extends Controller
       return $this->render('ADPWechatBundle:Default:index.html.twig', array('name' => '404'));
     }
 
+    public function debentureAction(){
+      return $this->render('ADPWechatBundle:Default:debenture.html.twig');
+    }
+
     public function testAction(){
       $wehcat = $this->container->get('my.Wechat');
       $data = $wehcat->checkmenuarray();

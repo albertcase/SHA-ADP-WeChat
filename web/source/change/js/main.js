@@ -530,7 +530,7 @@ var menu = {
     return a;
   },
   cleaninput:function(obj){
-    obj.find("input").each(function(){
+    $(obj+" input").each(function(){
       $(this).val("");
     });
     obj.find(".externalpage").html('');
@@ -549,7 +549,7 @@ var menu = {
       success: function(data){
         popup.closeloading();
         if(data.code == '10'){
-          menu.cleaninput($("#myModal"));
+          menu.cleaninput("#myModal");
           $('#myModal').modal('hide');
           popup.openwarning(data.msg);
           menu.ajaxreload();
@@ -576,7 +576,7 @@ var menu = {
       success: function(data){
         popup.closeloading();
         if(data.code == '10'){
-          menu.cleaninput($("#submenu"));
+          menu.cleaninput("#submenu");
           $('#submenu').modal('hide');
           popup.openwarning(data.msg);
           menu.ajaxreload();
@@ -752,7 +752,7 @@ var menu = {
         popup.closeloading();
         if(data.code == '10'){
           menu.ajaxreload();
-          menu.cleaninput($("#editmenu"));
+          menu.cleaninput("#editmenu");
           popup.openwarning(data.msg);
           $('#editmenu').modal('hide');
           return true;
@@ -1686,6 +1686,12 @@ var webpage = {
     CKEDITOR.instances.editor1.setData('');
   },
   ajaxarticleup:function(){
+    var test = [
+      [$("#addpage .pagename"), "tnonull", "the pagename is empty"],
+      [$("#addpage .pagetitle"), "tnonull", "the pagetitle is empty"],
+    ];
+    if(!formstr.tallobj(test))
+      return false;
     popup.openloading();
     $.ajax({
       url: "/adminapi/articleadd/",
@@ -1807,6 +1813,12 @@ var webpage = {
     });
   },
   updatearticle:function(){
+    var test = [
+      [$("#editpage .pagename"), "tnonull", "the pagename is empty"],
+      [$("#editpage .pagetitle"), "tnonull", "the pagetitle is empty"],
+    ];
+    if(!formstr.tallobj(test))
+      return false;
     popup.openloading();
     $.ajax({
       url: "/adminapi/editarticle/",

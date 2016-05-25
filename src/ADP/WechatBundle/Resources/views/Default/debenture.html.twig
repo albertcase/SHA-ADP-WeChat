@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="keywords" content="Photography, Photo Images, Responsive, Business, Corporate, Gallery, Notebook" />
+<meta name="description" content="PhotoBax Responsive Photography Business Template" />
+<head>
+  <title>退税计算器</title>
+  <style type="text/css">
+iframe{
+  width: 100%;
+}
+input{
+  padding:3% 3%;
+  background-color: #f6f6f6;
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  font-size: 100%;
+  text-align: right;
+  color:#111;
+  width:72%;
+  margin-left:5%;
+  margin-right:5%;
+}
+hr{
+  margin-top:30px;
+}
+  </style>
+  <script type="text/javascript" src="/source/manage/js/jquery-1.11.0.js"></script>
+</head>
+<body style="margin:0px;padding:0px;font-size:250%">
+  <div><img src="/source/change/img/adp1.png" style="width:100%"></div>
+<div style="width:90%;margin:0 auto">
+  <p style="margin-left:5%;width:90%">消费金额：</p>
+  <input class="form-control pagename" placeholder="请输入金额" id="inputm" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">€
+  <hr><br>
+  <p style="margin-left:5%;width:90%">退税金额：</p>
+  <input class="form-control pagename" disabled="disabled" id="outm">€
+  <hr><br>
+  <p style="margin-left:5%;width:90%">在店铺购物金额至少175欧元，科当天在同一店铺申请退税服务。</p>
+
+  <p style="margin-left:5%;width:90%">退税服务仅适用于游客。更多详细信息请<br><a href="#">点击这里</a></p>
+</div>
+  <div><img src="/source/change/img/adp2.png" style="width:100%"></div>
+  <script type="text/javascript">
+    $(function(){
+      $("#inputm").change(function(){
+        var m = $("#inputm").val();
+        var a = m * 0.2;
+        $("#outm").val(a);
+      })
+    });
+  </script>
+</body>
+</html>
