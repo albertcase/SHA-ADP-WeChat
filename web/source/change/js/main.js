@@ -498,18 +498,20 @@ var menu = {
     return a;
   },
   editpushmessage:function(){
+    var key = new Date().getTime();
     var self = this;
     var a = {
       "buttonupdate[id]": self.editinfo['id'],
       "buttonupdate[menuName]": $("#editmenu .menuname").val(),
       "buttonupdate[eventtype]": 'click',
       "buttonupdate[MsgType]": 'news',
-      "buttonupdate[eventKey]": self.editinfo['eventKey'],
+      "buttonupdate[eventKey]": "e"+key,
       "buttonupdate[newslist]": self.getnewslist($("#editmenu .pushmessage .newslist")),
     };
     return a;
   },
   edittextmessage:function(){
+    var key = new Date().getTime();
     var self = this;
     var a={
       "buttonupdate[id]": self.editinfo['id'],
@@ -517,7 +519,7 @@ var menu = {
       "buttonupdate[eventtype]":'click',
       "buttonupdate[Content]": $("#editmenu .textcontent").val(),
       "buttonupdate[MsgType]": 'text',
-      "buttonupdate[eventKey]": self.editinfo['eventKey'],
+      "buttonupdate[eventKey]": "e"+key,
     };
     return a;
   },
