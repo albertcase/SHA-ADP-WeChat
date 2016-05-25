@@ -10,6 +10,10 @@ adp_wechat_wechattest:
     path:     /wechattest/
     defaults: { _controller: ADPWechatBundle:Default:wechattest }
 
+adp_wechat_test:
+    path:     /test/
+    defaults: { _controller: ADPWechatBundle:Default:test }
+
 adp_wechat_api:
     path:     /api/
     defaults: { _controller: ADPWechatBundle:Default:api }
