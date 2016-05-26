@@ -121,6 +121,10 @@ class FlightSoapResponse{
       $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
       $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['estimatedarrivaltime']);
       $info['estimatedarrivaltime_time'] = date('H:i:s', $info['estimatedarrivaltime']);
+      foreach($info as $x => $_val){
+        if(!$_val)
+          $info[$x] = "暂未提供";
+      }
       $content =
 "航班信息
 航班号：{$info['ident']}
@@ -131,7 +135,9 @@ class FlightSoapResponse{
 计划离港日期：{$info['filed_departuretime_date']}
 计划离港时间：{$info['filed_departuretime_time']}
 计划到达日期：{$info['estimatedarrivaltime_date']}
-计划到达时间：{$info['estimatedarrivaltime_time']}";
+计划到达时间：{$info['estimatedarrivaltime_time']}
+
+该信息由第三方平台提供";
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
