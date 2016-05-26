@@ -133,3 +133,12 @@ a > img {
 	border: none;
 	outline: 1px solid #0782C1;
 }
+
+
+.dropmenuckedit{
+  border: 10px solid #CCC;
+}
+
+.dropmenuckedit>div:nth-child(1){
+  border: 2px solid #C0C;
+}

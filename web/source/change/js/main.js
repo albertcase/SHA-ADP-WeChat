@@ -740,6 +740,7 @@ var menu = {
         return true;
       }
     }
+    self.editbuttonfun = "editnone";
   },
   ajaxupdatebutton:function(){
     popup.openloading();

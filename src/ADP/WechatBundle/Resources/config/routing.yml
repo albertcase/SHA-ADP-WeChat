@@ -29,6 +29,10 @@ adp_wechat_article:
 adp_wechat_debenture:
     path:     /tools/debenture/
     defaults: { _controller: ADPWechatBundle:Default:debenture }
+
+adp_wechat_aaaaa:
+    path:     /tools/aaaaa/
+    defaults: { _controller: ADPWechatBundle:Default:aaaaa }
 # admin
 adp_admin_createmenu:
     path:     /adminapi/createmenu/
