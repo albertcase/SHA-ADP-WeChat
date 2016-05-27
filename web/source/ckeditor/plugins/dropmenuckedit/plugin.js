@@ -2,22 +2,24 @@ CKEDITOR.plugins.add( 'dropmenuckedit',
     {
         init : function( editor )
         {
-    
+
             // Register the command.
             editor.addCommand( 'dropmenuckedit',{
                 exec : function( editor )
                 {
-                    editor.insertHtml('<pre class="brush:php; toolbar: true; auto-links: false;" style="font-size:12px">//php脚本开始</pre>');
+                  var newhtml = CKEDITOR.dom.element.createFromHtml('<div class="dropmenuckedit"><div>aaaaaa</div><div>bbbbbb</div></div>');
+                    // editor.insertHtml('<div class="dropmenuckedit"><div>aaaaaa</div><div>bbbbbb</div></div>');
+                    editor.insertElement(newhtml);
                 }
             });
-            alert('dedephp!');
+            // alert('dedephp!');
             // Register the toolbar button.
             editor.ui.addButton( 'dropmenuckedit',
             {
-                label : '插入PHP代码',
+                label : 'dropshow',
                 command : 'dropmenuckedit',
-                icon: 'images/noimage.png'
+                icon: 'images/html_add.png'
             });
-            alert(editor.name);
+            // alert(editor.name);
         },
     });

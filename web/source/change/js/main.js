@@ -1334,12 +1334,20 @@ var autoreplay = {
   buildMsg: function(data){
     var self = this;
     if(data.MsgType == "text"){
+      if(self.navactive == "defaultmessage")
+        autoreplay.defaultfun = "dtextmessage";
+      if(self.navactive == "welcomemessage")
+        autoreplay.welcomefun = "wtextmessage";
       $("#"+self.navactive+" .buttontype .btn").eq(0).addClass("active");
       $("#"+self.navactive+" .textmessage").addClass("menushow");
       $("#"+self.navactive+" .textmessage").html(htmlconetnt.atextmessage(data.MsgData.Content));
       return true;
     }
     if(data.MsgType == "news"){
+      if(self.navactive = "defaultmessage")
+        autoreplay.defaultfun = "dpushmessage";
+      if(self.navactive == "welcomemessage")
+        autoreplay.welcomefun = "wpushmessage";
       $("#"+self.navactive+" .buttontype .btn").eq(1).addClass("active");
       $("#"+self.navactive+" .pushmessage").addClass("menushow");
       $("#"+self.navactive+" .pushmessage").html(htmlconetnt.apushmessage(data.MsgData.Articles));
