@@ -127,9 +127,9 @@
           filebrowserImageUploadUrl: '/outapi/ckeditoruploadimage/',
           image_previewText: 'your image',
           height: '500',
-          extraPlugins:'dropmenuckedit',
+          extraPlugins:'dropmenuckedit,hrline',
           pasteFromWordRemoveStyles: true,
-          // format_div: { element : 'div', attributes : { class : 'dropmenuckedit' } },
+          allowedContent: true,
           toolbar:[
 ['Source','-','NewPage','Preview'],
 ['Undo','Redo'],
@@ -140,7 +140,7 @@
 ['Image','Table','HorizontalRule','Iframe'],
 '/',
 ['Styles','Format','Font','FontSize'],
-['TextColor','BGColor','dropmenuckedit']
+['TextColor','BGColor','dropmenuckedit','hrline']
           ]
         };
         CKEDITOR.replace( 'editor1', config);
