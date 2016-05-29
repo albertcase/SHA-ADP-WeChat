@@ -127,7 +127,7 @@
           filebrowserImageUploadUrl: '/outapi/ckeditoruploadimage/',
           image_previewText: 'your image',
           height: '500',
-          extraPlugins:'dropmenuckedit,hrline',
+          extraPlugins:'dropmenuckedit,hrline,myPreview',
           pasteFromWordRemoveStyles: true,
           allowedContent: true,
           toolbar:[
@@ -140,7 +140,7 @@
 ['Image','Table','HorizontalRule','Iframe'],
 '/',
 ['Styles','Format','Font','FontSize'],
-['TextColor','BGColor','dropmenuckedit','hrline']
+['TextColor','BGColor','dropmenuckedit','hrline','myPreview']
           ]
         };
         CKEDITOR.replace( 'editor1', config);
