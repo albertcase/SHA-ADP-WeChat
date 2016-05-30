@@ -116,7 +116,7 @@ class Wechat{
     if(!$result['errcode']){
       return true;
     }
-    return false;
+    return $result['errmsg'];
   }
 
   public function checkmenuarray(){
