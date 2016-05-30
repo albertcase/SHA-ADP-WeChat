@@ -34,7 +34,7 @@ class AdminapiController extends Controller
     $check = $wehcat->checkmenuarray();
     if(!is_array($check) && $check){
       $build = $wehcat->buildmenu();
-      if($build !== true ){
+      if($build === true ){
         $data = array('code' => '10', 'msg' => 'update wechat menus success');
       }else{
         $data = array('code' => '11' ,'msg' => $build);
