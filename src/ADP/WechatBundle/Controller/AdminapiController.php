@@ -255,6 +255,6 @@ class AdminapiController extends Controller
   }
 
   public function notpassedeAction(){
-    return new Response(json_encode(array('code' => '2' ,'msg' => 'you are not login'), JSON_UNESCAPED_UNICODE));
+    return new Response(json_encode(array('code' => '2' ,'msg' => 'You are not Logged In'), JSON_UNESCAPED_UNICODE));
   }
 }
