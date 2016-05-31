@@ -34,7 +34,7 @@ class keywordupdate extends FormRequest{
     $dataSql = $this->container->get('my.dataSql');
     if($t = $dataSql->checktagnewname($this->getdata['menuId'],$this->getdata['Tagname']))
       return array('code' => '8', 'msg' => 'this Tagname already exists');
-    $keywords = json_decode($this->getdata['keywords'], true);
+    $keywords = $this->dealkeyword();
     if(!$keywords || !is_array($keywords))
       return array('code' => '6', 'msg' => $keywords);
     foreach($keywords as $x){
@@ -95,5 +95,15 @@ class keywordupdate extends FormRequest{
       return $events;
     }
     return $events;
+  }
+
+  public function dealkeyword(){
+    $out = array();
+    $keywords = json_decode($this->getdata['keywords'], true);
+    foreach($keywords as $x){
+      $exp = explode("；", $x);
+      $out = $out + $exp;
+    }
+    return array_unique($out);
   }
 }
