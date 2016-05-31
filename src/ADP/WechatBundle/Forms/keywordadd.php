@@ -33,7 +33,7 @@ class keywordadd extends FormRequest{
     $dataSql = $this->container->get('my.dataSql');
     if($dataSql->getCount(array('Tagname' => $this->getdata['Tagname']), 'wechat_keyword_tag')) //check tagname exists
       return array('code' => '8', 'msg' => 'this Tagname already exists');
-    $keywords = json_decode($this->getdata['keywords'], true);
+    $keywords = $this->dealkeyword();
     if(!$keywords || !is_array($keywords))
       return array('code' => '6', 'msg' => 'less than include one keyword');
     foreach($keywords as $x){
@@ -94,6 +94,16 @@ class keywordadd extends FormRequest{
       return $events;
     }
     return $events;
+  }
+
+  public function dealkeyword(){
+    $out = array();
+    $keywords = json_decode($this->getdata['keywords'], true);
+    foreach($keywords as $x){
+      $exp = explode("；", $x);
+      $out = $out + $exp;
+    }
+    return array_unique($out);
   }
 
 
