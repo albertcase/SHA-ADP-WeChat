@@ -152,13 +152,21 @@ class Wechat{
         $data[$x['mOrder']] = $this->buildbutton($x, $data[$x['mOrder']]);
       }else{
         $k = intval($x['subOrder'])-1;
-        print_r($k);
         if(!isset($data[$x['mOrder']]['sub_button'][$k]))
           $data[$x['mOrder']]['sub_button'][$k] = array();
+        $data[$x['mOrder']]['sub_button'] = $this->barraybefore($data[$x['mOrder']]['sub_button'], $k);
         $data[$x['mOrder']]['sub_button'][$k] = $this->buildbutton($x, $data[$x['mOrder']]['sub_button'][$k]);
       }
     }
     return $this->filterbutton($data);
+  }
+
+  public function barraybefore($data, $k){
+    for($i = 0; $i<$k ;$i++){
+      if(!isset($data[$i]))
+        $data[$i] = array();
+    }
+    return $data;
   }
 
   public function filterbutton($data){
