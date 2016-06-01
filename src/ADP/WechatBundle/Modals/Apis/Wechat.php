@@ -152,6 +152,7 @@ class Wechat{
         $data[$x['mOrder']] = $this->buildbutton($x, $data[$x['mOrder']]);
       }else{
         $k = intval($x['subOrder'])-1;
+        print_r($k);
         if(!isset($data[$x['mOrder']]['sub_button'][$k]))
           $data[$x['mOrder']]['sub_button'][$k] = array();
         $data[$x['mOrder']]['sub_button'][$k] = $this->buildbutton($x, $data[$x['mOrder']]['sub_button'][$k]);
