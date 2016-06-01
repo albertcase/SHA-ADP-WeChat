@@ -162,7 +162,7 @@ class Wechat{
   }
 
   public function barraybefore($data, $k){
-    for($i = 0; $i<$k ;$i++){
+    for($i = 0; $i<=$k ;$i++){
       if(!isset($data[$i]))
         $data[$i] = array();
     }
