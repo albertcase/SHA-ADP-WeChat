@@ -114,22 +114,22 @@ class OutapiController extends Controller
 
   public function myjobAction(Request $request){
     $FlightSoap = new \ADP\WechatBundle\Modals\FlightSoap\FlightSoap();
-    // $data = array();
-    // $data['ident'] = $request->get('ident');
-    // preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
-    // $Soap = array(
-    //   'soapfunction' => 'FlightInfo',
-    //   'FlightInfo' => array(
-    //     'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
-    //     'howMany' => '1',
-    //   ),
-    // );
-    // $result = $FlightSoap->SoapApi($Soap);
-    // print_r($result);
+    $data = array();
+    $data['ident'] = $request->get('ident');
+    preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
+    $Soap = array(
+      'soapfunction' => 'FlightInfo',
+      'FlightInfo' => array(
+        'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
+        'howMany' => '1',
+      ),
+    );
+    $result = $FlightSoap->SoapApi($Soap);
+    print_r($result);
     // $tgap = explode(":",'00:55:00');
-    $a = intval(strtotime('1970/1/1 00:55:00'))+8*3600;
+    // $a = intval(strtotime('1970/1/1 00:55:00'))+8*3600;
     // $a = intval($tgap[0])*3600+intval($tgap[1])*60+intval($tgap[2]);
-    print_r($a);
+    // print_r($a);
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 }
