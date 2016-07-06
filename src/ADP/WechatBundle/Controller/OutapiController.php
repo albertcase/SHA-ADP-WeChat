@@ -121,11 +121,11 @@ class OutapiController extends Controller
       'soapfunction' => 'FlightInfo',
       'FlightInfo' => array(
         'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
-        'howMany' => '1',
+        'howMany' => '3',
       ),
     );
     $result = $FlightSoap->SoapApi($Soap);
-    print_r($result);
+    print_r(array_reverse($result->FlightInfoResult->flights));
     // $tgap = explode(":",'00:55:00');
     // $a = intval(strtotime('1970/1/1 00:55:00'))+8*3600;
     // $a = intval($tgap[0])*3600+intval($tgap[1])*60+intval($tgap[2]);
