@@ -81,6 +81,8 @@ class FlightSoapResponse{
       if(property_exists($result->FlightInfoResult, 'flights')){
         $flight = array(
           'ident' => $result->FlightInfoResult->flights->ident,
+          'filed_time' => $result->FlightInfoResult->flights->filed_time,
+          'filed_ete' => $result->FlightInfoResult->flights->filed_ete,
           'filed_departuretime' => $result->FlightInfoResult->flights->filed_departuretime,
           'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
           'originName' => $result->FlightInfoResult->flights->originName,
@@ -90,6 +92,8 @@ class FlightSoapResponse{
     }
     if(!$flight)
       return false;
+    $tgap = explode(":", $flight['filed_ete']);
+    $flight['filed_dtime'] = $flight['filed_time']+intval($tgap[0])*3600+intval($tgap[1])*60+intval($tgap[2]);
     $Soap = array(
       'soapfunction' => 'AirlineFlightInfo',
       'AirlineFlightInfo' => array(
@@ -118,10 +122,10 @@ class FlightSoapResponse{
     require_once dirname(__FILE__).'/../CustomMsg/customsResponse.php';
     $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
     if($info = $this->getfightinfo($data)){
-      $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_departuretime']);
-      $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
-      $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['estimatedarrivaltime']);
-      $info['estimatedarrivaltime_time'] = date('H:i:s', $info['estimatedarrivaltime']);
+      $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_time']);
+      $info['filed_departuretime_time'] = date('H:i:s', $info['filed_time']);
+      $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['filed_dtime']);
+      $info['estimatedarrivaltime_time'] = date('H:i:s', $info['filed_dtime']);
       foreach($info as $x => $_val){
         if(!$_val)
           $info[$x] = "暂未提供";
