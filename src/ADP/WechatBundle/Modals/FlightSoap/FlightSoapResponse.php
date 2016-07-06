@@ -70,7 +70,6 @@ class FlightSoapResponse{
       'soapfunction' => 'FlightInfo',
       'FlightInfo' => array(
         'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
-        // 'ident' => $data['ident'],
         'howMany' => '1',
       ),
     );
