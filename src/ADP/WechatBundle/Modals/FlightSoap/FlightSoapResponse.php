@@ -65,10 +65,11 @@ class FlightSoapResponse{
   public function getfightinfo($data){
     require_once dirname(__FILE__).'/FlightSoap.php';
     $FlightSoap = new FlightSoap();
+    preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
     $Soap = array(
       'soapfunction' => 'FlightInfo',
       'FlightInfo' => array(
-        'ident' => $data['ident'],
+        'ident' => $pident['0']['1'].sprintf("%03d", $pident['0']['2']),
         'howMany' => '1',
       ),
     );
