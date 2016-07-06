@@ -136,10 +136,10 @@ class FlightSoapResponse{
     require_once dirname(__FILE__).'/../CustomMsg/customsResponse.php';
     $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
     if($info = $this->getfightinfo($data)){
-      $info['filed_departuretime_date'] = date('Y-m-d', ($info['filed_departuretime']-107400));
-      $info['filed_departuretime_time'] = date('H:i:s', ($info['filed_departuretime']-107400));
-      $info['estimatedarrivaltime_date'] = date('Y-m-d', ($info['estimatedarrivaltime']-107400));
-      $info['estimatedarrivaltime_time'] = date('H:i:s', ($info['estimatedarrivaltime']-107400));
+      $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_departuretime']);
+      $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
+      $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['estimatedarrivaltime']);
+      $info['estimatedarrivaltime_time'] = date('H:i:s', $info['estimatedarrivaltime']);
       foreach($info as $x => $_val){
         if(!$_val)
           $info[$x] = "暂未提供";
