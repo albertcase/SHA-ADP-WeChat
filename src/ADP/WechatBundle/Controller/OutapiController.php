@@ -113,27 +113,19 @@ class OutapiController extends Controller
 
 
   public function myjobAction(Request $request){
-    $data = $request->request->get('dologin');
-    $validator = Validation::createValidator();
-
-    $constraint = new Assert\Collection(array(
-        'email' => new Assert\Email(),
-        // 'simple' => new Assert\Length(array('min' => 102)),
-        // 'gender' => new Assert\Choice(array(3, 4)),
-        // 'password' => new Assert\Length(array('min' => 60)),
-    ));
-    $input = array(
-      'email' => 'aaa',
-      // 'simple' => 'bbbb',
-      // 'gender' => '3',
-      // 'password' => 'asdasdasda',
+    $FlightSoap = new \ADP\WechatBundle\Modals\FlightSoap\FlightSoap();
+    $data = array();
+    $data['ident'] = $request->get('ident');
+    preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
+    $Soap = array(
+      'soapfunction' => 'FlightInfo',
+      'FlightInfo' => array(
+        'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
+        'howMany' => '1',
+      ),
     );
-    $violations = $validator->validateValue($input, $constraint);
-    if($violations->count())
-      echo "success";
-    else
-      echo "error";
-    print_r($violations->count());
+    $result = $FlightSoap->SoapApi($Soap);
+    print_r($result);
     return new Response(json_encode($data, JSON_UNESCAPED_UNICODE));
   }
 }
