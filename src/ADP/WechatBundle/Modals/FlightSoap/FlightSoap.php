@@ -67,6 +67,19 @@ class FlightSoap{
     return $client->__soapCall($data['soapfunction'], $request);
   }
 
+  public function AirportInfoRequest($client, $data){
+    if(!$this->checkData(array('AirportInfo'), $data))
+      return false;
+    if(!$this->checkData(array('airportCode'), $data['AirportInfo']))
+      return false;
+    $request = array(
+      'AirlineInfo' => array(
+        'airportCode' => $data['AirportInfo']['airportCode'],
+      ),
+    );
+    return $client->__soapCall($data['soapfunction'], $request);
+  }
+
 //subfunction
 public function getallfunctions(){
   $client = $this->FlightSoapService();
