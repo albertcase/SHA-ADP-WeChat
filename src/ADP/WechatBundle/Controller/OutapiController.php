@@ -124,10 +124,22 @@ class OutapiController extends Controller
     );
     $result = $FlightSoap->SoapApi($Soap);
     print_r($result);
+    //
+    // preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
+    // $Soap = array(
+    //   'soapfunction' => 'FlightInfo',
+    //   'FlightInfo' => array(
+    //     'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
+    //     'howMany' => '3',
+    //   ),
+    // );
+    // $result = $FlightSoap->SoapApi($Soap);
+    // print_r(array_reverse($result->FlightInfoResult->flights));
     // $tgap = explode(":",'00:55:00');
     // $a = intval(strtotime('1970/1/1 00:55:00'))+8*3600;
     // $a = intval($tgap[0])*3600+intval($tgap[1])*60+intval($tgap[2]);
     // print_r($a);
+
     // $date = new \DateTime();
     // $date->setTimestamp('1467862886');
     // $date->setTimezone(new \DateTimeZone('America/Los_Angeles'));

@@ -70,7 +70,7 @@ class FlightSoapResponse{
       'soapfunction' => 'FlightInfo',
       'FlightInfo' => array(
         'ident' => $pident['0']['1'].ltrim($pident['0']['2'], "0"),
-        'howMany' => '1',
+        'howMany' => '3',
       ),
     );
     $result = $FlightSoap->SoapApi($Soap);
@@ -79,21 +79,35 @@ class FlightSoapResponse{
     $flight = array();
     if(property_exists($result, 'FlightInfoResult')){
       if(property_exists($result->FlightInfoResult, 'flights')){
-        $flight = array(
-          'ident' => $result->FlightInfoResult->flights->ident,
-          'filed_time' => $result->FlightInfoResult->flights->filed_time,
-          'filed_ete' => $result->FlightInfoResult->flights->filed_ete,
-          'filed_departuretime' => $result->FlightInfoResult->flights->filed_departuretime,
-          'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
-          'originName' => $result->FlightInfoResult->flights->originName,
-          'destinationName' => $result->FlightInfoResult->flights->destinationName,
-        );
+        if(isset($result->FlightInfoResult->flights->ident)){
+          $flight = array(
+            'ident' => $result->FlightInfoResult->flights->ident,
+            'filed_time' => $result->FlightInfoResult->flights->filed_time,
+            'filed_ete' => $result->FlightInfoResult->flights->filed_ete,
+            'filed_departuretime' => $result->FlightInfoResult->flights->filed_departuretime,
+            'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
+            'originName' => $result->FlightInfoResult->flights->originName,
+            'destinationName' => $result->FlightInfoResult->flights->destinationName,
+          );
+        }else{
+          foreach($result->FlightInfoResult->flights as $x){
+            if(time() < $x->filed_departuretime){
+              $flight = array(
+                'ident' => $x->ident,
+                'filed_time' => $x->filed_time,
+                'filed_ete' => $x->filed_ete,
+                'filed_departuretime' => $x->filed_departuretime,
+                'estimatedarrivaltime' => $x->estimatedarrivaltime,
+                'originName' => $x->originName,
+                'destinationName' => $x->destinationName,
+              );
+            }
+          }
+        }
       }
     }
     if(!$flight)
       return false;
-    $tgap = explode(":", $flight['filed_ete']);
-    $flight['filed_dtime'] = $flight['filed_time']+intval($tgap[0])*3600+intval($tgap[1])*60+intval($tgap[2]);
     $Soap = array(
       'soapfunction' => 'AirlineFlightInfo',
       'AirlineFlightInfo' => array(
@@ -107,8 +121,8 @@ class FlightSoapResponse{
     if(property_exists($result2, 'AirlineFlightInfoResult')){
       $out = array(
         'ident' => $flight['ident'],
-        'filed_departuretime' => $flight['filed_time'],
-        'estimatedarrivaltime' => $flight['filed_dtime'],
+        'filed_departuretime' => $flight['filed_departuretime'],
+        'estimatedarrivaltime' => $flight['estimatedarrivaltime'],
         'destinationName' => $flight['destinationName'],
         'originName' => $flight['originName'],
         'gate_orig' => $result2->AirlineFlightInfoResult->gate_orig,
@@ -142,7 +156,7 @@ class FlightSoapResponse{
 计划到达日期：{$info['estimatedarrivaltime_date']}
 计划到达时间：{$info['estimatedarrivaltime_time']}
 
-该信息由第三方平台提供";
+该信息由第三方平台提供,以上时间为北京时间";
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
