@@ -20,7 +20,7 @@ class listenerRequest{
 
     public function onKernelRequest(GetResponseEvent $event){
     	$this->router = $event->getRequest()->get('_route');
-    	if($this->router == 'adp_manage_index'){
+    	if($this->router == 'adp_manage_index' || $this->router == 'adp_index'){
         $Session = new Session();
         if($Session->has($this->container->getParameter('session_login'))){
           return $event->setResponse(new RedirectResponse($this->container->get('router')->generate('adp_manage_menu' ,array())));
