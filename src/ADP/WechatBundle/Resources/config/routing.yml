@@ -1,3 +1,7 @@
+adp_index:
+    path:     /
+    defaults: { _controller: ADPWechatBundle:Manage:index }
+
 adp_wechat_homepage:
     path:     /hello/{name}
     defaults: { _controller: ADPWechatBundle:Default:index }
