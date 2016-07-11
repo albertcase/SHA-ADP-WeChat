@@ -156,7 +156,7 @@ class FlightSoapResponse{
 计划到达日期：{$info['estimatedarrivaltime_date']}
 计划到达时间：{$info['estimatedarrivaltime_time']}
 
-该信息由第三方平台提供,以上时间为北京时间";
+该信息由第三方平台提供, 只提供最近航班信息, 以上时间为北京时间。";
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
