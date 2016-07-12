@@ -164,6 +164,7 @@ class FlightSoapResponse{
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
+    return print_r($content);
     $msg = array(
       'msgtype' => 'text',
       'touser' => $data['OpenID'],
@@ -176,8 +177,6 @@ class FlightSoapResponse{
   public function getLocaltime($airportCode, $timestrmp){
     require_once dirname(__FILE__).'/FlightSoap.php';
     $FlightSoap = new FlightSoap();
-    $data = array();
-    $data['ident'] = $request->get('ident');
     $Soap = array(
       'soapfunction' => 'AirportInfo',
       'AirportInfo' => array(
