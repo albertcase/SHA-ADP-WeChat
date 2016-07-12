@@ -164,7 +164,7 @@ class FlightSoapResponse{
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
-    return print_r($content);
+    // return print_r($content);
     $msg = array(
       'msgtype' => 'text',
       'touser' => $data['OpenID'],
