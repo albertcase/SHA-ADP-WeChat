@@ -88,6 +88,8 @@ class FlightSoapResponse{
             'estimatedarrivaltime' => $result->FlightInfoResult->flights->estimatedarrivaltime,
             'originName' => $result->FlightInfoResult->flights->originName,
             'destinationName' => $result->FlightInfoResult->flights->destinationName,
+            'origin' => $result->FlightInfoResult->flights->origin,
+            'destination' => $result->FlightInfoResult->flights->destination,
           );
         }else{
           foreach($result->FlightInfoResult->flights as $x){
@@ -100,6 +102,8 @@ class FlightSoapResponse{
                 'estimatedarrivaltime' => $x->estimatedarrivaltime,
                 'originName' => $x->originName,
                 'destinationName' => $x->destinationName,
+                'origin' => $x->origin,
+                'destination' => $x->destination,
               );
             }
           }
@@ -126,6 +130,8 @@ class FlightSoapResponse{
         'destinationName' => $flight['destinationName'],
         'originName' => $flight['originName'],
         'gate_orig' => $result2->AirlineFlightInfoResult->gate_orig,
+        'origin' =>  $flight['origin'],
+        'destination' =>  $flight['destination'],
         'terminal_orig' => $result2->AirlineFlightInfoResult->terminal_orig,
       );
     }
@@ -136,10 +142,8 @@ class FlightSoapResponse{
     require_once dirname(__FILE__).'/../CustomMsg/customsResponse.php';
     $customsResponse = new \ADP\WechatBundle\Modals\CustomMsg\customsResponse();
     if($info = $this->getfightinfo($data)){
-      $info['filed_departuretime_date'] = date('Y-m-d', $info['filed_departuretime']);
-      $info['filed_departuretime_time'] = date('H:i:s', $info['filed_departuretime']);
-      $info['estimatedarrivaltime_date'] = date('Y-m-d', $info['estimatedarrivaltime']);
-      $info['estimatedarrivaltime_time'] = date('H:i:s', $info['estimatedarrivaltime']);
+      $origin = $this->getLocaltime($info['origin'], $info['filed_departuretime']);
+      $departuretime = $this->getLocaltime($info['destination'], $info['estimatedarrivaltime']);
       foreach($info as $x => $_val){
         if(!$_val)
           $info[$x] = "暂未提供";
@@ -151,12 +155,12 @@ class FlightSoapResponse{
 目的地：{$info['destinationName']}
 候机楼：{$info['terminal_orig']}
 候机大门：{$info['gate_orig']}
-计划离港日期：{$info['filed_departuretime_date']}
-计划离港时间：{$info['filed_departuretime_time']}
-计划到达日期：{$info['estimatedarrivaltime_date']}
-计划到达时间：{$info['estimatedarrivaltime_time']}
+计划离港日期：{$origin['ldate']}
+计划离港时间：{$origin['ltime']}
+计划到达日期：{$departuretime['ldate']}
+计划到达时间：{$departuretime['ltime']}
 
-该信息由第三方平台提供, 只提供最近航班信息, 以上时间为北京时间。";
+该信息由第三方平台提供, 只提供最近航班信息, 以上时间均为机场当地时间。";
     }else{
       $content = "对不起您查询的航班不存在。请检查您的航班号";
     }
@@ -167,6 +171,35 @@ class FlightSoapResponse{
     );
     $customsResponse->addCustomMsg($msg);
     $customsResponse->sendCustomMsg();
+  }
+
+  public function getLocaltime($airportCode, $timestrmp){
+    require_once dirname(__FILE__).'/FlightSoap.php';
+    $FlightSoap = new FlightSoap();
+    $data = array();
+    $data['ident'] = $request->get('ident');
+    $Soap = array(
+      'soapfunction' => 'AirportInfo',
+      'AirportInfo' => array(
+        'airportCode' => $airportCode,
+      ),
+    );
+    $result = $FlightSoap->SoapApi($Soap);
+    $out = array();
+    $date = new \DateTime();
+    $date->setTimestamp($timestrmp);
+    $date->setTimezone(new \DateTimeZone('Asia/Shanghai'));
+    $out['bjdate'] = $date->format('Y-m-d');
+    $out['bjtime'] = $date->format('H:i:s');
+    if(property_exists($result, 'AirportInfoResult')){
+      $date->setTimezone(new \DateTimeZone(ltrim($result->AirportInfoResult->timezone, ":")));
+      $out['ldate'] = $date->format('Y-m-d');
+      $out['ltime'] = $date->format('H:i:s');
+      return $out;
+    }
+    $out['ldate'] = "获取不到当地时间";
+    $out['ltime'] = "获取不到当地时间";
+    return $out;
   }
 
 
