@@ -37,6 +37,9 @@ class OutapiController extends Controller
     $Ext = strtolower($photo->getClientOriginalExtension());
     if(!in_array($Ext, array('png', 'gif', 'bmp', 'jpg', 'jpeg')))
       return new Response($e1);
+    $e3 = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$CKEditorFuncNum.',"","it is not big than 2M");</script>';
+    if($photo->getClientSize() > 2090000)
+      return new Response($e3);
     $image = 'upload/image/'.$dir.'/'.uniqid().'.'.$photo->getClientOriginalExtension();
     $fs->rename($photo, $image, true);
     $e2 = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$CKEditorFuncNum.',"/'.$image.'","upload image success");window.close();</script>';
