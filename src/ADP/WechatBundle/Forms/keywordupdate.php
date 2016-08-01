@@ -102,7 +102,7 @@ class keywordupdate extends FormRequest{
     $keywords = json_decode($this->getdata['keywords'], true);
     foreach($keywords as $x){
       $exp = explode("；", $x);
-      $out = $out + $exp;
+      $out = array_merge($exp, $out);
     }
     return array_unique($out);
   }
