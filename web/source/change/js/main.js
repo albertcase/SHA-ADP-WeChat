@@ -498,7 +498,12 @@ var menu = {
     return a;
   },
   editpushmessage:function(){
-    var key = new Date().getTime();
+    var key;
+    if(self.editinfo.hasOwnProperty("eventKey")){
+      key = self.editinfo['eventKey'];
+    }else{
+      key = new Date().getTime();
+    }
     var self = this;
     var a = {
       "buttonupdate[id]": self.editinfo['id'],
@@ -511,7 +516,12 @@ var menu = {
     return a;
   },
   edittextmessage:function(){
-    var key = new Date().getTime();
+    var key;
+    if(self.editinfo.hasOwnProperty("eventKey")){
+      key = self.editinfo['eventKey'];
+    }else{
+      key = new Date().getTime();
+    }
     var self = this;
     var a={
       "buttonupdate[id]": self.editinfo['id'],
