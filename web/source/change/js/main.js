@@ -503,14 +503,14 @@ var menu = {
     if(self.editinfo.hasOwnProperty("eventKey")){
       key = self.editinfo['eventKey'];
     }else{
-      key = new Date().getTime();
+      key = "e"+new Date().getTime();
     }
     var a = {
       "buttonupdate[id]": self.editinfo['id'],
       "buttonupdate[menuName]": $("#editmenu .menuname").val(),
       "buttonupdate[eventtype]": 'click',
       "buttonupdate[MsgType]": 'news',
-      "buttonupdate[eventKey]": "e"+key,
+      "buttonupdate[eventKey]": key,
       "buttonupdate[newslist]": self.getnewslist($("#editmenu .pushmessage .newslist")),
     };
     return a;
@@ -521,7 +521,7 @@ var menu = {
     if(self.editinfo.hasOwnProperty("eventKey")){
       key = self.editinfo['eventKey'];
     }else{
-      key = new Date().getTime();
+      key = "e"+new Date().getTime();
     }
     var a={
       "buttonupdate[id]": self.editinfo['id'],
@@ -529,7 +529,7 @@ var menu = {
       "buttonupdate[eventtype]":'click',
       "buttonupdate[Content]": $("#editmenu .textcontent").val(),
       "buttonupdate[MsgType]": 'text',
-      "buttonupdate[eventKey]": "e"+key,
+      "buttonupdate[eventKey]": key,
     };
     return a;
   },
