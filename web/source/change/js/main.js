@@ -498,13 +498,13 @@ var menu = {
     return a;
   },
   editpushmessage:function(){
+    var self = this;
     var key;
     if(self.editinfo.hasOwnProperty("eventKey")){
       key = self.editinfo['eventKey'];
     }else{
       key = new Date().getTime();
     }
-    var self = this;
     var a = {
       "buttonupdate[id]": self.editinfo['id'],
       "buttonupdate[menuName]": $("#editmenu .menuname").val(),
@@ -516,13 +516,13 @@ var menu = {
     return a;
   },
   edittextmessage:function(){
+    var self = this;
     var key;
     if(self.editinfo.hasOwnProperty("eventKey")){
       key = self.editinfo['eventKey'];
     }else{
       key = new Date().getTime();
     }
-    var self = this;
     var a={
       "buttonupdate[id]": self.editinfo['id'],
       "buttonupdate[menuName]": $("#editmenu .menuname").val(),
