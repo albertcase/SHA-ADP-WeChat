@@ -65,6 +65,7 @@ class FlightSoapResponse{
   public function getfightinfo($data){
     require_once dirname(__FILE__).'/FlightSoap.php';
     $FlightSoap = new FlightSoap();
+    $data['ident'] = $this->transform($data['ident']);
     preg_match_all("/^([A-Za-z0-9]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
     $Soap = array(
       'soapfunction' => 'FlightInfo',
@@ -199,7 +200,16 @@ class FlightSoapResponse{
     return $out;
   }
 
-
-
-
+  public function transform($no){
+    $no = strtoupper($no);
+    preg_match_all("/^([A-Za-z0-9]{2})([0-9]{1,8})$/", $no,$pident, PREG_SET_ORDER);
+    $nNo = $pident['0']['1'];
+    $code = array(
+      '4U' => 'GWI',
+    );
+    if(isset($code[$nNo])){
+      $nNo = $code[$nNo];
+    }
+    return $nNo.$pident['0']['2'];
+  }
 }
