@@ -48,7 +48,7 @@ class WechatResponse{
     if(is_array($rs) && count($rs)> 0 ){
       return $this->msgResponse($rs);
     }
-    if(preg_match("/^[A-Za-z]{1,4}[0-9]{1,8}$/" ,trim($this->postObj->Content))){//judgement airport line
+    if(preg_match("/^[A-Za-z0-9]{1,4}[0-9]{1,8}$/" ,trim($this->postObj->Content))){//judgement airport line
       $FlightSoapResponse = $this->container->get('my.FlightSoapResponse');
       $data = array(
         'soapevent' => 'getlatest',
