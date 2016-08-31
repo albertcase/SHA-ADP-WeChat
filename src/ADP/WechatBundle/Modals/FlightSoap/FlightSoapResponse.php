@@ -65,7 +65,7 @@ class FlightSoapResponse{
   public function getfightinfo($data){
     require_once dirname(__FILE__).'/FlightSoap.php';
     $FlightSoap = new FlightSoap();
-    preg_match_all("/^([A-Za-z]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
+    preg_match_all("/^([A-Za-z0-9]{1,4})([0-9]{1,8})$/", $data['ident'],$pident, PREG_SET_ORDER);
     $Soap = array(
       'soapfunction' => 'FlightInfo',
       'FlightInfo' => array(
@@ -153,8 +153,6 @@ class FlightSoapResponse{
 航班号：{$info['ident']}
 始发地：{$info['originName']}
 目的地：{$info['destinationName']}
-候机楼：{$info['terminal_orig']}
-候机大门：{$info['gate_orig']}
 计划离港日期：{$origin['ldate']}
 计划离港时间：{$origin['ltime']}
 计划到达日期：{$departuretime['ldate']}
@@ -189,11 +187,11 @@ class FlightSoapResponse{
     $date->setTimestamp($timestrmp);
     $date->setTimezone(new \DateTimeZone('Asia/Shanghai'));
     $out['bjdate'] = $date->format('Y-m-d');
-    $out['bjtime'] = $date->format('H:i:s');
+    $out['bjtime'] = $date->format('H:i');
     if(property_exists($result, 'AirportInfoResult')){
       $date->setTimezone(new \DateTimeZone(ltrim($result->AirportInfoResult->timezone, ":")));
       $out['ldate'] = $date->format('Y-m-d');
-      $out['ltime'] = $date->format('H:i:s');
+      $out['ltime'] = $date->format('H:i');
       return $out;
     }
     $out['ldate'] = "获取不到当地时间";
