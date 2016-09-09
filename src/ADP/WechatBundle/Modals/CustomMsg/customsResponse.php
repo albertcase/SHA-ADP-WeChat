@@ -4,8 +4,8 @@ namespace ADP\WechatBundle\Modals\CustomMsg;
 class customsResponse
 {
   private $_TOKEN = 'adp_wechat_samesame';
-  private $_appid = 'wx4868f82730292835';
-  private $_secret = 'b994d3233e85e53712189f21880b83e3';
+  private $_appid = 'wx8fcd3f54960f2682';
+  private $_secret = '2fd531c6bfd43cff8615884602a33fb6';
   private $_redis;
   private $prostr = 'adp:custom:';
   private $list = 'list';
