@@ -500,7 +500,7 @@ var menu = {
   editpushmessage:function(){
     var self = this;
     var key;
-    if(self.editinfo.hasOwnProperty("eventKey")){
+    if(self.editinfo.hasOwnProperty("eventKey") && self.editinfo["eventKey"]){
       key = self.editinfo['eventKey'];
     }else{
       key = "e"+new Date().getTime();
@@ -518,7 +518,7 @@ var menu = {
   edittextmessage:function(){
     var self = this;
     var key;
-    if(self.editinfo.hasOwnProperty("eventKey")){
+    if(self.editinfo.hasOwnProperty("eventKey") && self.editinfo["eventKey"]){
       key = self.editinfo['eventKey'];
     }else{
       key = "e"+new Date().getTime();
