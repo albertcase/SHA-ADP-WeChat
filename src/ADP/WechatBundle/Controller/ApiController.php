@@ -32,7 +32,7 @@ class ApiController extends Controller
 		$return = json_decode($return);
 		var_dump($return);
 		if($return->status == 'success') {
-			$string = base64_decode($return->jsonResponse, TRUE);
+			$string = base64_decode($return->data, TRUE);
 			$access_token = $this->aes128_cbc_decrypt($key, $string, $iv);
 			var_dump($access_token);exit;
 			return $access_token;
