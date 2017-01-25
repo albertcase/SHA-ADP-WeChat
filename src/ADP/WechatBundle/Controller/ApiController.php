@@ -18,8 +18,9 @@ class ApiController extends Controller
 			$re = array('status' => 'failed', 'jsonResponse' => 'encrypt key is wrong');
 			return new JsonResponse($re);
 		}
-		$wechat = new Wechat();
-		$access_token = $wechat->getAccessToken();
+		// $wechat = new Wechat();
+		// $access_token = $wechat->getAccessToken();
+		$access_token = 'AlbertShen1206';
 		$data = base64_encode($this->aes128_cbc_encrypt(self::ENCRYPT_KEY, $access_token, self::ENCRYPT_IV));
 		$re = array('status' => 'success', 'jsonResponse' => $data);
 		return new JsonResponse($re);
