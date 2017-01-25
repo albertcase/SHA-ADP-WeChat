@@ -28,9 +28,9 @@ class WechatResponse{
     if(method_exists($this, $this->msgType.'Request')){
       $backxml =  call_user_func_array(array($this, $this->msgType.'Request'), array());
     }
-    // if($backxml == 'card') {
-    //   return '';
-    // }
+    if($backxml == 'card') {
+      return '';
+    }
     if($backxml){
       if($backxml != 'airport')
         return $backxml;
@@ -108,7 +108,7 @@ class WechatResponse{
     $card_list = array(
       'card_pass_check',
       'card_not_pass_check',
-      'user_get_card'，
+      'user_get_card',
       'user_del_card',
       'user_consume_card',
       'user_pay_from_pay_cell',
