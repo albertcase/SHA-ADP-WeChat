@@ -28,9 +28,9 @@ class WechatResponse{
     if(method_exists($this, $this->msgType.'Request')){
       $backxml =  call_user_func_array(array($this, $this->msgType.'Request'), array());
     }
-    if($backxml == 'card') {
-      return '';
-    }
+    // if($backxml == 'card') {
+    //   return '';
+    // }
     if($backxml){
       if($backxml != 'airport')
         return $backxml;
