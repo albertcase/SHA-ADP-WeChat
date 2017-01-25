@@ -20,7 +20,6 @@ class ApiController extends Controller
 		}
 		$wehcat = $this->container->get('my.Wechat'); 
 		$access_token = $wehcat->getAccessToken();
-		$access_token = 'AlbertShen1206';
 		$data = base64_encode($this->aes128_cbc_encrypt(self::ENCRYPT_KEY, $access_token, self::ENCRYPT_IV));
 		$re = array('status' => 'success', 'jsonResponse' => $data);
 		return new JsonResponse($re);
