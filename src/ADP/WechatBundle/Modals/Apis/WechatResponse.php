@@ -115,6 +115,7 @@ class WechatResponse{
       'user_view_card',
       'user_enter_session_from_card',
       'card_sku_remind',
+      'click',
       );
     if(in_array($event, $card_list)) {
       return 'card';
