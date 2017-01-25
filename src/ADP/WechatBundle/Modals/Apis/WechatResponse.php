@@ -33,7 +33,7 @@ class WechatResponse{
         return $backxml;
       return '';
     }
-    return $this->defaultfeedback();
+    //return $this->defaultfeedback();
   }
 
   public function msgResponse($rs){
