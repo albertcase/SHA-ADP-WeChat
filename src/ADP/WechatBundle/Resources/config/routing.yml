@@ -218,3 +218,12 @@ adp_manage_replay:
 adp_manage_preference:
     path:     /manage/preference/
     defaults: { _controller: ADPWechatBundle:Manage:preference }
+
+adp_wechat_retrieve_access_token:
+    path:     /wechat/retrieve/access_token/{key}
+    defaults: { _controller: ADPWechatBundle:Api:retrieveAccessToken }
+
+adp_wechat_retrieve_test:
+    path:     /wechat/retrieve/test
+    defaults: { _controller: ADPWechatBundle:Api:testRetrieve }
+    
