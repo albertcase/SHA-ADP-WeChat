@@ -28,6 +28,9 @@ class WechatResponse{
     if(method_exists($this, $this->msgType.'Request')){
       $backxml =  call_user_func_array(array($this, $this->msgType.'Request'), array());
     }
+    if($backxml == 'card') {
+      return '';
+    }
     if($backxml){
       if($backxml != 'airport')
         return $backxml;
@@ -102,6 +105,20 @@ class WechatResponse{
 
   public function eventRequest(){
     $event = strtolower($this->postObj->Event);
+    $card_list = array(
+      'card_pass_check',
+      'card_not_pass_check',
+      'user_get_card'，
+      'user_del_card',
+      'user_consume_card',
+      'user_pay_from_pay_cell',
+      'user_view_card',
+      'user_enter_session_from_card',
+      'card_sku_remind',
+      );
+    if(in_array($event, $card_list)) {
+      return 'card';
+    }
     if(method_exists($this, $event.'Event')){
       return call_user_func_array(array($this, $event.'Event'), array());
     }
