@@ -15,13 +15,13 @@ class ApiController extends Controller
 
 	public function retrieveAccessTokenAction($key) {
 		if($key != self::ENCRYPT_KEY) {
-			$re = array('status' => 'failed', 'jsonResponse' => 'encrypt key is wrong');
+			$re = array('status' => 'failed', 'errormsg' => 'encrypt key is wrong');
 			return new JsonResponse($re);
 		}
 		$wehcat = $this->container->get('my.Wechat'); 
 		$access_token = $wehcat->getAccessToken();
 		$data = base64_encode($this->aes128_cbc_encrypt(self::ENCRYPT_KEY, $access_token, self::ENCRYPT_IV));
-		$re = array('status' => 'success', 'jsonResponse' => $data);
+		$re = array('status' => 'success', 'data' => $data);
 		return new JsonResponse($re);
 	}
 
