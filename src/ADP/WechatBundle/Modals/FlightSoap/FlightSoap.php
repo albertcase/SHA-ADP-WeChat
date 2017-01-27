@@ -10,8 +10,8 @@ class FlightSoap{
       'cache_wsdl' => WSDL_CACHE_NONE,
       'trace' => true,
       'exceptions' => 0,
-      'login' => 'dirkwang',
-      'password' => '299992422c4a006a47860bd5ad81cebc4d1d0b81',
+      'login' => 'fredericboudet',
+      'password' => '8142d5e6474f01195ca4dc213a261c4778074e61',
    );
    $client = new \SoapClient(dirname(__FILE__)."/FlightSoap.wsdl", $part);
    return $client;
